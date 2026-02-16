@@ -9,10 +9,6 @@ import {
   StatusBar,
   Alert
 } from 'react-native';
-import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
-import TicketCardStack from './components/neverHaveIEver/TicketCardStack';
->>>>>>> neverHaveIEverCardUI
 
 const { width } = Dimensions.get('window');
 
@@ -198,7 +194,6 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#333',
   },
   pagination: {
     flexDirection: 'row',
@@ -230,7 +225,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: '700',
-    backgroundColor: '#8f6a43',
     alignItems: 'center',
     justifyContent: 'center',
   },
