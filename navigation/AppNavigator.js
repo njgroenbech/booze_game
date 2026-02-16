@@ -7,12 +7,6 @@ import NeverHaveIEverScreen from '../screens/neverHaveIEverScreen';
 
 const Stack = createNativeStackNavigator();
 
-export const GAME_SCREENS = {
-  '1': 'NeverHaveIEver',
-  // '2': 'DrukQuiz',
-  // '3': 'DetHemmeligeSpil',
-};
-
 export default function AppNavigator() {
   return (
     <NavigationContainer>
