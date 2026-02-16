@@ -11,50 +11,9 @@ import {
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Welcome</Text>
-          <Text style={styles.subtitle}>Start building something amazing</Text>
-        </View>
-
-        <View style={styles.content}>
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>📱 React Native</Text>
-            <Text style={styles.cardDescription}>
-              Build native apps for iOS and Android using React
-            </Text>
-          </View>
-
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>⚡ Fast Refresh</Text>
-            <Text style={styles.cardDescription}>
-              See your changes instantly as you code
-            </Text>
-          </View>
-
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>🎨 Customizable</Text>
-            <Text style={styles.cardDescription}>
-              Easily modify styles and components to match your vision
-            </Text>
-          </View>
-
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Get Started</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Edit App.js to customize this screen
-          </Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View>
+      <Text>Hejsa :3</Text>
+    </View>
   );
 };
 
