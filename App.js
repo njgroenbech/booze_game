@@ -6,7 +6,8 @@ import {
   TouchableOpacity, 
   Animated, 
   Dimensions,
-  StatusBar
+  StatusBar,
+  Alert
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -17,10 +18,15 @@ const FULL_SIZE = CARD_WIDTH + SPACING;
 const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
 const App = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  
+  const scrollOffsetRef = useRef(0);
+
+  const handleScroll = (event) => {
+    const scrollOffset = event.nativeEvent.contentOffset.x;
+    scrollOffsetRef.current = scrollOffset;
+  };
+
   const [players, setPlayers] = useState([]);
-  
+
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const games = [
@@ -45,11 +51,16 @@ const App = () => {
           decelerationRate="fast"
           contentContainerStyle={{
             paddingHorizontal: SIDE_SPACING - (SPACING / 2),
-            alignItems: 'center', 
+            alignItems: 'center',
           }}
+          onScrollEndDrag={handleScroll}
+          onMomentumScrollEnd={handleScroll}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: true }
+            {
+              useNativeDriver: true,
+              listener: handleScroll,
+            }
           )}
           renderItem={({ item, index }) => {
             const inputRange = [
@@ -116,7 +127,20 @@ const App = () => {
         })}
       </View>
 
-      <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Calculate the current index from the latest scroll position
+          const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
+          const activeGame = games[currentIndex];
+          if (activeGame) {
+            Alert.alert("Starting Game", `You chose: ${activeGame.name} (ID: ${activeGame.id})`);
+          } else {
+            Alert.alert("Error", "No game selected");
+          }
+        }}
+      >
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
 
