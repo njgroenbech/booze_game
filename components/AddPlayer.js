@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-export default function DrinkiesPlayerList({ players, setPlayers, navigation }) {
+export default function DrinkiesPlayerList({ players, setPlayers, onReady }) {
   const [playerName, setPlayerName] = useState('');
 
   const addPlayer = () => {
@@ -69,7 +69,7 @@ export default function DrinkiesPlayerList({ players, setPlayers, navigation }) 
           </ScrollView>
 
           {/* Ready button */}
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={onReady}>
             <Text style={styles.readyButton}>Færdig</Text>
           </TouchableOpacity>
         </View>

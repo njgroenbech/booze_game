@@ -1,4 +1,8 @@
-const neverHaveIEverScreen = () => {
+import React from 'react';
+import { SafeAreaView, View, StyleSheet } from 'react-native';
+import TicketCardStack from '../components/neverHaveIEver/TicketCardStack';
+
+const NeverHaveIEverScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -8,9 +12,24 @@ const neverHaveIEverScreen = () => {
           cornerLabel="Jeg har aldrig"
           brand="Booze Game"
           maxCards={3}
-          backgroundImageSource={require('./assets/wood-table.png')}
+          backgroundImageSource={require('../assets/wood-table.png')}
         />
       </View>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#2a1810',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+});
+
+export default NeverHaveIEverScreen;
