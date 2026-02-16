@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { 
   StyleSheet, 
   Text, 
@@ -17,6 +17,8 @@ const FULL_SIZE = CARD_WIDTH + SPACING;
 const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
 const App = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const games = [
