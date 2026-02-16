@@ -1,0 +1,27 @@
+{
+  "name": "booze-game",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000B\u0000o\u0000o\u0000z\u0000e\u0000 \u0000G\u0000a\u0000m\u0000e\u0000\r\u0000 \u0000",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/njgroenbech/booze_game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/njgroenbech/booze_game/issues"
+  },
+  "homepage": "https://github.com/njgroenbech/booze_game#readme",
+  "dependencies": {
+    "expo": "^54.0.33",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
+  }
+}
