@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, View, StyleSheet } from 'react-native';
 import TicketCardStack from '../components/neverHaveIEver/TicketCardStack';
 
 const NeverHaveIEverScreen = () => {
@@ -22,12 +22,13 @@ const NeverHaveIEverScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111',
-    justifyContent: 'center',
+    backgroundColor: '#2a1810',
   },
   content: {
-    width: '100%',
-    paddingHorizontal: 16,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
 });
 
