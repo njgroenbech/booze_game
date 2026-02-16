@@ -1,26 +1,28 @@
 import React, { useRef, useState } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  Animated, 
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Animated,
   Dimensions,
   StatusBar
 } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DrinkiesPlayerList from './components/AddPlayer';
 
 const { width } = Dimensions.get('window');
 
-const CARD_WIDTH = width * 0.75; 
+const CARD_WIDTH = width * 0.75;
 const SPACING = 16;
 const FULL_SIZE = CARD_WIDTH + SPACING;
 const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
-const App = () => {
+const Stack = createNativeStackNavigator();
+
+const HomeScreen = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  
-  const [players, setPlayers] = useState([]);
-  
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const games = [
@@ -116,11 +118,32 @@ const App = () => {
         })}
       </View>
 
-      <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+      <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => navigation.navigate('AddPlayer')}>
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
 
     </View>
+  );
+};
+
+const App = () => {
+  const [players, setPlayers] = useState([]);
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="AddPlayer">
+          {(props) => (
+            <DrinkiesPlayerList
+              {...props}
+              players={players}
+              setPlayers={setPlayers}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
