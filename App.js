@@ -1,20 +1,125 @@
-import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
+import React, { useRef, useState } from 'react';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  Animated, 
+  Dimensions,
+  StatusBar
 } from 'react-native';
 
+const { width } = Dimensions.get('window');
+
+const CARD_WIDTH = width * 0.75; 
+const SPACING = 16;
+const FULL_SIZE = CARD_WIDTH + SPACING;
+const SIDE_SPACING = (width - CARD_WIDTH) / 2;
+
 const App = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  
   const [players, setPlayers] = useState([]);
+  
+  const scrollX = useRef(new Animated.Value(0)).current;
+
+  const games = [
+    { id: '1', name: 'Jeg Har Aldrig', color: '#de4545' },
+    { id: '2', name: 'Druk Quiz', color: '#45de6b' },
+    { id: '3', name: 'Det Hemmelige Spil', color: '#4586de' },
+  ];
 
   return (
-    <View>
-      <Text>Hejsa :3</Text>
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      
+      <Text style={styles.title}>Booze Game</Text>
+
+      <View style={styles.carouselWrapper}>
+        <Animated.FlatList
+          data={games}
+          horizontal
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={FULL_SIZE}
+          decelerationRate="fast"
+          contentContainerStyle={{
+            paddingHorizontal: SIDE_SPACING - (SPACING / 2),
+            alignItems: 'center', 
+          }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: true }
+          )}
+          renderItem={({ item, index }) => {
+            const inputRange = [
+              (index - 1) * FULL_SIZE,
+              index * FULL_SIZE,
+              (index + 1) * FULL_SIZE,
+            ];
+
+            const scale = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.9, 1.05, 0.9],
+              extrapolate: 'clamp',
+            });
+
+            const opacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.7, 1, 0.7],
+              extrapolate: 'clamp',
+            });
+
+            return (
+              <Animated.View style={[
+                styles.shadowWrapper, 
+                { transform: [{ scale }], opacity }
+              ]}>
+                <View style={[styles.card, { backgroundColor: item.color }]}>
+                  <View style={styles.cardBody} />
+                  <View style={styles.cardFooter}>
+                    <Text style={styles.cardText}>{item.name}</Text>
+                  </View>
+                </View>
+              </Animated.View>
+            );
+          }}
+        />
+      </View>
+
+      <View style={styles.pagination}>
+        {games.map((_, index) => {
+          const inputRange = [
+            (index - 1) * FULL_SIZE,
+            index * FULL_SIZE,
+            (index + 1) * FULL_SIZE,
+          ];
+
+          const scaleX = scrollX.interpolate({
+            inputRange,
+            outputRange: [1, 1, 1],
+            extrapolate: 'clamp',
+          });
+
+          const dotOpacity = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.3, 1, 0.3],
+            extrapolate: 'clamp',
+          });
+
+          return (
+            <Animated.View 
+              key={index} 
+              style={[styles.dot, { opacity: dotOpacity, transform: [{ scaleX }] }]} 
+            />
+          );
+        })}
+      </View>
+
+      <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+        <Text style={styles.buttonText}>Play</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -23,76 +128,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  header: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 40,
-    paddingHorizontal: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
+    justifyContent: 'center', 
+    alignItems: 'center',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#212529',
-    marginBottom: 8,
+    fontSize: 36,
+    fontWeight: '500',
+    marginBottom: 20,
+    color: '#1a1a1a',
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#6c757d',
+  carouselWrapper: {
+    height: 480, 
+    width: '100%',
   },
-  content: {
-    padding: 24,
+  shadowWrapper: {
+    width: CARD_WIDTH,
+    height: 400,
+    marginHorizontal: SPACING / 2,
+    elevation: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
   },
   card: {
+    flex: 1,
+    borderRadius: 30,
+    justifyContent: 'flex-end',
+    overflow: "hidden",
+  },
+  cardBody: {
+    flex: 1,
+  },
+  cardFooter: {
+    width: '100%',
     backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
+    paddingVertical: 20,
+    paddingHorizontal: 25,
+    alignItems: "flex-end",
   },
-  cardTitle: {
+  cardText: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#212529',
-    marginBottom: 8,
+    fontWeight: '700',
+    color: '#333',
   },
-  cardDescription: {
-    fontSize: 14,
-    color: '#6c757d',
-    lineHeight: 20,
+  pagination: {
+    flexDirection: 'row',
+    height: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 40,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#333',
+    marginHorizontal: 8,
   },
   button: {
-    backgroundColor: '#007bff',
-    borderRadius: 8,
+    backgroundColor: '#007AFF',
     paddingVertical: 16,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    marginTop: 8,
+    paddingHorizontal: 100,
+    borderRadius: 35,
+    elevation: 6,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  footer: {
-    padding: 24,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 12,
-    color: '#adb5bd',
-    textAlign: 'center',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '700',
   },
 });
 
