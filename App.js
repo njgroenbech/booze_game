@@ -143,7 +143,6 @@ const App = () => {
       >
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
-
     </View>
   );
 };
