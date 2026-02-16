@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useRef, useState } from 'react';
 import { 
   StyleSheet, 
@@ -8,6 +9,11 @@ import {
   Dimensions,
   StatusBar
 } from 'react-native';
+=======
+import React from 'react';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import TicketCardStack from './components/neverHaveIEver/TicketCardStack';
+>>>>>>> neverHaveIEverCardUI
 
 const { width } = Dimensions.get('window');
 
@@ -30,6 +36,7 @@ const App = () => {
   ];
 
   return (
+<<<<<<< HEAD
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       
@@ -121,12 +128,27 @@ const App = () => {
       </TouchableOpacity>
 
     </View>
+=======
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <TicketCardStack
+          title="Jeg har aldrig"
+          body="...glemt at mobilepay for drinks i byen"
+          cornerLabel="Jeg har aldrig"
+          brand="Booze Game"
+          maxCards={3}
+          backgroundImageSource={require('./assets/wood-table.png')}
+        />
+      </View>
+    </SafeAreaView>
+>>>>>>> neverHaveIEverCardUI
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
     backgroundColor: '#f8f9fa',
     justifyContent: 'center', 
     alignItems: 'center',
@@ -202,6 +224,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: '700',
+=======
+    backgroundColor: '#8f6a43',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content: {
+    width: '100%',
+    paddingHorizontal: 16,
+>>>>>>> neverHaveIEverCardUI
   },
 });
 
