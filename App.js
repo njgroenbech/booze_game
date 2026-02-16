@@ -19,6 +19,8 @@ const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 const App = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   
+  const [players, setPlayers] = useState([]);
+  
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const games = [
@@ -117,6 +119,7 @@ const App = () => {
       <TouchableOpacity style={styles.button} activeOpacity={0.8}>
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
+
     </View>
   );
 };
