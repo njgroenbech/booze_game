@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 const App = () => {
+  const [players, setPlayers] = useState([]);
+
   return (
     <View>
       <Text>Hejsa :3</Text>
