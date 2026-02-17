@@ -8,6 +8,7 @@ import {
   Dimensions,
   StatusBar,
   Alert,
+  Pressable,
 } from 'react-native';
 import { useGame } from '../context/GameContext';
 import DrinkiesPlayerList from '../components/AddPlayer';
@@ -25,6 +26,20 @@ export default function HomeScreen({ navigation }) {
   const scrollOffsetRef = useRef(0);
   const [showPlayerList, setShowPlayerList] = React.useState(false);
 
+  function startGame() {
+    const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
+    const activeGame = games[currentIndex];
+    if (activeGame) {
+      if (activeGame.id === '2' || activeGame.id === '3') {
+        Alert.alert('Kommer snart!');
+        return;
+      }
+      setGameId(activeGame.id);
+      setGameName(activeGame.name);
+      setShowPlayerList(true);
+    }
+  }
+
   const handleScroll = (event) => {
     const scrollOffset = event.nativeEvent.contentOffset.x;
     scrollOffsetRef.current = scrollOffset;
@@ -41,13 +56,13 @@ export default function HomeScreen({ navigation }) {
   const { players, setPlayers, gameId } = useGame();
 
   const handleReady = () => {
-      const screen = GAME_SCREENS[gameId];
-      if (screen) {
-        navigation.navigate(screen);
-      } else {
-        navigation.navigate('Home');
-      }
-    };
+    const screen = GAME_SCREENS[gameId];
+    if (screen) {
+      navigation.navigate(screen);
+    } else {
+      navigation.navigate('Home');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -96,17 +111,20 @@ export default function HomeScreen({ navigation }) {
             });
 
             return (
-              <Animated.View style={[
-                styles.shadowWrapper,
-                { transform: [{ scale }], opacity }
-              ]}>
-                <View style={[styles.card, { backgroundColor: item.color }]}>
-                  <View style={styles.cardBody} />
-                  <View style={styles.cardFooter}>
-                    <Text style={styles.cardText}>{item.name}</Text>
+              <Pressable
+                onPress={startGame}>
+                <Animated.View style={[
+                  styles.shadowWrapper,
+                  { transform: [{ scale }], opacity }
+                ]}>
+                  <View style={[styles.card, { backgroundColor: item.color }]}>
+                    <View style={styles.cardBody} />
+                    <View style={styles.cardFooter}>
+                      <Text style={styles.cardText}>{item.name}</Text>
+                    </View>
                   </View>
-                </View>
-              </Animated.View>
+                </Animated.View>
+              </Pressable>
             );
           }}
         />
