@@ -3,6 +3,8 @@ import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native
 import TicketCard from './TicketCard';
 import questions from '../../data/questions.json';
 
+const EXHAUSTED_BODY_TEXT = 'der er ikke flere spørgsmål tilbage';
+
 const COLOR_PALETTE = ['#f85d63', '#34b0fcff', '#00d031ff', '#f67efcff'];
 const QUESTION_KEY_BY_COLOR = {
   '#f85d63': 'jegHarAldrig',
@@ -49,16 +51,11 @@ const buildRoundBuckets = () =>
 // Modul-scope state: undgår reset af brugte spørgsmål ved evt. remount af skærmen.
 let sessionRemainingQuestionsByColor = buildRoundBuckets();
 
+const resetSessionQuestions = () => {
+  sessionRemainingQuestionsByColor = buildRoundBuckets();
+};
+
 const drawQuestionWithoutRepeat = () => {
-  const colorsWithQuestionsLeft = COLOR_PALETTE.filter(
-    (backgroundColor) => sessionRemainingQuestionsByColor[backgroundColor].length > 0
-  );
-
-  // Når hele runden er tømt, starter en ny blandet runde.
-  if (colorsWithQuestionsLeft.length === 0) {
-    sessionRemainingQuestionsByColor = buildRoundBuckets();
-  }
-
   const availableColors = COLOR_PALETTE.filter(
     (backgroundColor) => sessionRemainingQuestionsByColor[backgroundColor].length > 0
   );
@@ -87,34 +84,57 @@ const drawQuestionWithoutRepeat = () => {
 const createRandomizedCard = (id, defaultBody) => {
   const questionEntry = drawQuestionWithoutRepeat();
 
+  if (!questionEntry) {
+    return {
+      id,
+      questionId: `exhausted:${id}`,
+      title: null,
+      body: EXHAUSTED_BODY_TEXT,
+      cornerLabel: null,
+      tilt: randomRange(-7, 7),
+      backgroundColor: randomFrom(COLOR_PALETTE),
+      offsetX: randomRange(-12, 12),
+      offsetY: randomRange(-10, 10),
+      isExhausted: true,
+    };
+  }
+
   return {
     id,
-    questionId: questionEntry?.questionId ?? `fallback:${id}`,
-    title: questionEntry?.title ?? 'Booze Game',
-    body: questionEntry?.body ?? defaultBody,
-    cornerLabel: questionEntry?.cornerLabel ?? 'Booze Game',
+    questionId: questionEntry.questionId,
+    title: questionEntry.title,
+    body: questionEntry.body ?? defaultBody,
+    cornerLabel: questionEntry.cornerLabel,
     tilt: randomRange(-7, 7),
-    backgroundColor: questionEntry?.backgroundColor ?? randomFrom(COLOR_PALETTE),
+    backgroundColor: questionEntry.backgroundColor,
     offsetX: randomRange(-12, 12),
     offsetY: randomRange(-10, 10),
+    isExhausted: false,
   };
 };
 
 const TicketCardStack = ({
-  title,
   body,
-  cornerLabel,
   brand,
   maxCards = 10,
   backgroundImageSource,
 }) => {
   const nextIdRef = useRef(2);
   const [cards, setCards] = useState([createRandomizedCard(1, body)]);
+  const [hasNoMoreQuestions, setHasNoMoreQuestions] = useState(false);
 
   const addCard = () => {
+    if (hasNoMoreQuestions) {
+      return;
+    }
+
     // Træk udføres udenfor setState-updateren for at undgå side effects i dev Strict Mode.
     const nextCard = createRandomizedCard(nextIdRef.current, body);
     nextIdRef.current += 1;
+
+    if (nextCard.isExhausted) {
+      setHasNoMoreQuestions(true);
+    }
 
     setCards((prevCards) => {
       const nextCards = [...prevCards, nextCard];
@@ -127,14 +147,22 @@ const TicketCardStack = ({
     });
   };
 
+  const resetQuestions = () => {
+    resetSessionQuestions();
+    const firstCard = createRandomizedCard(1, body);
+    nextIdRef.current = 2;
+    setCards([firstCard]);
+    setHasNoMoreQuestions(Boolean(firstCard.isExhausted));
+  };
+
   const stackContent = (
-    <Pressable style={styles.stackLayer} onPress={addCard}>
+    <Pressable style={styles.stackLayer} onPress={addCard} disabled={hasNoMoreQuestions}>
       {cards.map((card, index) => (
         <TicketCard
           key={`${card.id}:${card.questionId}`}
-          title={card.title || title}
-          body={card.body || body}
-          cornerLabel={card.cornerLabel || cornerLabel}
+          title={card.title}
+          body={card.body}
+          cornerLabel={card.cornerLabel}
           brand={brand}
           backgroundColor={card.backgroundColor}
           tilt={card.tilt}
@@ -151,9 +179,19 @@ const TicketCardStack = ({
         />
       ))}
 
-      <View style={styles.hintWrapper}>
-        <Text style={styles.hintText}>Tryk for at trække et nyt kort</Text>
-      </View>
+      {!hasNoMoreQuestions && (
+        <View style={styles.hintWrapper}>
+          <Text style={styles.hintText}>Tryk for at trække et nyt kort</Text>
+        </View>
+      )}
+
+      {hasNoMoreQuestions && (
+        <View style={styles.actionsWrapper}>
+          <Pressable style={styles.actionButton} onPress={resetQuestions}>
+            <Text style={styles.actionButtonText}>Nulstil spørgsmål</Text>
+          </Pressable>
+        </View>
+      )}
     </Pressable>
   );
 
@@ -203,6 +241,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     opacity: 0.8,
+  },
+  actionsWrapper: {
+    position: 'absolute',
+    bottom: 24,
+    width: '100%',
+    alignItems: 'center',
+    gap: 10,
+  },
+  actionButton: {
+    minWidth: 220,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#ffffff',
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+  },
+  actionButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '700',
   },
 });
 

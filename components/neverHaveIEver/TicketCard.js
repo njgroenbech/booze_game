@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const TicketCard = ({
-  title = 'Jeg har aldrig',
-  body = '...glemt at mobilepay for drinks i byen',
-  cornerLabel = 'Jeg har aldrig',
-  brand = 'Booze Game',
+  title = '',
+  body = '',
+  cornerLabel = '',
+  brand = '',
   backgroundColor = '#f85d63',
   tilt = -3,
   style,
@@ -21,10 +21,10 @@ const TicketCard = ({
           },
         ]}
       >
-        <View style={styles.cornerCutout} />
-        <Text style={styles.cornerLabel}>{cornerLabel}</Text>
+        {cornerLabel ? <View style={styles.cornerCutout} /> : null}
+        {cornerLabel ? <Text style={styles.cornerLabel}>{cornerLabel}</Text> : null}
 
-        <Text style={styles.title}>{title}</Text>
+        {title ? <Text style={styles.title}>{title}</Text> : null}
         <Text style={styles.body}>{body}</Text>
 
         <Text style={styles.brand}>{brand}</Text>
