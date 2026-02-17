@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGame } from '../context/GameContext';
-import DrinkiesPlayerList from '../components/AddPlayer';
+import DrinkiesPlayerList from '../components/addplayers/AddPlayer';
 import { GAME_SCREENS } from '../navigation/gameScreens';
 
 export default function AddPlayerScreen({ navigation }) {
