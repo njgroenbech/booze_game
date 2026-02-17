@@ -26,56 +26,58 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClo
   };
 
   return (
+    <TouchableWithoutFeedback onPress={onClose} accessible={false}>
       <View style={styles.container}>
         {/* Background */}
         <View style={styles.backgroundBlur} />
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        {/* Chalkboard */}
-        <View style={styles.chalkboard}>
-          <View style={styles.chalkboardBorder}>
-            {/* Close button */}
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Text style={styles.closeButtonText}>✕</Text>
-            </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          {/* Chalkboard */}
+          <View style={styles.chalkboard}>
+            <View style={styles.chalkboardBorder}>
+              {/* Close button */}
+              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                <Text style={styles.closeButtonText}>✕</Text>
+              </TouchableOpacity>
 
-            {/* Text at top */}
-            <Text style={styles.chalkText}>
-              Spillet er federe,{'\n'}hvis du tilføjer{'\n'}spillere
-            </Text>
+              {/* Text at top */}
+              <Text style={styles.chalkText}>
+                Spillet er federe,{'\n'}hvis du tilføjer{'\n'}spillere
+              </Text>
 
-            {/* Input field */}
-            <TextInput
-              style={styles.input}
-              placeholder="Skriv navn..."
-              placeholderTextColor="#999"
-              value={playerName}
-              onChangeText={setPlayerName}
-              onSubmitEditing={addPlayer}
-            />
+              {/* Input field */}
+              <TextInput
+                style={styles.input}
+                placeholder="Skriv navn..."
+                placeholderTextColor="#999"
+                value={playerName}
+                onChangeText={setPlayerName}
+                onSubmitEditing={addPlayer}
+              />
 
-            {/* Player list */}
-            <ScrollView style={styles.playerList} showsVerticalScrollIndicator={true}>
-              {players.map((player, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.playerItem}
-                  onPress={() => removePlayer(index)}
-                >
-                  <Text style={styles.xMark}>✗</Text>
-                  <Text style={styles.playerName}>{player}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+              {/* Player list */}
+              <ScrollView style={styles.playerList} showsVerticalScrollIndicator={true}>
+                {players.map((player, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.playerItem}
+                    onPress={() => removePlayer(index)}
+                  >
+                    <Text style={styles.xMark}>✗</Text>
+                    <Text style={styles.playerName}>{player}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
 
-            {/* Ready button */}
-            <TouchableOpacity onPress={onReady}>
-              <Text style={styles.readyButton}>Færdig</Text>
-            </TouchableOpacity>
+              {/* Ready button */}
+              <TouchableOpacity onPress={onReady}>
+                <Text style={styles.readyButton}>Færdig</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
         </TouchableWithoutFeedback>
       </View>
+    </TouchableWithoutFeedback>
   );
 }
 
