@@ -12,7 +12,7 @@ import {
   ImageBackground
 } from 'react-native';
 import { useGame } from '../context/GameContext';
-import DrinkiesPlayerList from '../components/AddPlayer';
+import DrinkiesPlayerList from '../components/addplayers/AddPlayer';
 import { GAME_SCREENS } from '../navigation/gameScreens';
 
 const { width } = Dimensions.get('window');
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    fontWeight: '500',
+    fontWeight: '600',
     marginBottom: 20,
     color: '#1a1a1a',
   },

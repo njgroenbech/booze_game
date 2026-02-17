@@ -121,7 +121,7 @@ const TicketCardStack = ({
   backgroundImageSource,
 }) => {
   const nextIdRef = useRef(2);
-  const [cards, setCards] = useState([createRandomizedCard(1, body)]);
+  const [cards, setCards] = useState(() => [createRandomizedCard(1, body)]);
   const [hasNoMoreQuestions, setHasNoMoreQuestions] = useState(false);
 
   const addCard = () => {
