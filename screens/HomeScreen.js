@@ -9,6 +9,8 @@ import {
   StatusBar,
 } from 'react-native';
 import { useGame } from '../context/GameContext';
+import DrinkiesPlayerList from '../components/AddPlayer';
+import { GAME_SCREENS } from '../navigation/gameScreens';
 
 const { width } = Dimensions.get('window');
 
@@ -20,6 +22,7 @@ const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 export default function HomeScreen({ navigation }) {
   const { setGameId, setGameName } = useGame();
   const scrollOffsetRef = useRef(0);
+  const [showPlayerList, setShowPlayerList] = React.useState(false);
 
   const handleScroll = (event) => {
     const scrollOffset = event.nativeEvent.contentOffset.x;
@@ -33,6 +36,17 @@ export default function HomeScreen({ navigation }) {
     { id: '2', name: 'Druk Quiz', color: '#45de6b' },
     { id: '3', name: 'Det Hemmelige Spil', color: '#4586de' },
   ];
+
+  const { players, setPlayers, gameId } = useGame();
+
+  const handleReady = () => {
+      const screen = GAME_SCREENS[gameId];
+      if (screen) {
+        navigation.navigate(screen);
+      } else {
+        navigation.navigate('Home');
+      }
+    };
 
   return (
     <View style={styles.container}>
@@ -135,13 +149,21 @@ export default function HomeScreen({ navigation }) {
           if (activeGame) {
             setGameId(activeGame.id);
             setGameName(activeGame.name);
-            navigation.navigate('AddPlayer');
+            setShowPlayerList(true);
           }
         }}
       >
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
 
+      {showPlayerList && (
+        <DrinkiesPlayerList
+          players={players}
+          setPlayers={setPlayers}
+          onReady={handleReady}
+          onClose={() => setShowPlayerList(false)}
+        />
+      )}
     </View>
   );
 }

@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-export default function DrinkiesPlayerList({ players, setPlayers, onReady }) {
+export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClose }) {
   const [playerName, setPlayerName] = useState('');
 
   const addPlayer = () => {
@@ -27,18 +27,15 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady }) {
     <View style={styles.container}>
       {/* Background */}
       <View style={styles.backgroundBlur} />
-      
-      {/* Header */}
-      <Text style={styles.title}>Drinkies</Text>
-      
-      {/* Rope decoration */}
-      <View style={styles.ropeContainer}>
-        <View style={styles.rope} />
-      </View>
 
       {/* Chalkboard */}
       <View style={styles.chalkboard}>
         <View style={styles.chalkboardBorder}>
+          {/* Close button */}
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeButtonText}>✕</Text>
+          </TouchableOpacity>
+
           {/* Text at top */}
           <Text style={styles.chalkText}>
             Spillet er federe,{'\n'}hvis du tilføjer{'\n'}spillere
@@ -80,10 +77,11 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#2a1810',
+    width: "100%",
+    height: "100%",
+    position: "absolute",
     alignItems: 'center',
-    paddingTop: 60,
+    justifyContent: 'center',
   },
   backgroundBlur: {
     position: 'absolute',
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(42, 24, 16, 0.9)',
+    backgroundColor: 'rgba(0, 0, 0, 0.73)',
   },
   title: {
     fontFamily: 'System',
@@ -120,8 +118,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   chalkboard: {
-    width: 380,
-    height: 600,
+    width: "90%",
+    height: "70%",
     backgroundColor: '#1a1a1a',
     borderRadius: 8,
     padding: 4,
@@ -137,6 +135,25 @@ const styles = StyleSheet.create({
     borderColor: '#666',
     borderRadius: 4,
     padding: 24,
+    position: 'relative',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  closeButtonText: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: '700',
+    lineHeight: 24,
   },
   chalkText: {
     fontFamily: 'System',
