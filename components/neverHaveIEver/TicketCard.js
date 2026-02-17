@@ -21,8 +21,8 @@ const TicketCard = ({
           },
         ]}
       >
-        {cornerLabel ? <View style={styles.cornerCutout} /> : null}
-        {cornerLabel ? <Text style={styles.cornerLabel}>{cornerLabel}</Text> : null}
+        <View style={styles.cornerCutout} />
+        <Text style={[styles.cornerLabel, {color: backgroundColor}]}>{cornerLabel}</Text>
 
         {title ? <Text style={styles.title}>{title}</Text> : null}
         <Text style={styles.body}>{body}</Text>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    width: '75%',
+    width: '65%',
     minHeight: 240,
     borderRadius: 34,
     borderWidth: 9,
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     top: 16,
     right: 20,
     fontSize: 16,
-    color: '#ee7272ff',
     fontWeight: '700',
   },
   title: {
