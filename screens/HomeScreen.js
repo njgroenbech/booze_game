@@ -49,9 +49,9 @@ export default function HomeScreen({ navigation }) {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const games = [
-    { id: '1', name: 'Jeg Har Aldrig', color: '#de4545', image: require('../assets/bamsefar.jpg') },
-    { id: '2', name: 'Druk Quiz', color: '#45de6b', image: require('../assets/dj-toenail.jpg')},
-    { id: '3', name: 'Det Hemmelige Spil', color: '#4586de', image: require('../assets/cool-kid.jpg')},
+    { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
+    { id: '2', name: 'Druk Quiz', color: '#fff', image: require('../assets/dj-toenail.jpg')},
+    { id: '3', name: 'Det Hemmelige Spil', color: '#fff', image: require('../assets/cool-kid.jpg')},
   ];
 
   const { players, setPlayers, gameId } = useGame();
