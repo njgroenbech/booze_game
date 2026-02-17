@@ -12,7 +12,7 @@ const NeverHaveIEverScreen = () => {
           body="...glemt at mobilepay for drinks i byen"
           cornerLabel="Jeg har aldrig"
           brand="Booze Game"
-          maxCards={3}
+          maxCards={10}
           backgroundImageSource={require('../assets/wood-table.png')}
         />
       </View>
