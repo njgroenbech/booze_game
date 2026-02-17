@@ -14,15 +14,15 @@ export default function AppNavigator() {
         <Stack.Screen 
           name="Home" 
           component={HomeScreen} 
-          options={{orientation: 'portrait'}}/>
-        <Stack.Screen 
-          name="AddPlayer" 
-          component={AddPlayerScreen} 
-          options={{orientation: 'portrait'}}/>
+          options={{orientation: 'portrait', animation: 'none'}}/>
+        <Stack.Screen
+          name="AddPlayer"
+          component={AddPlayerScreen}
+          options={{orientation: 'portrait', animation: 'none'}}/>
         <Stack.Screen
           name="NeverHaveIEver"
           component={NeverHaveIEverScreen}
-          options={{ orientation: 'landscape' }}
+          options={{ orientation: 'landscape', animation: 'none' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
