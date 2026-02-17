@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    width: '75%',
+    width: '65%',
     minHeight: 240,
     borderRadius: 34,
     borderWidth: 9,
