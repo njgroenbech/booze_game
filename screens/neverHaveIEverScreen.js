@@ -20,7 +20,7 @@ const NeverHaveIEverScreen = ({ navigation }) => {
         <TicketCardStack
           body="...glemt at mobilepay for drinks i byen"
           brand="Booze Game"
-          maxCards={3}
+          maxCards={10}
           backgroundImageSource={require('../assets/wood-table.png')}
         />
       </View>
