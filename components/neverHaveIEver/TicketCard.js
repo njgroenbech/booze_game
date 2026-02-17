@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    width: '65%',
-    minHeight: 240,
+    width: '60%',
+    minHeight: 260,
     borderRadius: 34,
     borderWidth: 9,
     borderColor: '#ffffff',
