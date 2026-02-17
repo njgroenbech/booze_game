@@ -7,10 +7,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   TouchableWithoutFeedback,
+  Pressable,
   Keyboard,
+  Animated,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import AnimatedPlayerItem from './AnimatedPlayerItem';
+import ScaleInModal from './ScaleInModal';
 
 function randomColor(alpha = 1) {
   const base = Math.floor(Math.random() * 40) + 20;
@@ -34,6 +38,30 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClo
     setPlayers(playerItems.map(p => p.name));
   }, [playerItems]);
 
+  // Fade the blur backdrop in on mount
+  const bgOpacity = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(bgOpacity, {
+      toValue: 1,
+      duration: 280,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const modalRef = useRef(null);
+  const isClosing = useRef(false);
+
+  const animatedClose = () => {
+    if (isClosing.current) return;
+    isClosing.current = true;
+    Animated.timing(bgOpacity, {
+      toValue: 0,
+      duration: 220,
+      useNativeDriver: true,
+    }).start();
+    modalRef.current?.exit(() => onClose());
+  };
+
   // Generate 4 random faded colors once per mount for the gradient
   const gradientColors = useMemo(
     () => [randomColor(1), randomColor(1), randomColor(1), randomColor(1)],
@@ -52,20 +80,25 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClo
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onClose} accessible={false}>
-      <View style={styles.container}>
-        <View style={styles.backgroundBlur} />
+    <View style={styles.container}>
+        {/* Backdrop — sibling to the card, so taps inside the card never reach this */}
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: bgOpacity }]}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={animatedClose}>
+            <BlurView intensity={75} tint="dark" style={StyleSheet.absoluteFill} />
+          </Pressable>
+        </Animated.View>
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <ScaleInModal ref={modalRef} style={styles.card}>
           <LinearGradient
             colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.card}
+            style={styles.gradientFill}
           >
             <View style={styles.inner}>
               {/* Close button */}
-              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <TouchableOpacity style={styles.closeButton} onPress={animatedClose}>
                 <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>
 
@@ -104,9 +137,9 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClo
               </View>
             </View>
           </LinearGradient>
+          </ScaleInModal>
         </TouchableWithoutFeedback>
-      </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 }
 
@@ -118,14 +151,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backgroundBlur: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.73)',
-  },
   card: {
     width: '90%',
     height: '70%',
@@ -135,6 +160,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 12,
     elevation: 10,
+  },
+  gradientFill: {
+    flex: 1,
+    borderRadius: 40,
   },
   inner: {
     flex: 1,

@@ -8,7 +8,7 @@ export default function AnimatedPlayerItem({ name, onRemove }) {
   useEffect(() => {
     Animated.timing(opacity, {
       toValue: 1,
-      duration: 250,
+      duration: 150,
       useNativeDriver: true,
     }).start();
   }, []);
@@ -17,7 +17,7 @@ export default function AnimatedPlayerItem({ name, onRemove }) {
   const handlePress = () => {
     Animated.timing(opacity, {
       toValue: 0,
-      duration: 200,
+      duration: 150,
       useNativeDriver: true,
     }).start(() => onRemove());
   };
