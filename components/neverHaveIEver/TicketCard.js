@@ -10,8 +10,10 @@ const TicketCard = ({
   tilt = -3,
   style,
 }) => {
-  const cornerCutoutWidth =
-    backgroundColor === '#f67efcff'
+  const hasSkullLabel = cornerLabel.includes('\u2620');
+  const cornerCutoutWidth = hasSkullLabel
+    ? '15%'
+    : backgroundColor === '#f67efcff'
       ? '20%'
       : backgroundColor === '#34b0fcff'
         ? '25%'
