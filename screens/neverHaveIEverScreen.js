@@ -1,16 +1,24 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TicketCardStack from '../components/neverHaveIEver/TicketCardStack';
 
-const NeverHaveIEverScreen = () => {
+const NeverHaveIEverScreen = ({ navigation }) => {
+  const handleBackToHome = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }],
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.content}>
+        <Pressable style={styles.backButton} onPress={handleBackToHome}>
+          <Text style={styles.backButtonText}>←</Text>
+        </Pressable>
         <TicketCardStack
-          title="Jeg har aldrig"
           body="...glemt at mobilepay for drinks i byen"
-          cornerLabel="Jeg har aldrig"
           brand="Booze Game"
           maxCards={3}
           backgroundImageSource={require('../assets/wood-table.png')}
@@ -29,6 +37,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 24,
+    left: 16,
+    zIndex: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 2,
+    borderColor: '#ffffff',
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backButtonText: {
+    color: '#ffffff',
+    fontSize: 28,
+    lineHeight: 28,
+    fontWeight: '700',
+    marginTop: -2,
   },
 });
 

@@ -11,9 +11,19 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="AddPlayer" component={AddPlayerScreen} />
-        <Stack.Screen name="NeverHaveIEver" component={NeverHaveIEverScreen} />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{orientation: 'portrait'}}/>
+        <Stack.Screen 
+          name="AddPlayer" 
+          component={AddPlayerScreen} 
+          options={{orientation: 'portrait'}}/>
+        <Stack.Screen
+          name="NeverHaveIEver"
+          component={NeverHaveIEverScreen}
+          options={{ orientation: 'landscape' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
