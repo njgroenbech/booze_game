@@ -7,6 +7,7 @@ import {
   Animated,
   Dimensions,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { useGame } from '../context/GameContext';
 import DrinkiesPlayerList from '../components/AddPlayer';
@@ -147,6 +148,10 @@ export default function HomeScreen({ navigation }) {
           const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
           const activeGame = games[currentIndex];
           if (activeGame) {
+            if (activeGame.id === '2' || activeGame.id === '3') {
+              Alert.alert('Kommer snart!');
+              return;
+            }
             setGameId(activeGame.id);
             setGameName(activeGame.name);
             setShowPlayerList(true);
