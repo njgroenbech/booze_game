@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import TicketCard from './TicketCard';
+import CardThrowAnimation from './CardThrowAnimation';
 import questions from '../../data/questions.json';
 
 const EXHAUSTED_BODY_TEXT = 'der er ikke flere spørgsmål tilbage';
@@ -158,25 +159,23 @@ const TicketCardStack = ({
   const stackContent = (
     <Pressable style={styles.stackLayer} onPress={addCard} disabled={hasNoMoreQuestions}>
       {cards.map((card, index) => (
-        <TicketCard
+        <CardThrowAnimation
           key={`${card.id}:${card.questionId}`}
-          title={card.title}
-          body={card.body}
-          cornerLabel={card.cornerLabel}
-          brand={brand}
-          backgroundColor={card.backgroundColor}
+          offsetX={card.offsetX}
+          offsetY={card.offsetY}
           tilt={card.tilt}
-          style={[
-            styles.absoluteCard,
-            {
-              zIndex: index + 1,
-              transform: [
-                { translateX: card.offsetX },
-                { translateY: card.offsetY },
-              ],
-            },
-          ]}
-        />
+          skipAnimation={index === 0 && cards.length === 1}
+          style={[styles.absoluteCard, { zIndex: index + 1 }]}
+        >
+          <TicketCard
+            title={card.title}
+            body={card.body}
+            cornerLabel={card.cornerLabel}
+            brand={brand}
+            backgroundColor={card.backgroundColor}
+            tilt={card.tilt}
+          />
+        </CardThrowAnimation>
       ))}
 
       {!hasNoMoreQuestions && (
