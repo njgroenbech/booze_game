@@ -55,9 +55,7 @@ const styles = StyleSheet.create({
   backButtonText: {
     color: '#ffffff',
     fontSize: 28,
-    lineHeight: 28,
     fontWeight: '700',
-    marginTop: -2,
   },
 });
 
