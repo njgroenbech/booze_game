@@ -10,6 +10,13 @@ const TicketCard = ({
   tilt = -3,
   style,
 }) => {
+  const cornerCutoutWidth =
+    backgroundColor === '#f67efcff'
+      ? '20%'
+      : backgroundColor === '#34b0fcff'
+        ? '25%'
+        : null;
+
   return (
     <View style={[styles.wrapper, style]}>
       <View
@@ -21,7 +28,12 @@ const TicketCard = ({
           },
         ]}
       >
-        <View style={styles.cornerCutout} />
+        <View
+          style={[
+            styles.cornerCutout,
+            cornerCutoutWidth ? { width: cornerCutoutWidth } : null,
+          ]}
+        />
         <Text style={[styles.cornerLabel, {color: backgroundColor}]}>{cornerLabel}</Text>
 
         {title ? <Text style={styles.title}>{title}</Text> : null}

@@ -18,7 +18,7 @@ const NeverHaveIEverScreen = ({ navigation }) => {
           <Text style={styles.backButtonText}>←</Text>
         </Pressable>
         <TicketCardStack
-          body="...glemt at mobilepay for drinks i byen"
+          body=""
           brand="Booze Game"
           maxCards={10}
           backgroundImageSource={require('../assets/wood-table.png')}
