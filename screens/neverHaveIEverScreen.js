@@ -5,7 +5,7 @@ import TicketCardStack from '../components/neverHaveIEver/TicketCardStack';
 
 const NeverHaveIEverScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.content}>
         <TicketCardStack
           title="Jeg har aldrig"
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
   },
 });
 
