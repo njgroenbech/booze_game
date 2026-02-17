@@ -9,6 +9,7 @@ import {
   StatusBar,
   Alert,
   Pressable,
+  ImageBackground
 } from 'react-native';
 import { useGame } from '../context/GameContext';
 import DrinkiesPlayerList from '../components/AddPlayer';
@@ -48,7 +49,7 @@ export default function HomeScreen({ navigation }) {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const games = [
-    { id: '1', name: 'Jeg Har Aldrig', color: '#de4545' },
+    { id: '1', name: 'Jeg Har Aldrig', color: '#de4545', image: require('../assets/party1.webp') },
     { id: '2', name: 'Druk Quiz', color: '#45de6b' },
     { id: '3', name: 'Det Hemmelige Spil', color: '#4586de' },
   ];
@@ -112,17 +113,23 @@ export default function HomeScreen({ navigation }) {
 
             return (
               <Pressable
-                onPress={startGame}>
+                onPress={()=>{
+                  startGame()
+                  console.log(item.image)
+                }
+                  }>
                 <Animated.View style={[
                   styles.shadowWrapper,
                   { transform: [{ scale }], opacity }
                 ]}>
-                  <View style={[styles.card, { backgroundColor: item.color }]}>
+                  <ImageBackground source={item.image} style={[styles.card, { backgroundColor: item.color }]} imageStyle={styles.card}>
                     <View style={styles.cardBody} />
+
                     <View style={styles.cardFooter}>
                       <Text style={styles.cardText}>{item.name}</Text>
                     </View>
-                  </View>
+                  </ImageBackground>
+
                 </Animated.View>
               </Pressable>
             );
