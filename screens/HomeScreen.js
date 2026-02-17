@@ -113,11 +113,7 @@ export default function HomeScreen({ navigation }) {
 
             return (
               <Pressable
-                onPress={()=>{
-                  startGame()
-                  console.log(item.image)
-                }
-                  }>
+                onPress={startGame}>
                 <Animated.View style={[
                   styles.shadowWrapper,
                   { transform: [{ scale }], opacity }
