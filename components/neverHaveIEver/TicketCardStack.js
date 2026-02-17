@@ -4,7 +4,7 @@ import TicketCard from './TicketCard';
 import CardThrowAnimation from './CardThrowAnimation';
 import questions from '../../data/questions.json';
 
-const EXHAUSTED_BODY_TEXT = 'der er ikke flere spørgsmål tilbage';
+const EXHAUSTED_BODY_TEXT = 'Der er ikke flere spørgsmål tilbage. Nustil spørgsmål eller gå tilbage til hovedmenu.';
 
 const COLOR_PALETTE = ['#f85d63', '#34b0fcff', '#00d031ff', '#f67efcff'];
 const QUESTION_KEY_BY_COLOR = {
@@ -89,9 +89,9 @@ const createRandomizedCard = (id, defaultBody) => {
     return {
       id,
       questionId: `exhausted:${id}`,
-      title: null,
+      title: "Tak for i aften. Vand anbefales",
       body: EXHAUSTED_BODY_TEXT,
-      cornerLabel: null,
+      cornerLabel: '\u2620\uFE0F',
       tilt: randomRange(-7, 7),
       backgroundColor: randomFrom(COLOR_PALETTE),
       offsetX: randomRange(-12, 12),
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   actionsWrapper: {
     position: 'absolute',
-    bottom: 24,
+    bottom: 2,
     width: '100%',
     alignItems: 'center',
     gap: 10,
