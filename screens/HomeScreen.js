@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
     const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
     const activeGame = games[currentIndex];
     if (activeGame) {
-      if (activeGame.id === '2' || activeGame.id === '3') {
+      if (activeGame.id === '2') {
         Alert.alert('Kommer snart!');
         return;
       }
@@ -51,7 +51,7 @@ export default function HomeScreen({ navigation }) {
   const games = [
     { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
     { id: '2', name: 'Druk Quiz', color: '#fff', image: require('../assets/dj-toenail.jpg')},
-    { id: '3', name: 'Det Hemmelige Spil', color: '#fff', image: require('../assets/cool-kid.jpg')},
+    { id: '3', name: 'Fuck the Dealer', color: '#fff', image: require('../assets/cool-kid.jpg')},
   ];
 
   const { players, setPlayers, gameId } = useGame();
@@ -165,19 +165,7 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.8}
-        onPress={() => {
-          const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
-          const activeGame = games[currentIndex];
-          if (activeGame) {
-            if (activeGame.id === '2' || activeGame.id === '3') {
-              Alert.alert('Kommer snart!');
-              return;
-            }
-            setGameId(activeGame.id);
-            setGameName(activeGame.name);
-            setShowPlayerList(true);
-          }
-        }}
+        onPress={startGame}
       >
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import AddPlayerScreen from '../screens/AddPlayerScreen';
 import NeverHaveIEverScreen from '../screens/neverHaveIEverScreen';
+import FuckTheDealerScreen from '../screens/FuckTheDealerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,11 @@ export default function AppNavigator() {
         <Stack.Screen
           name="NeverHaveIEver"
           component={NeverHaveIEverScreen}
+          options={{ orientation: 'landscape', animation: 'none' }}
+        />
+        <Stack.Screen
+          name="FuckTheDealer"
+          component={FuckTheDealerScreen}
           options={{ orientation: 'landscape', animation: 'none' }}
         />
       </Stack.Navigator>
