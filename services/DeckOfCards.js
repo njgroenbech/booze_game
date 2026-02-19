@@ -35,3 +35,5 @@ class DeckOfCards {
         return this.cards.length === 0;
     }
 }
+
+export default DeckOfCards

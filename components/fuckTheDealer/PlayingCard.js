@@ -1,18 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+} from 'react-native';
+import { CARD_IMAGES } from '../../assets/playingCards/index.js';
 
-const PlayingCard = () => {
+const PlayingCard = ({ cardId }) => {
+    // If cardId is null (empty deck), show the back of the card
+    const source = cardId !== null ? CARD_IMAGES[cardId] : CARD_IMAGES.back;
+
     return (
-        <View>
-            <Text>Hejsa :3</Text>
-        </View>
-    )
-}
+        <Image 
+            source={source} 
+            style={{ width: 100, height: 140, borderRadius: 8 }} 
+        />
+    );
+};
 
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        backgroundColor: "red"
-    }
-})
-
-export default PlayingCard
+export default PlayingCard;

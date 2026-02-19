@@ -1,23 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet,
   Text,
+  Image,
   View,
   TouchableOpacity,
 } from 'react-native';
-import { useGame } from '../context/GameContext';
-import { GAME_SCREENS } from '../navigation/gameScreens';
 import BackButton from '../components/BackButton';
-
-let deckOfCards = {}
+import PlayingCard from '../components/fuckTheDealer/PlayingCard';
+import DeckOfCards from "../services/DeckOfCards";
 
 const FuckTheDealerScreen = ({ navigation }) => {
+  // useMemo ensures the deck is only initialized ONCE.
+  const deck = useMemo(() => new DeckOfCards().shuffle(), []);
+
   return (
     <View style={styles.screen}>
       <BackButton navigation={navigation} />
 
       <View style={styles.container}>
-        <Text>Hejsa :3</Text>
+        <PlayingCard cardId={deck.drawNextCard()}/>
       </View>
     </View> 
     )
