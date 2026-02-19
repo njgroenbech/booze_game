@@ -9,6 +9,8 @@ import { useGame } from '../context/GameContext';
 import { GAME_SCREENS } from '../navigation/gameScreens';
 import BackButton from '../components/BackButton';
 
+let deckOfCards = {}
+
 const FuckTheDealerScreen = ({ navigation }) => {
   return (
     <View style={styles.screen}>
