@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Pressable,
   ImageBackground,
 } from 'react-native';
 import BackButton from '../components/BackButton';
@@ -31,8 +32,8 @@ const FuckTheDealerScreen = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground source={require("../assets/wood-table.png")}>
-      <TouchableOpacity style={styles.screen} onPress={handleDraw} activeOpacity={1}>
+    <ImageBackground source={require("../assets/wood-table.png")} style={styles.screen}>
+      <Pressable style={styles.screen} onPress={handleDraw}>
         <BackButton navigation={navigation} />
 
         <View style={styles.container}>
@@ -46,7 +47,7 @@ const FuckTheDealerScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
 
-      </TouchableOpacity>
+      </Pressable>
     </ImageBackground>
   );
 }
