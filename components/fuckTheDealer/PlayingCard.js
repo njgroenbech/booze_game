@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import { CARD_IMAGES } from '../../assets/playingCards/CARD_IMAGES.js';
 
-const { height } = Dimensions.get('window');
-const CARD_HEIGHT = height * 0.8;
+const { width, height } = Dimensions.get('window');
+const CARD_HEIGHT = Math.min(width, height) * 0.8;
 const CARD_WIDTH = CARD_HEIGHT * (5 / 7); // standard playing card aspect ratio
 
 const PlayingCard = ({ cardId }) => {
