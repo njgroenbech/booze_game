@@ -71,10 +71,12 @@ class TicketCardFactoryService {
     if (!cardBody) {
       cardBody = defaultBody;
     }
-    const resolvedCardBody = this.playerPlaceholderService.replacePlayerPlaceholdersInText(
+    const placeholderResolution = this.playerPlaceholderService.resolvePlayerPlaceholders(
       cardBody,
       players
     );
+    const resolvedCardBody = placeholderResolution.resolvedText;
+    const highlightedPlayerNames = placeholderResolution.highlightedPlayerNames;
 
     return {
       id: cardId,
@@ -87,6 +89,7 @@ class TicketCardFactoryService {
       offsetX: randomPresentation.offsetX,
       offsetY: randomPresentation.offsetY,
       isExhausted: false,
+      highlightedPlayerNames,
     };
   }
 
