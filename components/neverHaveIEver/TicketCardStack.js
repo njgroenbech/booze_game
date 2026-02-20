@@ -4,11 +4,12 @@ import TicketCard from './TicketCard';
 import CardThrowAnimation from './CardThrowAnimation';
 import questionSessionService from '../../services/neverHaveIEver/QuestionSessionService';
 import TicketCardFactoryService from '../../services/neverHaveIEver/TicketCardFactoryService';
+import { useGame } from '../../context/GameContext';
 
 // Service-instans som bygger hvert kort (spørgsmål eller exhausted-kort).
 const ticketCardService = new TicketCardFactoryService(questionSessionService);
 
-// Vi holder kort-id'er stabile, da ID hjælper med at gøre hvert kort unikt, så vi ikke får gentagne spørgsmål
+// Vi holder kort-id'er stabile, så hvert kort har en entydig identitet i React-listen.
 const FIRST_CARD_ID = 1;
 const NEXT_CARD_ID_AFTER_RESET = 2;
 
@@ -18,10 +19,11 @@ const TicketCardStack = ({
   maxCards = 10,
   backgroundImageSource,
 }) => {
+  const { players } = useGame();
   // Ref bruges til næste kort-id uden at trigge rerenders.
   const nextCardIdRef = useRef(NEXT_CARD_ID_AFTER_RESET);
   // Stack starter med ét kort, så skærmen aldrig er tom.
-  const [cards, setCards] = useState(() => [ticketCardService.createNextCard(FIRST_CARD_ID, body)]);
+  const [cards, setCards] = useState(() => [ticketCardService.createNextCard(FIRST_CARD_ID, body, players)]);
   // Når spørgsmål er opbrugt, låses træk og reset-knap vises.
   const [hasNoMoreQuestions, setHasNoMoreQuestions] = useState(false);
 
@@ -37,7 +39,7 @@ const TicketCardStack = ({
 
   // Opretter næste kort og flytter tælleren frem til næste træk.
   const createNextCardAndIncreaseId = () => {
-    const nextCard = ticketCardService.createNextCard(nextCardIdRef.current, body);
+    const nextCard = ticketCardService.createNextCard(nextCardIdRef.current, body, players);
     nextCardIdRef.current += 1;
     return nextCard;
   };
@@ -64,7 +66,7 @@ const TicketCardStack = ({
   // Starter en ny spørgsmålsrunde i services og nulstiller lokal stack-state.
   const resetQuestionSession = () => {
     questionSessionService.resetSessionQuestions();
-    const firstCard = ticketCardService.createNextCard(FIRST_CARD_ID, body);
+    const firstCard = ticketCardService.createNextCard(FIRST_CARD_ID, body, players);
     nextCardIdRef.current = NEXT_CARD_ID_AFTER_RESET;
     setCards([firstCard]);
 
@@ -96,6 +98,7 @@ const TicketCardStack = ({
           <TicketCard
             title={card.title}
             body={card.body}
+            highlightedPlayerNames={card.highlightedPlayerNames}
             cornerLabel={card.cornerLabel}
             brand={brand}
             backgroundColor={card.backgroundColor}
@@ -144,6 +147,10 @@ const TicketCardStack = ({
   // Wrapper indholdet i baggrundsbillede, hvis der er sendt et ind.
   const renderContentWithOptionalBackground = () => {
     const stackContent = renderStackContent();
+
+    if (!backgroundImageSource) {
+      return stackContent;
+    }
 
     return (
       <ImageBackground
