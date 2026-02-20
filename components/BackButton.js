@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
-import Svg, { Polyline } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
 
 const BackButton = ({ navigation }) => {
     const handleBackToHome = () => {
@@ -13,15 +13,7 @@ const BackButton = ({ navigation }) => {
     return (
         <View style={styles.content}>
             <Pressable style={styles.backButton} onPress={handleBackToHome}>
-                <Svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ marginLeft: -2 }}>
-                    <Polyline
-                        points="15,6 9,12 15,18"
-                        stroke="white"
-                        strokeWidth={2.5}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </Svg>
+                <Ionicons name="chevron-back" size={22} color="white" style={{ marginLeft: -2 }} />
             </Pressable>
         </View>
     )
