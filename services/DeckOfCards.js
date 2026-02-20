@@ -34,6 +34,10 @@ class DeckOfCards {
     get isEmpty() {
         return this.cards.length === 0;
     }
+
+    peek(n = 1) {
+        return this.cards.slice(0, n);
+    }
 }
 
 export default DeckOfCards
