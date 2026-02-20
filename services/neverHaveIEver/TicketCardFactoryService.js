@@ -59,6 +59,7 @@ class TicketCardFactoryService {
       offsetX: randomPresentation.offsetX,
       offsetY: randomPresentation.offsetY,
       isExhausted: true,
+      highlightedPlayerNames: [],
     };
   }
 
