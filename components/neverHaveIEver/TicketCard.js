@@ -1,9 +1,116 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+const escapeTextForRegex = (text) => {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+const getUniqueNamesToHighlight = (highlightedPlayerNames) => {
+  const uniqueNames = [];
+
+  if (!Array.isArray(highlightedPlayerNames)) {
+    return uniqueNames;
+  }
+
+  for (const name of highlightedPlayerNames) {
+    if (typeof name !== 'string') {
+      continue;
+    }
+
+    const trimmedName = name.trim();
+    if (trimmedName.length === 0) {
+      continue;
+    }
+
+    if (!uniqueNames.includes(trimmedName)) {
+      uniqueNames.push(trimmedName);
+    }
+  }
+
+  return uniqueNames;
+};
+
+const sortByLengthDescending = (items) => {
+  const sortedItems = [...items];
+
+  sortedItems.sort((leftItem, rightItem) => {
+    if (leftItem.length > rightItem.length) {
+      return -1;
+    }
+    if (leftItem.length < rightItem.length) {
+      return 1;
+    }
+    return 0;
+  });
+
+  return sortedItems;
+};
+
+const buildBodySegments = (bodyText, highlightedPlayerNames) => {
+  const segments = [];
+
+  if (typeof bodyText !== 'string') {
+    return segments;
+  }
+
+  const uniqueNames = getUniqueNamesToHighlight(highlightedPlayerNames);
+  if (uniqueNames.length === 0) {
+    segments.push({ text: bodyText, isPlayerName: false });
+    return segments;
+  }
+
+  const sortedNames = sortByLengthDescending(uniqueNames);
+  const escapedNames = sortedNames.map((name) => escapeTextForRegex(name));
+  const patternSource = escapedNames.join('|');
+
+  if (patternSource.length === 0) {
+    segments.push({ text: bodyText, isPlayerName: false });
+    return segments;
+  }
+
+  const highlightPattern = new RegExp(patternSource, 'g');
+  let currentIndex = 0;
+  let match = highlightPattern.exec(bodyText);
+
+  while (match !== null) {
+    const matchText = match[0];
+    const matchStartIndex = match.index;
+    const matchEndIndex = matchStartIndex + matchText.length;
+
+    if (matchStartIndex > currentIndex) {
+      segments.push({
+        text: bodyText.slice(currentIndex, matchStartIndex),
+        isPlayerName: false,
+      });
+    }
+
+    segments.push({
+      text: matchText,
+      isPlayerName: true,
+    });
+
+    currentIndex = matchEndIndex;
+    match = highlightPattern.exec(bodyText);
+  }
+
+  if (currentIndex < bodyText.length) {
+    segments.push({
+      text: bodyText.slice(currentIndex),
+      isPlayerName: false,
+    });
+  }
+
+  if (segments.length === 0) {
+    segments.push({ text: bodyText, isPlayerName: false });
+  }
+
+  return segments;
+};
+
 const TicketCard = ({
   title = '',
   body = '',
+  highlightedPlayerNames = [],
   cornerLabel = '',
   brand = '',
   backgroundColor = '#f85d63',
@@ -11,13 +118,17 @@ const TicketCard = ({
   style,
 }) => {
   const hasSkullLabel = cornerLabel.includes('\u2620');
-  const cornerCutoutWidth = hasSkullLabel
-    ? '15%'
-    : backgroundColor === '#f67efcff'
-      ? '20%'
-      : backgroundColor === '#34b0fcff'
-        ? '25%'
-        : null;
+  let cornerCutoutWidth = null;
+
+  if (hasSkullLabel) {
+    cornerCutoutWidth = '15%';
+  } else if (backgroundColor === '#f67efcff') {
+    cornerCutoutWidth = '20%';
+  } else if (backgroundColor === '#34b0fcff') {
+    cornerCutoutWidth = '25%';
+  }
+
+  const bodySegments = buildBodySegments(body, highlightedPlayerNames);
 
   return (
     <View style={[styles.wrapper, style]}>
@@ -39,7 +150,20 @@ const TicketCard = ({
         <Text style={[styles.cornerLabel, {color: backgroundColor}]}>{cornerLabel}</Text>
 
         {title ? <Text style={styles.title}>{title}</Text> : null}
-        <Text style={styles.body}>{body}</Text>
+        <Text style={styles.body}>
+          {bodySegments.map((segment, index) => {
+            let segmentStyle = styles.bodyRegular;
+            if (segment.isPlayerName) {
+              segmentStyle = styles.bodyPlayerName;
+            }
+
+            return (
+              <Text key={`${index}:${segment.isPlayerName ? 'p' : 'n'}`} style={segmentStyle}>
+                {segment.text}
+              </Text>
+            );
+          })}
+        </Text>
 
         <Text style={styles.brand}>{brand}</Text>
       </View>
@@ -99,6 +223,13 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     fontWeight: '600',
     maxWidth: '88%',
+  },
+  bodyRegular: {
+    fontWeight: '600',
+  },
+  bodyPlayerName: {
+    fontWeight: '600',
+    fontStyle: 'italic',
   },
   brand: {
     position: 'absolute',

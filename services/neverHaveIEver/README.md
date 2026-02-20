@@ -19,13 +19,23 @@ Formålet er at holde forretningslogik ude af UI-komponenten, så koden er lette
 - Gør følgende:
 - Opretter almindelige kort fra spørgsmål leveret af `QuestionSessionService`.
 - Opretter "exhausted" kort, når der ikke er flere spørgsmål.
+- Udskifter spiller-placeholders via `PlayerPlaceholderService`.
 - Tilføjer visuel randomisering (tilt og offset), så kortene får variation.
-- Samler kortoprettelsen i én entry-metode: `createNextCard(cardId, defaultBody)`.
+- Samler kortoprettelsen i én entry-metode: `createNextCard(cardId, defaultBody, players)`.
+
+### `PlayerPlaceholderService.js`
+- Ansvar: Udskifter spiller-placeholders i spørgsmålstekster.
+- Gør følgende:
+- Finder placeholders som `{player}`, `{player2}`, `{player3}` i teksten.
+- Vælger tilfældige spillernavne fra `GameContext` uden gentagelse pr. spørgsmål.
+- Falder tilbage til generelle beskrivelser, hvis der mangler spillere.
+- Returnerer den færdige tekst, som kan vises direkte på kortet.
 
 ## Samspil mellem services
 
 1. `TicketCardStack` kalder `ticketCardService.createNextCard(...)`.
 2. `TicketCardFactoryService` beder `QuestionSessionService` om næste unikke spørgsmål.
-3. Hvis der findes et spørgsmål, bygges et almindeligt kort.
-4. Hvis der ikke findes flere spørgsmål, bygges et exhausted-kort.
-5. Ved reset kalder `TicketCardStack` `questionSessionService.resetSessionQuestions()`.
+3. Hvis spørgsmålet har placeholders, udskifter `PlayerPlaceholderService` dem med navne/fallback.
+4. Hvis der findes et spørgsmål, bygges et almindeligt kort.
+5. Hvis der ikke findes flere spørgsmål, bygges et exhausted-kort.
+6. Ved reset kalder `TicketCardStack` `questionSessionService.resetSessionQuestions()`.

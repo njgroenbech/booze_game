@@ -1,9 +1,16 @@
+import PlayerPlaceholderService from './PlayerPlaceholderService';
+
 const EXHAUSTED_BODY_TEXT = 'Der er ikke flere spørgsmål tilbage. Nustil spørgsmål eller gå tilbage til hovedmenu.';
 
 class TicketCardFactoryService {
   // Fabrikken får en session-service ind, som leverer næste unikke spørgsmål.
-  constructor(questionSessionService) {
+  constructor(questionSessionService, playerPlaceholderService = null) {
     this.questionSessionService = questionSessionService;
+    this.playerPlaceholderService = playerPlaceholderService;
+
+    if (!this.playerPlaceholderService) {
+      this.playerPlaceholderService = new PlayerPlaceholderService();
+    }
   }
 
   // Vælger et tilfældigt element fra en liste.
@@ -56,19 +63,23 @@ class TicketCardFactoryService {
   }
 
   // Opretter et normalt kort fra et spørgsmål.
-  createQuestionCard(cardId, questionEntry, defaultBody) {
+  createQuestionCard(cardId, questionEntry, defaultBody, players) {
     const randomPresentation = this.createCardPresentationRandomness();
     // Falder tilbage til defaultBody hvis spørgsmål mangler body.
     let cardBody = questionEntry.body;
     if (!cardBody) {
       cardBody = defaultBody;
     }
+    const resolvedCardBody = this.playerPlaceholderService.replacePlayerPlaceholdersInText(
+      cardBody,
+      players
+    );
 
     return {
       id: cardId,
       questionId: questionEntry.questionId,
       title: questionEntry.title,
-      body: cardBody,
+      body: resolvedCardBody,
       cornerLabel: questionEntry.cornerLabel,
       tilt: randomPresentation.tilt,
       backgroundColor: questionEntry.backgroundColor,
@@ -79,14 +90,14 @@ class TicketCardFactoryService {
   }
 
   // Returnerer enten et normalt kort eller et exhausted-kort.
-  createNextCard(cardId, defaultBody) {
+  createNextCard(cardId, defaultBody, players) {
     const questionEntry = this.questionSessionService.drawNextUniqueQuestion();
 
     if (!questionEntry) {
       return this.createExhaustedCard(cardId);
     }
 
-    return this.createQuestionCard(cardId, questionEntry, defaultBody);
+    return this.createQuestionCard(cardId, questionEntry, defaultBody, players);
   }
 }
 
