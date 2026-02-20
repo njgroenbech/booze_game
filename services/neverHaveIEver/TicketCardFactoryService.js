@@ -59,7 +59,6 @@ class TicketCardFactoryService {
       offsetX: randomPresentation.offsetX,
       offsetY: randomPresentation.offsetY,
       isExhausted: true,
-      highlightedPlayerNames: [],
     };
   }
 
@@ -71,12 +70,10 @@ class TicketCardFactoryService {
     if (!cardBody) {
       cardBody = defaultBody;
     }
-    const placeholderResolution = this.playerPlaceholderService.resolvePlayerPlaceholders(
+    const resolvedCardBody = this.playerPlaceholderService.replacePlayerPlaceholdersInText(
       cardBody,
       players
     );
-    const resolvedCardBody = placeholderResolution.resolvedText;
-    const highlightedPlayerNames = placeholderResolution.highlightedPlayerNames;
 
     return {
       id: cardId,
@@ -89,7 +86,6 @@ class TicketCardFactoryService {
       offsetX: randomPresentation.offsetX,
       offsetY: randomPresentation.offsetY,
       isExhausted: false,
-      highlightedPlayerNames,
     };
   }
 
