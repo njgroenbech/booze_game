@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,65 +6,46 @@ import {
   TouchableOpacity,
   Pressable,
   ImageBackground,
-  Animated,
 } from 'react-native';
 import BackButton from '../components/BackButton';
-import PlayingCard, { CARD_WIDTH, CARD_HEIGHT } from '../components/fuckTheDealer/PlayingCard';
+import PlayingCard from '../components/fuckTheDealer/PlayingCard';
+import PlayingCardStack, { CARD_GAP } from '../components/fuckTheDealer/PlayingCardStack';
+import CardPreloader from '../components/fuckTheDealer/CardPreloader';
 import DeckOfCards from "../services/DeckOfCards";
 
-const CARD_GAP = 20;
+const PRELOAD_COUNT = 10;
 
 const FuckTheDealerScreen = ({ navigation }) => {
-  // useMemo ensures the deck is only initialized ONCE.
   const deck = useMemo(() => new DeckOfCards().shuffle(), []);
-  const [displayedCard, setDisplayedCard] = useState(null);
-  const [animatingCard, setAnimatingCard] = useState(null);
+  const [drawnCards, setDrawnCards] = useState([]);
   const [deckEmpty, setDeckEmpty] = useState(false);
-  const slideAnim = useRef(new Animated.Value(0)).current;
+  const [upcomingCards, setUpcomingCards] = useState(() => deck.peek(PRELOAD_COUNT));
 
   const handleDraw = () => {
     if (!deck.isEmpty) {
       const card = deck.drawNextCard();
-      slideAnim.setValue(-(CARD_WIDTH + CARD_GAP));
-      setAnimatingCard(card);
+      setDrawnCards(prev => [...prev, card]);
       setDeckEmpty(deck.isEmpty);
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        useNativeDriver: true,
-        friction: 20,
-        tension: 80,
-      }).start(({ finished }) => {
-        if (finished) {
-          setDisplayedCard(card)
-        }
-      });
+      setUpcomingCards(deck.peek(PRELOAD_COUNT));
     }
   };
 
   const handleReset = () => {
     deck.reset().shuffle();
-    setDisplayedCard(null);
-    setAnimatingCard(null);
+    setDrawnCards([]);
     setDeckEmpty(false);
+    setUpcomingCards(deck.peek(PRELOAD_COUNT));
   };
 
   return (
     <ImageBackground source={require("../assets/wood-table.png")} style={styles.screen}>
+      <CardPreloader cardIds={upcomingCards} />
       <Pressable style={styles.screen} onPress={handleDraw}>
         <BackButton navigation={navigation} />
 
         <View style={styles.container}>
           {!deckEmpty && <PlayingCard cardId={null} />}
-          {(displayedCard !== null || animatingCard !== null) && (
-            <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
-              {displayedCard !== null && <PlayingCard cardId={displayedCard} />}
-              {animatingCard !== null && (
-                <Animated.View style={[StyleSheet.absoluteFill, { transform: [{ translateX: slideAnim }] }]}>
-                  <PlayingCard cardId={animatingCard} />
-                </Animated.View>
-              )}
-            </View>
-          )}
+          <PlayingCardStack drawnCards={drawnCards} />
         </View>
 
         {deckEmpty && (
