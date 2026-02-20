@@ -5,8 +5,8 @@ import {
 import { CARD_IMAGES } from '../../assets/playingCards/CARD_IMAGES.js';
 
 const { width, height } = Dimensions.get('window');
-const CARD_HEIGHT = Math.min(width, height) * 0.8;
-const CARD_WIDTH = CARD_HEIGHT * (5 / 7); // standard playing card aspect ratio
+export const CARD_HEIGHT = Math.min(width, height) * 0.8;
+export const CARD_WIDTH = CARD_HEIGHT * (5 / 7); // standard playing card aspect ratio
 
 const PlayingCard = ({ cardId }) => {
     // If cardId is null (empty deck), show the back of the card

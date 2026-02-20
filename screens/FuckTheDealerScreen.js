@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,28 +6,45 @@ import {
   TouchableOpacity,
   Pressable,
   ImageBackground,
+  Animated,
 } from 'react-native';
 import BackButton from '../components/BackButton';
-import PlayingCard from '../components/fuckTheDealer/PlayingCard';
+import PlayingCard, { CARD_WIDTH, CARD_HEIGHT } from '../components/fuckTheDealer/PlayingCard';
 import DeckOfCards from "../services/DeckOfCards";
+
+const CARD_GAP = 20;
 
 const FuckTheDealerScreen = ({ navigation }) => {
   // useMemo ensures the deck is only initialized ONCE.
   const deck = useMemo(() => new DeckOfCards().shuffle(), []);
-  const [drawnCard, setDrawnCard] = useState(null);
+  const [displayedCard, setDisplayedCard] = useState(null);
+  const [animatingCard, setAnimatingCard] = useState(null);
   const [deckEmpty, setDeckEmpty] = useState(false);
+  const slideAnim = useRef(new Animated.Value(0)).current;
 
   const handleDraw = () => {
     if (!deck.isEmpty) {
       const card = deck.drawNextCard();
-      setDrawnCard(card);
+      slideAnim.setValue(-(CARD_WIDTH + CARD_GAP));
+      setAnimatingCard(card);
       setDeckEmpty(deck.isEmpty);
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        friction: 20,
+        tension: 80,
+      }).start(({ finished }) => {
+        if (finished) {
+          setDisplayedCard(card)
+        }
+      });
     }
   };
 
   const handleReset = () => {
     deck.reset().shuffle();
-    setDrawnCard(null);
+    setDisplayedCard(null);
+    setAnimatingCard(null);
     setDeckEmpty(false);
   };
 
@@ -38,7 +55,16 @@ const FuckTheDealerScreen = ({ navigation }) => {
 
         <View style={styles.container}>
           {!deckEmpty && <PlayingCard cardId={null} />}
-          {drawnCard !== null && <PlayingCard cardId={drawnCard} />}
+          {(displayedCard !== null || animatingCard !== null) && (
+            <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
+              {displayedCard !== null && <PlayingCard cardId={displayedCard} />}
+              {animatingCard !== null && (
+                <Animated.View style={[StyleSheet.absoluteFill, { transform: [{ translateX: slideAnim }] }]}>
+                  <PlayingCard cardId={animatingCard} />
+                </Animated.View>
+              )}
+            </View>
+          )}
         </View>
 
         {deckEmpty && (
@@ -62,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 20,
+    gap: CARD_GAP,
   },
   resetButton: {
     position: 'absolute',
