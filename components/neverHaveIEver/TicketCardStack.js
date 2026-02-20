@@ -2,117 +2,15 @@ import React, { useRef, useState } from 'react';
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import TicketCard from './TicketCard';
 import CardThrowAnimation from './CardThrowAnimation';
-import questions from '../../data/questions.json';
+import questionSessionService from '../../services/neverHaveIEver/QuestionSessionService';
+import TicketCardFactoryService from '../../services/neverHaveIEver/TicketCardFactoryService';
 
-const EXHAUSTED_BODY_TEXT = 'Der er ikke flere spørgsmål tilbage. Nustil spørgsmål eller gå tilbage til hovedmenu.';
+// Service-instans som bygger hvert kort (spørgsmål eller exhausted-kort).
+const ticketCardService = new TicketCardFactoryService(questionSessionService);
 
-const COLOR_PALETTE = ['#f85d63', '#34b0fcff', '#00d031ff', '#f67efcff'];
-const QUESTION_KEY_BY_COLOR = {
-  '#f85d63': 'jegHarAldrig',
-  '#34b0fcff': 'kategori',
-  '#00d031ff': 'mestTilbøjeligTil',
-  '#f67efcff': 'joker',
-};
-const LABEL_BY_QUESTION_KEY = {
-  jegHarAldrig: 'Jeg har aldrig..',
-  kategori: 'Kategori',
-  mestTilbøjeligTil: 'Mest tilbøjelig til..',
-  joker: 'Joker',
-};
-
-const randomFrom = (items) => items[Math.floor(Math.random() * items.length)];
-const randomRange = (min, max) => Math.random() * (max - min) + min;
-const normalizeQuestion = (question) => question.trim().toLowerCase();
-
-const SOURCE_QUESTIONS_BY_COLOR = COLOR_PALETTE.reduce((accumulator, backgroundColor) => {
-  const questionKey = QUESTION_KEY_BY_COLOR[backgroundColor];
-  const questionPool = Array.isArray(questions[questionKey]) ? questions[questionKey] : [];
-
-  // De-duper pr. kategori, så samme tekst ikke kan optræde flere gange i samme runde.
-  const uniqueQuestionPool = [];
-  const seenNormalizedQuestions = new Set();
-  questionPool.forEach((question) => {
-    const normalizedQuestion = normalizeQuestion(question);
-    if (!seenNormalizedQuestions.has(normalizedQuestion)) {
-      seenNormalizedQuestions.add(normalizedQuestion);
-      uniqueQuestionPool.push(question);
-    }
-  });
-
-  accumulator[backgroundColor] = uniqueQuestionPool;
-  return accumulator;
-}, {});
-
-const buildRoundBuckets = () =>
-  COLOR_PALETTE.reduce((accumulator, backgroundColor) => {
-    accumulator[backgroundColor] = [...SOURCE_QUESTIONS_BY_COLOR[backgroundColor]];
-    return accumulator;
-  }, {});
-
-// Modul-scope state: undgår reset af brugte spørgsmål ved evt. remount af skærmen.
-let sessionRemainingQuestionsByColor = buildRoundBuckets();
-
-const resetSessionQuestions = () => {
-  sessionRemainingQuestionsByColor = buildRoundBuckets();
-};
-
-const drawQuestionWithoutRepeat = () => {
-  const availableColors = COLOR_PALETTE.filter(
-    (backgroundColor) => sessionRemainingQuestionsByColor[backgroundColor].length > 0
-  );
-  if (availableColors.length === 0) {
-    return null;
-  }
-
-  const backgroundColor = randomFrom(availableColors);
-  const questionKey = QUESTION_KEY_BY_COLOR[backgroundColor];
-  const label = LABEL_BY_QUESTION_KEY[questionKey] ?? 'Booze Game';
-
-  // selectAndRemoveQuestion-princip: vælg random index og fjern med splice.
-  const questionArray = sessionRemainingQuestionsByColor[backgroundColor];
-  const randomIndex = Math.floor(Math.random() * questionArray.length);
-  const [questionBody] = questionArray.splice(randomIndex, 1);
-
-  return {
-    questionId: `${questionKey}:${normalizeQuestion(questionBody)}`,
-    title: label,
-    cornerLabel: label,
-    body: questionBody,
-    backgroundColor,
-  };
-};
-
-const createRandomizedCard = (id, defaultBody) => {
-  const questionEntry = drawQuestionWithoutRepeat();
-
-  if (!questionEntry) {
-    return {
-      id,
-      questionId: `exhausted:${id}`,
-      title: "Tak for i aften. Vand anbefales",
-      body: EXHAUSTED_BODY_TEXT,
-      cornerLabel: '\u2620\uFE0F',
-      tilt: randomRange(-7, 7),
-      backgroundColor: randomFrom(COLOR_PALETTE),
-      offsetX: randomRange(-12, 12),
-      offsetY: randomRange(-10, 10),
-      isExhausted: true,
-    };
-  }
-
-  return {
-    id,
-    questionId: questionEntry.questionId,
-    title: questionEntry.title,
-    body: questionEntry.body ?? defaultBody,
-    cornerLabel: questionEntry.cornerLabel,
-    tilt: randomRange(-7, 7),
-    backgroundColor: questionEntry.backgroundColor,
-    offsetX: randomRange(-12, 12),
-    offsetY: randomRange(-10, 10),
-    isExhausted: false,
-  };
-};
+// Vi holder kort-id'er stabile, da ID hjælper med at gøre hvert kort unikt, så vi ikke får gentagne spørgsmål
+const FIRST_CARD_ID = 1;
+const NEXT_CARD_ID_AFTER_RESET = 2;
 
 const TicketCardStack = ({
   body,
@@ -120,51 +18,79 @@ const TicketCardStack = ({
   maxCards = 10,
   backgroundImageSource,
 }) => {
-  const nextIdRef = useRef(2);
-  const [cards, setCards] = useState(() => [createRandomizedCard(1, body)]);
+  // Ref bruges til næste kort-id uden at trigge rerenders.
+  const nextCardIdRef = useRef(NEXT_CARD_ID_AFTER_RESET);
+  // Stack starter med ét kort, så skærmen aldrig er tom.
+  const [cards, setCards] = useState(() => [ticketCardService.createNextCard(FIRST_CARD_ID, body)]);
+  // Når spørgsmål er opbrugt, låses træk og reset-knap vises.
   const [hasNoMoreQuestions, setHasNoMoreQuestions] = useState(false);
 
-  const addCard = () => {
+  // Begrænser antal kort i stacken, så UI ikke vokser uendeligt.
+  const trimCardsToMaxLimit = (cardList) => {
+    if (cardList.length <= maxCards) {
+      return cardList;
+    }
+
+    const startIndex = cardList.length - maxCards;
+    return cardList.slice(startIndex);
+  };
+
+  // Opretter næste kort og flytter tælleren frem til næste træk.
+  const createNextCardAndIncreaseId = () => {
+    const nextCard = ticketCardService.createNextCard(nextCardIdRef.current, body);
+    nextCardIdRef.current += 1;
+    return nextCard;
+  };
+
+  // Kører når brugeren trykker på stacken for at trække et nyt kort.
+  const addCardToStack = () => {
     if (hasNoMoreQuestions) {
       return;
     }
 
-    // Træk udføres udenfor setState-updateren for at undgå side effects i dev Strict Mode.
-    const nextCard = createRandomizedCard(nextIdRef.current, body);
-    nextIdRef.current += 1;
+    const nextCard = createNextCardAndIncreaseId();
 
     if (nextCard.isExhausted) {
       setHasNoMoreQuestions(true);
     }
 
+    // Tilføjer kortet og trimmer bagefter til ønsket max-længde.
     setCards((prevCards) => {
-      const nextCards = [...prevCards, nextCard];
-
-      if (nextCards.length <= maxCards) {
-        return nextCards;
-      }
-
-      return nextCards.slice(nextCards.length - maxCards);
+      const updatedCards = [...prevCards, nextCard];
+      return trimCardsToMaxLimit(updatedCards);
     });
   };
 
-  const resetQuestions = () => {
-    resetSessionQuestions();
-    const firstCard = createRandomizedCard(1, body);
-    nextIdRef.current = 2;
+  // Starter en ny spørgsmålsrunde i services og nulstiller lokal stack-state.
+  const resetQuestionSession = () => {
+    questionSessionService.resetSessionQuestions();
+    const firstCard = ticketCardService.createNextCard(FIRST_CARD_ID, body);
+    nextCardIdRef.current = NEXT_CARD_ID_AFTER_RESET;
     setCards([firstCard]);
-    setHasNoMoreQuestions(Boolean(firstCard.isExhausted));
+
+    if (firstCard.isExhausted) {
+      setHasNoMoreQuestions(true);
+    } else {
+      setHasNoMoreQuestions(false);
+    }
   };
 
-  const stackContent = (
-    <Pressable style={styles.stackLayer} onPress={addCard} disabled={hasNoMoreQuestions}>
-      {cards.map((card, index) => (
+  // Renderer alle kort i stacken med kast-animation.
+  const renderCards = () => {
+    return cards.map((card, index) => {
+      let shouldSkipAnimation = false;
+      // Første kort ved initial render skal ikke "flyve ind".
+      if (index === 0 && cards.length === 1) {
+        shouldSkipAnimation = true;
+      }
+
+      return (
         <CardThrowAnimation
           key={`${card.id}:${card.questionId}`}
           offsetX={card.offsetX}
           offsetY={card.offsetY}
           tilt={card.tilt}
-          skipAnimation={index === 0 && cards.length === 1}
+          skipAnimation={shouldSkipAnimation}
           style={[styles.absoluteCard, { zIndex: index + 1 }]}
         >
           <TicketCard
@@ -176,39 +102,61 @@ const TicketCardStack = ({
             tilt={card.tilt}
           />
         </CardThrowAnimation>
-      ))}
+      );
+    });
+  };
 
-      {!hasNoMoreQuestions && (
+  // Nederste hjælpetekst eller reset-knap afhængigt af game-state.
+  const renderFooterContent = () => {
+    let footerContent = null;
+
+    if (!hasNoMoreQuestions) {
+      footerContent = (
         <View style={styles.hintWrapper}>
           <Text style={styles.hintText}>Tryk for at trække et nyt kort</Text>
         </View>
-      )}
+      );
+    }
 
-      {hasNoMoreQuestions && (
+    if (hasNoMoreQuestions) {
+      footerContent = (
         <View style={styles.actionsWrapper}>
-          <Pressable style={styles.actionButton} onPress={resetQuestions}>
+          <Pressable style={styles.actionButton} onPress={resetQuestionSession}>
             <Text style={styles.actionButtonText}>Nulstil spørgsmål</Text>
           </Pressable>
         </View>
-      )}
-    </Pressable>
-  );
+      );
+    }
 
-  return (
-    <View style={styles.container}>
-      {backgroundImageSource ? (
-        <ImageBackground
-          source={backgroundImageSource}
-          style={styles.background}
-          imageStyle={styles.backgroundImage}
-        >
-          {stackContent}
-        </ImageBackground>
-      ) : (
-        stackContent
-      )}
-    </View>
-  );
+    return footerContent;
+  };
+
+  // Klikbar stack-beholder der samler kort og footer i samme lag.
+  const renderStackContent = () => {
+    return (
+      <Pressable style={styles.stackLayer} onPress={addCardToStack} disabled={hasNoMoreQuestions}>
+        {renderCards()}
+        {renderFooterContent()}
+      </Pressable>
+    );
+  };
+
+  // Wrapper indholdet i baggrundsbillede, hvis der er sendt et ind.
+  const renderContentWithOptionalBackground = () => {
+    const stackContent = renderStackContent();
+
+    return (
+      <ImageBackground
+        source={backgroundImageSource}
+        style={styles.background}
+        imageStyle={styles.backgroundImage}
+      >
+        {stackContent}
+      </ImageBackground>
+    );
+  };
+
+  return <View style={styles.container}>{renderContentWithOptionalBackground()}</View>;
 };
 
 const styles = StyleSheet.create({
