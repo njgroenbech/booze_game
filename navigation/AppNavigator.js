@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import AddPlayerScreen from '../screens/AddPlayerScreen';
 import NeverHaveIEverScreen from '../screens/neverHaveIEverScreen';
 import ClassicCardGameScreen from '../screens/ClassicCardGameScreen';
+import DiceGameScreen from '../screens/DiceGameScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,11 @@ export default function AppNavigator() {
         <Stack.Screen
           name="ClassicCardGame"
           component={ClassicCardGameScreen}
+          options={{ orientation: 'landscape', animation: 'none' }}
+        />
+        <Stack.Screen
+          name="DiceGame"
+          component={DiceGameScreen}
           options={{ orientation: 'landscape', animation: 'none' }}
         />
       </Stack.Navigator>
