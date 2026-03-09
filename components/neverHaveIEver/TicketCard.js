@@ -1,110 +1,172 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const escapeTextForRegex = (text) => {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const escapeRegexText = (text) => {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // regex for replacement of player names in questions.
 };
 
-const getUniqueNamesToHighlight = (highlightedPlayerNames) => {
-  const uniqueNames = [];
+const getUniqueHighlightedNames = (highlightedPlayerNames) => {
+  const uniqueHighlightedNames = [];
 
   if (!Array.isArray(highlightedPlayerNames)) {
-    return uniqueNames;
+    return uniqueHighlightedNames;
   }
 
-  for (const name of highlightedPlayerNames) {
-    if (typeof name !== 'string') {
+  for (const playerName of highlightedPlayerNames) {
+    if (typeof playerName !== 'string') {
       continue;
     }
 
-    const trimmedName = name.trim();
-    if (trimmedName.length === 0) {
+    const normalizedPlayerName = playerName.trim();
+    if (normalizedPlayerName.length === 0) {
       continue;
     }
 
-    if (!uniqueNames.includes(trimmedName)) {
-      uniqueNames.push(trimmedName);
+    if (!uniqueHighlightedNames.includes(normalizedPlayerName)) {
+      uniqueHighlightedNames.push(normalizedPlayerName);
     }
   }
 
-  return uniqueNames;
+  return uniqueHighlightedNames;
 };
 
-const sortByLengthDescending = (items) => {
-  const sortedItems = [...items];
+const sortNamesByLengthDesc = (names) => {
+  const sortedNames = names.slice();
 
-  sortedItems.sort((leftItem, rightItem) => {
-    if (leftItem.length > rightItem.length) {
+  // Sort longer names first so the regex matches full names before shorter partial matches.
+  sortedNames.sort((leftName, rightName) => {
+    if (leftName.length > rightName.length) {
       return -1;
     }
-    if (leftItem.length < rightItem.length) {
+    if (leftName.length < rightName.length) {
       return 1;
     }
     return 0;
   });
 
-  return sortedItems;
+  return sortedNames;
 };
 
-const buildBodySegments = (bodyText, highlightedPlayerNames) => {
-  const segments = [];
-
-  if (typeof bodyText !== 'string') {
-    return segments;
+const buildHighlightPattern = (highlightedPlayerNames) => {
+  // Build one regex that can find every player name that should be italicized.
+  const uniqueHighlightedNames = getUniqueHighlightedNames(highlightedPlayerNames);
+  if (uniqueHighlightedNames.length === 0) {
+    return null;
   }
 
-  const uniqueNames = getUniqueNamesToHighlight(highlightedPlayerNames);
-  if (uniqueNames.length === 0) {
-    segments.push({ text: bodyText, isPlayerName: false });
-    return segments;
+  const sortedHighlightedNames = sortNamesByLengthDesc(uniqueHighlightedNames);
+  const escapedHighlightedNames = [];
+
+  for (const playerName of sortedHighlightedNames) {
+    escapedHighlightedNames.push(escapeRegexText(playerName));
   }
 
-  const sortedNames = sortByLengthDescending(uniqueNames);
-  const escapedNames = sortedNames.map((name) => escapeTextForRegex(name));
-  const patternSource = escapedNames.join('|');
+  const patternSource = escapedHighlightedNames.join('|');
 
   if (patternSource.length === 0) {
-    segments.push({ text: bodyText, isPlayerName: false });
-    return segments;
+    return null;
   }
 
-  const highlightPattern = new RegExp(patternSource, 'g');
-  let currentIndex = 0;
-  let match = highlightPattern.exec(bodyText);
+  return new RegExp(patternSource, 'g');
+};
 
-  while (match !== null) {
-    const matchText = match[0];
-    const matchStartIndex = match.index;
-    const matchEndIndex = matchStartIndex + matchText.length;
+const buildBodyTextSegments = (bodyText, highlightedPlayerNames) => {
+  if (typeof bodyText !== 'string') {
+    return [];
+  }
 
-    if (matchStartIndex > currentIndex) {
+  const highlightPattern = buildHighlightPattern(highlightedPlayerNames);
+  if (!highlightPattern) {
+    return [{ text: bodyText, isHighlightedName: false }];
+  }
+
+  // We build the result from left to right.
+  // `nextPlainTextStart` marks where the next non-highlighted text begins.
+  const segments = [];
+  let nextPlainTextStart = 0;
+  let currentMatch = highlightPattern.exec(bodyText);
+
+  while (currentMatch !== null) {
+    const matchedName = currentMatch[0];
+    const matchedNameStart = currentMatch.index;
+    const matchedNameEnd = matchedNameStart + matchedName.length;
+
+    // Add the plain text that appears before the matched player name.
+    if (matchedNameStart > nextPlainTextStart) {
+      const plainTextBeforeName = bodyText.slice(nextPlainTextStart, matchedNameStart);
       segments.push({
-        text: bodyText.slice(currentIndex, matchStartIndex),
-        isPlayerName: false,
+        text: plainTextBeforeName,
+        isHighlightedName: false,
       });
     }
 
+    // Add the player name itself as a highlighted segment.
     segments.push({
-      text: matchText,
-      isPlayerName: true,
+      text: matchedName,
+      isHighlightedName: true,
     });
 
-    currentIndex = matchEndIndex;
-    match = highlightPattern.exec(bodyText);
+    // Continue reading from the end of the matched name.
+    nextPlainTextStart = matchedNameEnd;
+    currentMatch = highlightPattern.exec(bodyText);
   }
 
-  if (currentIndex < bodyText.length) {
+  // Add any plain text that appears after the last matched player name.
+  if (nextPlainTextStart < bodyText.length) {
+    const remainingPlainText = bodyText.slice(nextPlainTextStart);
     segments.push({
-      text: bodyText.slice(currentIndex),
-      isPlayerName: false,
+      text: remainingPlainText,
+      isHighlightedName: false,
     });
   }
 
   if (segments.length === 0) {
-    segments.push({ text: bodyText, isPlayerName: false });
+    return [{ text: bodyText, isHighlightedName: false }];
   }
 
   return segments;
+};
+
+const getCornerCutoutWidth = (cornerLabel, backgroundColor) => {
+  // Different labels need slightly different cutout widths to fit visually according to the labels text length
+  if (cornerLabel.includes('\u2620')) {
+    return '15%';
+  }
+
+  if (backgroundColor === '#f67efcff') {
+    return '20%';
+  }
+
+  if (backgroundColor === '#34b0fcff') {
+    return '25%';
+  }
+
+  return null;
+};
+
+const TicketCardBody = ({ bodyText, highlightedPlayerNames }) => {
+  const textSegments = buildBodyTextSegments(bodyText, highlightedPlayerNames);
+  const renderedSegments = [];
+
+  // Render each segment as a nested Text node so only player names become italic.
+  for (let index = 0; index < textSegments.length; index += 1) {
+    const segment = textSegments[index];
+    let textStyle = styles.bodyRegular;
+
+    if (segment.isHighlightedName) {
+      textStyle = styles.bodyPlayerName;
+    }
+
+    renderedSegments.push(
+      <Text key={`${index}:${segment.isHighlightedName ? 'p' : 'n'}`} style={textStyle}>
+        {segment.text}
+      </Text>
+    );
+  }
+
+  return (
+    <Text style={styles.body}>{renderedSegments}</Text>
+  );
 };
 
 const TicketCard = ({
@@ -117,53 +179,27 @@ const TicketCard = ({
   tilt = -3,
   style,
 }) => {
-  const hasSkullLabel = cornerLabel.includes('\u2620');
-  let cornerCutoutWidth = null;
+  const cornerCutoutWidth = getCornerCutoutWidth(cornerLabel, backgroundColor);
+  const cardStyle = {
+    backgroundColor,
+    transform: [{ rotate: `${tilt}deg` }],
+  };
+  const cornerCutoutStyle = [styles.cornerCutout];
 
-  if (hasSkullLabel) {
-    cornerCutoutWidth = '15%';
-  } else if (backgroundColor === '#f67efcff') {
-    cornerCutoutWidth = '20%';
-  } else if (backgroundColor === '#34b0fcff') {
-    cornerCutoutWidth = '25%';
+  if (cornerCutoutWidth) {
+    cornerCutoutStyle.push({ width: cornerCutoutWidth });
   }
 
-  const bodySegments = buildBodySegments(body, highlightedPlayerNames);
+  const cornerLabelStyle = [styles.cornerLabel, { color: backgroundColor }];
 
   return (
     <View style={[styles.wrapper, style]}>
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor,
-            transform: [{ rotate: `${tilt}deg` }],
-          },
-        ]}
-      >
-        <View
-          style={[
-            styles.cornerCutout,
-            cornerCutoutWidth ? { width: cornerCutoutWidth } : null,
-          ]}
-        />
-        <Text style={[styles.cornerLabel, {color: backgroundColor}]}>{cornerLabel}</Text>
+      <View style={[styles.card, cardStyle]}>
+        <View style={cornerCutoutStyle} />
+        <Text style={cornerLabelStyle}>{cornerLabel}</Text>
 
         {title ? <Text style={styles.title}>{title}</Text> : null}
-        <Text style={styles.body}>
-          {bodySegments.map((segment, index) => {
-            let segmentStyle = styles.bodyRegular;
-            if (segment.isPlayerName) {
-              segmentStyle = styles.bodyPlayerName;
-            }
-
-            return (
-              <Text key={`${index}:${segment.isPlayerName ? 'p' : 'n'}`} style={segmentStyle}>
-                {segment.text}
-              </Text>
-            );
-          })}
-        </Text>
+        <TicketCardBody bodyText={body} highlightedPlayerNames={highlightedPlayerNames} />
 
         <Text style={styles.brand}>{brand}</Text>
       </View>
