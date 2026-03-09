@@ -8,14 +8,14 @@ import {
   ImageBackground,
 } from 'react-native';
 import BackButton from '../components/BackButton';
-import PlayingCard from '../components/fuckTheDealer/PlayingCard';
-import PlayingCardStack, { CARD_GAP } from '../components/fuckTheDealer/PlayingCardStack';
-import CardPreloader from '../components/fuckTheDealer/CardPreloader';
+import PlayingCard from '../components/classicCardGame/PlayingCard';
+import PlayingCardStack, { CARD_GAP } from '../components/classicCardGame/PlayingCardStack';
+import CardPreloader from '../components/classicCardGame/CardPreloader';
 import DeckOfCards from "../services/DeckOfCards";
 
 const PRELOAD_COUNT = 10;
 
-const FuckTheDealerScreen = ({ navigation }) => {
+const ClassicCardGameScreen = ({ navigation }) => {
   const deck = useMemo(() => new DeckOfCards().shuffle(), []);
   const [drawnCards, setDrawnCards] = useState([]);
   const [deckEmpty, setDeckEmpty] = useState(false);
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FuckTheDealerScreen;
+export default ClassicCardGameScreen;

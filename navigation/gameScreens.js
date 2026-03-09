@@ -1,5 +1,5 @@
 export const GAME_SCREENS = {
   '1': 'NeverHaveIEver',
-  // '2': 'DrukQuiz',
-  '3': 'FuckTheDealer',
+  // '3': 'DrukQuiz',
+  '2': 'ClassicCardGame',
 };

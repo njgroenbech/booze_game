@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import AddPlayerScreen from '../screens/AddPlayerScreen';
 import NeverHaveIEverScreen from '../screens/neverHaveIEverScreen';
-import FuckTheDealerScreen from '../screens/FuckTheDealerScreen';
+import ClassicCardGameScreen from '../screens/ClassicCardGameScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,8 +26,8 @@ export default function AppNavigator() {
           options={{ orientation: 'landscape', animation: 'none' }}
         />
         <Stack.Screen
-          name="FuckTheDealer"
-          component={FuckTheDealerScreen}
+          name="ClassicCardGame"
+          component={ClassicCardGameScreen}
           options={{ orientation: 'landscape', animation: 'none' }}
         />
       </Stack.Navigator>

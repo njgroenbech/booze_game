@@ -50,8 +50,8 @@ export default function HomeScreen({ navigation }) {
 
   const games = [
     { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
-    { id: '2', name: 'Fuck the Dealer', color: '#fff', image: require('../assets/cool-kid.jpg')},
-    { id: '3', name: 'Druk Quiz', color: '#fff', image: require('../assets/dj-toenail.jpg')},
+    { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cool-kid.jpg')},
+    { id: '3', name: 'Terninger', color: '#fff', image: require('../assets/dj-toenail.jpg')},
   ];
 
   const { players, setPlayers, gameId } = useGame();
