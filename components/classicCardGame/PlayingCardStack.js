@@ -2,7 +2,7 @@ import React, { useRef, useEffect, memo } from 'react';
 import { View, Animated, StyleSheet } from 'react-native';
 import PlayingCard, { CARD_WIDTH, CARD_HEIGHT } from './PlayingCard';
 
-export const CARD_GAP = 20;
+export const CARD_GAP = 35;
 
 const MAX_VISIBLE = 6;    // how many active (non-fading) cards are shown
 const MAX_OFFSET_XY = 14;
