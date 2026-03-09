@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
     const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
     const activeGame = games[currentIndex];
     if (activeGame) {
-      if (activeGame.id === '2') {
+      if (activeGame.name === 'Druk Quiz') {
         Alert.alert('Kommer snart!');
         return;
       }
@@ -50,8 +50,8 @@ export default function HomeScreen({ navigation }) {
 
   const games = [
     { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
-    { id: '2', name: 'Druk Quiz', color: '#fff', image: require('../assets/dj-toenail.jpg')},
-    { id: '3', name: 'Fuck the Dealer', color: '#fff', image: require('../assets/cool-kid.jpg')},
+    { id: '2', name: 'Fuck the Dealer', color: '#fff', image: require('../assets/cool-kid.jpg')},
+    { id: '3', name: 'Druk Quiz', color: '#fff', image: require('../assets/dj-toenail.jpg')},
   ];
 
   const { players, setPlayers, gameId } = useGame();
