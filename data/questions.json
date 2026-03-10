@@ -67,7 +67,6 @@
     "fået AI til at skrive en personlig besked for mig",
     "tabt mere end 1000kr på gambling på en aften",
     "gjort mig flot til en koncert 'just in case'",
-    "set Jackass stiv",
     "sprunget en postkasse i luften",
     "skidt i skoven",
     "stjålet fra et supermarked",
@@ -80,7 +79,32 @@
     "taget et brugt stykke snus",
     "været i håndlænker i sengen",
     "taget 'the fridge' så min ven kunne få 'the snack'",
-    "brugt de samme underbukser i mere end 3 dage"
+    "brugt de samme underbukser i mere end 3 dage",
+    "lavet hjemmelavet fyrværkeri",
+    "ladet som om jeg havde set en film, jeg aldrig har set",
+    "løjet på mit CV",
+    "ghostet nogen",
+    "blevet ghostet",
+    "mistet mine nøgler efter en bytur",
+    "snakket mig ud af en bøde",
+    "fået en besked der var ment til en anden",
+    "været til en fest hvor jeg ikke kendte nogen",
+    "haft sex i en bil",
+    "haft sex med nogen jeg mødte samme aften",
+    "haft sex på et køkkenbord",
+    "været til en fest jeg ikke var inviteret til",
+    "tabt min telefon i toilettet",
+    "løbet fra en taxa uden at betale.",
+    "kastet op foran alle til en fest",
+    "ved en fejl drukket af en øl med et stykke snus i",
+    "introduceret mig selv til nogen jeg allerede havde mødt",
+    "pillet næse og håbet ingen så det",
+    "kløet mig i røven og lugtet til fingeren.",
+    "vinket tilbage til nogen der ikke vinkede til mig.",
+    "sendt et nøgenbillede",
+    "blevet lagt i håndhjern af politiet",
+    "tisset i en flaske"
+
   ],
   "kategori": [
     "Ølmærker",
@@ -155,33 +179,13 @@
     "at blive model"
   ],
 
-  "unhinged": [
-    "hvad ville du helst: blive bollet af din far i røven eller bolle din far i røven. tommel op for at bolle, tommel ned for at blive bollet",
-    "du har pikken i røven på din mor, og du har din fars pik i røven. Går du frem eller tilbage? tommel op for frem, tommel ned for tilbage",
-    "ville du dræbe uden straf for 10m kroner? Hvis ja, så drik!",
-    "har du nogensinde sendt et nøgenbillede? tommel op for ja, tommel ned for nej",
-    "Ville du bytte kønsdele med en ven for en million kroner? tommel op for ja, tommel ned for nej. Hvis din ven er til stede i aften, skal han udpeges og bunde",
-    "Ville du helst leve uden porno eller uden sociale medier? tomell op for porno, tommel ned for medierne.",
-    "Hvis du fik 50.000 kr. for at holde et stripshow foran dine bedsteforældre, ville du gøre det? tommel op hvis ja, tommel ned for nej.",
-    "Ville du cykle en tur nøgen på 10 minutter i københavns myldretrafik for 50.000kr? tommel op hvis ja, tommel ned for nej",
-    "Du er nødt til ......., eller aldrig have sex igen. tommel op for ....., tommel ned cølibat.",
-    "Ville du hellere spise en hjemløs' sok eller en brugt tampon? tommel op for sok, tommel ned for tampon.",
-    "Du får en million kroner, men skal have en penistatovering op ad halsen. tommel op hvis ja, tommel ned hvis nej.",
-    "Aldrig bruge toiletpapir igen eller kun kunne drikke lunkent vand resten af livet? tommel op for ingen toiletpapir, tommel ned for lunkent vand.",
-    "Ville du tage en shot lavet af alles sved ved bordet for 10.000kr? tommel op for ja, tommel ned for nej",
-    "Ville du hellere se dine forældre have sex én gang om dagen i et år, eller deltage én gang og så stoppe det? tommel op for se, tommel ned for deltage.",
-    "Ville du hellere have konstant stiv pik under familiefester eller miste evnen til at blive tændt af nogen under 50? tommel op for stiv pik, tommel ned for boomer-kink.",
-    "Ville du hellere få et sexvideo lækket til hele familien eller se din bedste ven i en porno med dine forældre? 1 slurk for eget sexbånd, 2 for forældreporno."
-  ],
-
-
   "joker": [
-    "{player} skal udpege en person til at hente (reserve)øl til bordet",
+    "{player} skal udpege en person til at hente øl til bordet",
     "{player} skal give 2 slurke ud. Det skal din makker til venstre også.",
     "{player} vælg en person, der skal give 3 slurke ud",
     "Alle med et ur på venstre arm skal tage 2 slurke. Hvis du har ur på højre arm, skal du bunde",
     "{player} skal udpege en person, der skal tage 1 slurk ud for hver farve på deres tøj",
-    "FÆLLESKÅL",
+    "FÆLLESKÅL!",
     "Den sidste, der ankom i dag, skal tage 4 slurke",
     "Alle der har et familiemedlem med samme navn som en ved bordet, tager 1 shot (5 slurk øl, hvis shots ikke er til stede)",
     "Alle der har haft deres kørekort i over 5 år tager 1 slurk. Folk uden kørekort skal bunde",
@@ -195,17 +199,7 @@
     "Alle med piercinger tager en slurk pr. piercing.",
     "Den, der sidder tættest på toilettet, må vælge en person til at tage 3 slurke.",
     "Alle med planer i morgen tager 1 slurk",
-    "{player} må give 1 slurk ud pr. armbøjning"
-  ],
-
-  "svarPåTid": [
-    "{player} nævn 3 sportsgrene, hvor man skal hoppe",
-    "{player}, nævn 3 Eminem-sange",
-    "{player}, nævn 3 ølmærker",
-    "{player}, sig 3 komplimenter til personen til venstre. Hvis du ikke kan finde nogle, så tag 3 slurke",
-    "{player}, nævn 3 sportgrene med en bold",
-    "{player}, nævn 3 lande i Europa",
-    "{player}, nævn 3 lande udenfor Europa",
-    "{player}, nævn 3 ord der rimer på “øl”"
+    "{player} må give 1 slurk ud pr. armbøjning",
+    "Hvis du har en tatovering på højre arm, skal du tage 2 slurke"
   ]
 }
