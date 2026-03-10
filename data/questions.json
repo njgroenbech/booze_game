@@ -99,12 +99,25 @@
     "ved en fejl drukket af en øl med et stykke snus i",
     "introduceret mig selv til nogen jeg allerede havde mødt",
     "pillet næse og håbet ingen så det",
-    "kløet mig i røven og lugtet til fingeren.",
-    "vinket tilbage til nogen der ikke vinkede til mig.",
+    "kløet mig i røven og lugtet til fingeren",
+    "vinket tilbage til nogen der ikke vinkede til mig",
     "sendt et nøgenbillede",
     "blevet lagt i håndhjern af politiet",
-    "tisset i en flaske"
-
+    "tisset i en flaske",
+    "spist så meget at jeg kastede op",
+    "brugt mere end 200kr på en enkelt McDonald's ordre",
+    "set bremsespor i min kærestes underbukser",
+    "haft et stykke snus i mine kønsorganer",
+    "haft sex i mine forældres seng",
+    "gået ind på nogen, som onanerede",
+    "hørt mine forældre haft sex",
+    "kommet til at gå ind i en fremmed persons bil",
+    "taget et kviklån",
+    "givet penge til en hjemløs bare for at imponere en flirt",
+    "prøvet at blive content creator uden succes",
+    "genbrugt en gave",
+    "holdt en flirt i live, bare for at få opmærksomhed",
+    ""
   ],
   "kategori": [
     "Ølmærker",
@@ -145,7 +158,8 @@
     "Eminem sange",
     "Nik og Jay sange",
     "Skisportssteder",
-    "Kendte kunstmalere"
+    "Kendte kunstmalere",
+    ""
   ],
 
   "mestTilbøjeligTil": [
@@ -171,12 +185,27 @@
     "at tage hårde stoffer",
     "at give penge til en hjemløs",
     "at få en fartbøde",
-    "blive medlem af en bande",
+    "at blive medlem af en bande",
     "at komme for sent til en jobsamtale og alligevel få jobbet",
     "at sige 'jeg elsker dig' på første date",
     "have flest penge på bankkontoen",
-    "blive kærester med en vens eks",
-    "at blive model"
+    "at blive kærester med en vens eks",
+    "at blive model",
+    "at få 8 børn",
+    "at brænde maden på",
+    "at stille op til folketinget",
+    "at klage over for meget skum i sin øl",
+    "at glemme navnet på en person, de lige har scoret",
+    "at starte en røvsyg politisk debat til en fest",
+    "at få tæv i byen",
+    "at blackout til sit eget bryllup",
+    "at fyre n-ordet casually",
+    "at være racist",
+    "at ikke at støvsuge i 3 uger",
+    "ikke at skifte sit sengetøj",
+    "at 'glemme' at sende penge til nogen som har lagt ud",
+    "at tage tidligt hjem fra byen for at se Netflix",
+    ""
   ],
 
   "joker": [
@@ -200,6 +229,28 @@
     "Den, der sidder tættest på toilettet, må vælge en person til at tage 3 slurke.",
     "Alle med planer i morgen tager 1 slurk",
     "{player} må give 1 slurk ud pr. armbøjning",
-    "Hvis du har en tatovering på højre arm, skal du tage 2 slurke"
+    "Hvis du har en tatovering på højre arm, skal du tage 2 slurke",
+    "Alle tager en slurk per tatovering de har",
+    "Alle tager en slurk per stykke snus de har på sig",
+    "Alle tager en slurk per gang de har onaneret denne uge",
+    "Alle tager en slurk per ekskæreste de har",
+    "Alle der stemmer blå blok drikker 1 slurk, alle der stemmer rød blok drikker 2 slurke",
+    "{player} må give 2 slurke ud",
+    "{player} må give 2 slurke ud",
+    "{player} må give 2 slurke ud",
+    "{player} må give 2 slurke ud",
+    "{player} må give 2 slurke ud",
+    "{player} må give 3 slurke ud",
+    "{player} må give 3 slurke ud",
+    "{player} må give 3 slurke ud",
+    "{player} må give 5 slurke ud",
+    "{player} må give 5 slurke ud",
+    "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
+    "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
+    "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør"
+  ],
+
+  "unhinged": [
+    "Personen der sidst har onaneret må give 5 slurke ud"
   ]
 }
