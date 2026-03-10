@@ -39,6 +39,78 @@ test('drawNextUniqueQuestion removes a question from the current session and ret
   }
 });
 
+test('pickColorFromPercentages gives never have i ever 50 percent and splits the rest across the other modes', () => {
+  const originalRandom = Math.random;
+  Math.random = () => 0.49;
+
+  try {
+    assert.equal(
+      questionSessionService.pickColorFromPercentages(questionSessionService.getQuestionCategoryColors()),
+      '#f85d63'
+    );
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('pickColorFromPercentages selects a non-never-have-i-ever mode when random value lands in those ranges', () => {
+  const originalRandom = Math.random;
+  Math.random = () => 0.75;
+
+  try {
+    assert.equal(
+      questionSessionService.pickColorFromPercentages(questionSessionService.getQuestionCategoryColors()),
+      '#00d031ff'
+    );
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('pickColorFromPercentages falls back to an available color when the percentage-picked mode is exhausted', () => {
+  const originalRandom = Math.random;
+  let randomCallCount = 0;
+  Math.random = () => {
+    randomCallCount += 1;
+    return randomCallCount === 1 ? 0.9 : 0;
+  };
+
+  try {
+    assert.equal(
+      questionSessionService.pickColorFromPercentages([
+        '#34b0fcff',
+        '#00d031ff',
+      ]),
+      '#34b0fcff'
+    );
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('drawNextUniqueQuestion uses threshold-based category selection', () => {
+  const originalRandom = Math.random;
+  let drawCount = 0;
+  Math.random = () => {
+    drawCount += 1;
+    return drawCount === 1 ? 0.9 : 0;
+  };
+
+  try {
+    const expectedColor = '#f67efcff';
+    const expectedQuestion =
+      questionSessionService.remainingQuestionsByColor[expectedColor][0];
+
+    const result = questionSessionService.drawNextUniqueQuestion();
+
+    assert.equal(result.backgroundColor, expectedColor);
+    assert.equal(result.body, expectedQuestion);
+    assert.equal(result.questionId, `joker:${questionSessionService.normalizeQuestion(expectedQuestion)}`);
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
 test('drawNextUniqueQuestion returns null when every category has been exhausted', () => {
   for (const color of questionSessionService.getQuestionCategoryColors()) {
     questionSessionService.remainingQuestionsByColor[color] = [];
