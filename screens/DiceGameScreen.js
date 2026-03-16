@@ -37,7 +37,7 @@ function Die() {
           const maxDim = Math.max(size.x, size.y, size.z);
           console.log('GLB loaded, size:', size, 'maxDim:', maxDim);
           if (maxDim > 0) {
-            const scale = 8 / maxDim;
+            const scale = 2 / maxDim;
             s.scale.setScalar(scale);
             s.position.set(
               -center.x * scale,
