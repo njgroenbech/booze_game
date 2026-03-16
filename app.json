@@ -1,5 +1,11 @@
 {
   "plugins": [
     "expo-asset"
-  ]
+  ],
+  "android": {
+    "package": "com.anonymous.boozegame"
+  },
+  "ios": {
+    "bundleIdentifier": "com.anonymous.boozegame"
+  }
 }
