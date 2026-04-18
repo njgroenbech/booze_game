@@ -37,6 +37,10 @@ export default function HomeScreen({ navigation }) {
       }
       setGameId(activeGame.id);
       setGameName(activeGame.name);
+      if (activeGame.id === '4') {
+        navigation.navigate('MayerGame');
+        return;
+      }
       setShowPlayerList(true);
     }
   }
@@ -52,6 +56,7 @@ export default function HomeScreen({ navigation }) {
     { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
     { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cool-kid.jpg')},
     { id: '3', name: 'Terninger', color: '#fff', image: require('../assets/dj-toenail.jpg')},
+    { id: '4', name: 'Mayer', color: '#fff', image: require('../assets/dj-toenail.jpg')},
   ];
 
   const { players, setPlayers, gameId } = useGame();
