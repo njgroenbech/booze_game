@@ -93,7 +93,7 @@ function Die({ rotation, position, dieScale }) {
   );
 }
 
-export default function MayerGameScreen({ navigation }) {
+export default function MeyerGameScreen({ navigation }) {
   const [rotations, setRotations] = useState([FACES[1], FACES[1]]);
   const [isCovered, setIsCovered] = useState(true);
   const rollCount = useRef(0);
