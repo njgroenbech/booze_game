@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system/legacy';
 import {
   StyleSheet,
   ImageBackground,
@@ -8,6 +10,8 @@ import {
 } from 'react-native';
 import { Canvas } from '@react-three/fiber/native';
 import { useSpring, animated } from '@react-spring/three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from 'three';
 import BackButton from '../components/BackButton';
 import { loadDie } from '../services/dieLoader';
 
@@ -74,7 +78,6 @@ function Die({ rotation, position, dieScale, isLocked, onPress }) {
           const size = box.getSize(new THREE.Vector3());
           const center = box.getCenter(new THREE.Vector3());
           const maxDim = Math.max(size.x, size.y, size.z);
-          console.log('GLB loaded, size:', size, 'maxDim:', maxDim);
           if (maxDim > 0) {
             const scale = 2 / maxDim;
             s.scale.setScalar(scale);
