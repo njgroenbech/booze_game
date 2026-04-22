@@ -95,7 +95,7 @@ function Die({ rotation, position, dieScale }) {
 
 export default function MeyerGameScreen({ navigation }) {
   const [rotations, setRotations] = useState([FACES[1], FACES[1]]);
-  const [isCovered, setIsCovered] = useState(true);
+  const [isCovered, setIsCovered] = useState(false);
   const rollCount = useRef(0);
 
   function rollDice() {
