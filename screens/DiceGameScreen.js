@@ -31,13 +31,32 @@ const LAYOUTS = {
   5: { scale: 0.7, positions: [[-1.8, 0.8, 0], [0, 0.8, 0], [1.8, 0.8, 0], [-1.0, -0.8, 0], [1.0, -0.8, 0]] },
 };
 
-function Die({ rotation, position, dieScale }) {
+function Die({ rotation, position, dieScale, isLocked, onPress }) {
   const [scene, setScene] = useState(null);
+  const originalColors = useRef({});
 
-  const { rot } = useSpring({
+  const { rot, zOff } = useSpring({
     rot: rotation,
+    zOff: isLocked ? -0.5 : 0,
     config: { mass: 1, tension: 120, friction: 20 },
   });
+
+  useEffect(() => {
+    if (!scene) return;
+    scene.traverse(child => {
+      if (child.isMesh) {
+        if (!(child.uuid in originalColors.current)) {
+          originalColors.current[child.uuid] = child.material.color.clone();
+        }
+        const orig = originalColors.current[child.uuid];
+        if (isLocked) {
+          child.material.color.setRGB(orig.r * 0.5, orig.g * 0.5, orig.b * 0.5);
+        } else {
+          child.material.color.copy(orig);
+        }
+      }
+    });
+  }, [isLocked, scene]);
 
   useEffect(() => {
     async function load() {
@@ -79,7 +98,12 @@ function Die({ rotation, position, dieScale }) {
 
   if (!scene) return null;
   return (
-    <animated.group rotation={rot} position={position} scale={[dieScale, dieScale, dieScale]}>
+    <animated.group
+      rotation={rot}
+      position={zOff.to(z => [position[0], position[1], position[2] + z])}
+      scale={[dieScale, dieScale, dieScale]}
+      onClick={onPress}
+    >
       <primitive object={scene} />
     </animated.group>
   );
@@ -88,6 +112,7 @@ function Die({ rotation, position, dieScale }) {
 export default function ClassicCardGameScreen({ navigation }) {
   const [diceCount, setDiceCount] = useState(1);
   const [rotations, setRotations] = useState([[0, 0, 0]]);
+  const [lockedDice, setLockedDice] = useState([false]);
   const rollCount = useRef(0);
 
   const layout = LAYOUTS[diceCount];
@@ -95,16 +120,22 @@ export default function ClassicCardGameScreen({ navigation }) {
   function rollAllDice() {
     rollCount.current += 1;
     const spin = Math.PI * 4 * rollCount.current;
-    setRotations(prev => prev.map(() => {
+    setRotations(prev => prev.map((rot, i) => {
+      if (lockedDice[i]) return rot;
       const [fx, fy, fz] = FACES[Math.floor(Math.random() * FACES.length)];
       return [spin + fx, spin + fy, spin + fz];
     }));
+  }
+
+  function toggleDieLock(index) {
+    setLockedDice(prev => prev.map((locked, i) => i === index ? !locked : locked));
   }
 
   function addDie() {
     if (diceCount < 5) {
       setDiceCount(c => c + 1);
       setRotations(prev => [...prev, [0, 0, 0]]);
+      setLockedDice(prev => [...prev, false]);
     }
   }
 
@@ -112,6 +143,7 @@ export default function ClassicCardGameScreen({ navigation }) {
     if (diceCount > 1) {
       setDiceCount(c => c - 1);
       setRotations(prev => prev.slice(0, -1));
+      setLockedDice(prev => prev.slice(0, -1));
     }
   }
 
@@ -121,7 +153,7 @@ export default function ClassicCardGameScreen({ navigation }) {
       <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
         <ambientLight intensity={0.8} />
         <directionalLight position={[10, 10, 10]} intensity={1.5} />
-        <mesh onClick={rollAllDice} position={[0, 0, 2]}>
+        <mesh onClick={rollAllDice} position={[0, 0, -2]}>
           <planeGeometry args={[100, 100]} />
           <meshBasicMaterial transparent opacity={0} />
         </mesh>
@@ -131,6 +163,8 @@ export default function ClassicCardGameScreen({ navigation }) {
             rotation={rotation}
             position={layout.positions[i]}
             dieScale={layout.scale}
+            isLocked={lockedDice[i]}
+            onPress={diceCount > 1 ? (e) => { e.stopPropagation(); toggleDieLock(i); } : undefined}
           />
         ))}
       </Canvas>
