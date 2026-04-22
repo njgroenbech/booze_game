@@ -8,10 +8,8 @@ class PlayerPlaceholderService {
       'spilleren med den bedste dans',
       'den spiller der kom sidst i dag',
       'spilleren med den højeste stemme',
-      'den spiller med flest lommer',
-      'spilleren der lugter mest af fest',
-      'den spiller der blinker først',
-      'spilleren med den mest kaotiske energi',
+      "spilleren der kan tage flest armbøjninger",
+      "spilleren med de største muskler"
     ];
   }
 
