@@ -22,6 +22,13 @@ const SPACING = 16;
 const FULL_SIZE = CARD_WIDTH + SPACING;
 const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
+const games = [
+  { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
+  { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cool-kid.jpg') },
+  { id: '3', name: 'Terninger', color: '#fff', image: require('../assets/dj-toenail.jpg') },
+  { id: '4', name: 'Meyer', color: '#fff', image: require('../assets/dj-toenail.jpg') },
+];
+
 export default function HomeScreen({ navigation }) {
   const { setGameId, setGameName } = useGame();
   const scrollOffsetRef = useRef(0);
@@ -51,13 +58,6 @@ export default function HomeScreen({ navigation }) {
   };
 
   const scrollX = useRef(new Animated.Value(0)).current;
-
-  const games = [
-    { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
-    { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cool-kid.jpg')},
-    { id: '3', name: 'Terninger', color: '#fff', image: require('../assets/dj-toenail.jpg')},
-    { id: '4', name: 'Meyer', color: '#fff', image: require('../assets/dj-toenail.jpg')},
-  ];
 
   const { players, setPlayers, gameId } = useGame();
 

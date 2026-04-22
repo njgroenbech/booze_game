@@ -9,10 +9,7 @@ import {
 import { Canvas } from '@react-three/fiber/native';
 import { useSpring, animated } from '@react-spring/three';
 import BackButton from '../components/BackButton';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Asset } from 'expo-asset';
-import * as FileSystem from 'expo-file-system/legacy';
-import * as THREE from 'three';
+import { loadDie } from '../services/dieLoader';
 
 const FACES = [
   [0, 0, 0],
@@ -40,41 +37,9 @@ function Die({ rotation, position, dieScale }) {
   });
 
   useEffect(() => {
-    async function load() {
-      try {
-        const asset = Asset.fromModule(require('../assets/high-poly-die.glb'));
-        await asset.downloadAsync();
-        const file = await FileSystem.readAsStringAsync(asset.localUri, {
-          encoding: 'base64',
-        });
-        const binary = atob(file);
-        const buf = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) buf[i] = binary.charCodeAt(i);
-
-        new GLTFLoader().parse(buf.buffer, '', (gltf) => {
-          const s = gltf.scene;
-          s.updateWorldMatrix(true, true);
-          const box = new THREE.Box3().setFromObject(s);
-          const size = box.getSize(new THREE.Vector3());
-          const center = box.getCenter(new THREE.Vector3());
-          const maxDim = Math.max(size.x, size.y, size.z);
-          console.log('GLB loaded, size:', size, 'maxDim:', maxDim);
-          if (maxDim > 0) {
-            const scale = 2 / maxDim;
-            s.scale.setScalar(scale);
-            s.position.set(
-              -center.x * scale,
-              -center.y * scale,
-              -center.z * scale
-            );
-          }
-          setScene(s);
-        }, (err) => console.error('GLTFLoader error:', err));
-      } catch (e) {
-        console.error('Load error:', e);
-      }
-    }
-    load();
+    loadDie()
+      .then(base => setScene(base.clone(true)))
+      .catch(e => console.error('Load error:', e));
   }, []);
 
   if (!scene) return null;
