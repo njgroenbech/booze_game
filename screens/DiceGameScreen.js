@@ -9,10 +9,7 @@ import {
 import { Canvas } from '@react-three/fiber/native';
 import { useSpring, animated } from '@react-spring/three';
 import BackButton from '../components/BackButton';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Asset } from 'expo-asset';
-import * as FileSystem from 'expo-file-system/legacy';
-import * as THREE from 'three';
+import { loadDie } from '../services/dieLoader';
 
 const FACES = [
   [0, 0, 0],
