@@ -13,6 +13,7 @@ import { useSpring, animated } from '@react-spring/three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
 import BackButton from '../components/BackButton';
+import { Ionicons } from '@expo/vector-icons';
 import { loadDie } from '../services/dieLoader';
 
 const FACES = [
@@ -113,6 +114,7 @@ export default function ClassicCardGameScreen({ navigation }) {
   const [diceCount, setDiceCount] = useState(1);
   const [rotations, setRotations] = useState([[0, 0, 0]]);
   const [lockedDice, setLockedDice] = useState([false]);
+  const [diceVisible, setDiceVisible] = useState(true);
   const rollCount = useRef(0);
 
   const layout = LAYOUTS[diceCount];
@@ -153,11 +155,11 @@ export default function ClassicCardGameScreen({ navigation }) {
       <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
         <ambientLight intensity={0.8} />
         <directionalLight position={[10, 10, 10]} intensity={1.5} />
-        <mesh onClick={rollAllDice} position={[0, 0, -2]}>
+        <mesh onClick={diceVisible ? rollAllDice : undefined} position={[0, 0, -2]}>
           <planeGeometry args={[100, 100]} />
           <meshBasicMaterial transparent opacity={0} />
         </mesh>
-        {rotations.map((rotation, i) => (
+        {diceVisible && rotations.map((rotation, i) => (
           <Die
             key={i}
             rotation={rotation}
@@ -168,6 +170,15 @@ export default function ClassicCardGameScreen({ navigation }) {
           />
         ))}
       </Canvas>
+      {!diceVisible && (
+        <View style={styles.hiddenOverlay}>
+          <Text style={styles.hiddenTitle}>Terningerne er skjult</Text>
+          <Text style={styles.hiddenSubtitle}>Tryk på ikonet oppe i højre hjørne for at vise terningerne.</Text>
+        </View>
+      )}
+      <TouchableOpacity style={styles.hideButton} onPress={() => setDiceVisible(v => !v)}>
+        <Ionicons name={diceVisible ? 'eye' : 'eye-off'} size={22} color="white" />
+      </TouchableOpacity>
       <View style={styles.controls}>
         <TouchableOpacity
           style={[styles.controlButton, diceCount >= 5 && styles.controlButtonDisabled]}
@@ -190,6 +201,39 @@ const styles = StyleSheet.create({
   screen: {
     width: '100%',
     height: '100%',
+  },
+  hiddenOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+  },
+  hiddenTitle: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  hiddenSubtitle: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  hideButton: {
+    position: 'absolute',
+    top: 25,
+    right: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   controls: {
     position: 'absolute',
