@@ -39,13 +39,9 @@ export default function HomeScreen({ navigation }) {
     const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
     const activeGame = games[currentIndex];
     if (activeGame) {
-      if (activeGame.name === 'Druk Quiz') {
-        Alert.alert('Kommer snart!');
-        return;
-      }
       setGameId(activeGame.id);
       setGameName(activeGame.name);
-      if (activeGame.id === '4') {
+      if (activeGame.id === '3') {
         navigation.navigate('MeyerGame');
         return;
       }
