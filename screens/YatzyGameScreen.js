@@ -17,12 +17,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { loadDie } from '../services/dieLoader';
 
 const FACES = [
-  [0, 0, 0],
-  [Math.PI * 0.5, 0, 0],
-  [-Math.PI * 0.5, 0, 0],
-  [0, Math.PI * 0.5, 0],
-  [0, -Math.PI * 0.5, 0],
-  [Math.PI, 0, 0],
+  { rotation: [0, 0, 0],              value: 1 },
+  { rotation: [Math.PI * 0.5, 0, 0],  value: 2 },
+  { rotation: [-Math.PI * 0.5, 0, 0], value: 5 },
+  { rotation: [0, Math.PI * 0.5, 0],  value: 3 },
+  { rotation: [0, -Math.PI * 0.5, 0], value: 4 },
+  { rotation: [Math.PI, 0, 0],        value: 6 },
 ];
 
 const LAYOUTS = {
@@ -110,10 +110,12 @@ function Die({ rotation, position, dieScale, isLocked, onPress }) {
   );
 }
 
+
 export default function YatzyGameScreen({ navigation }) {
-  const [diceCount, setDiceCount] = useState(1);
-  const [rotations, setRotations] = useState([[0, 0, 0]]);
-  const [lockedDice, setLockedDice] = useState([false]);
+  const [diceCount, setDiceCount] = useState(5);
+  const [rotations, setRotations] = useState([[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+  const [lockedDice, setLockedDice] = useState([false, false, false, false, false]);
+  const [faceValues, setFaceValues] = useState([null, null, null, null, null]);
   const [diceVisible, setDiceVisible] = useState(true);
   const rollCount = useRef(0);
 
@@ -122,11 +124,14 @@ export default function YatzyGameScreen({ navigation }) {
   function rollAllDice() {
     rollCount.current += 1;
     const spin = Math.PI * 4 * rollCount.current;
+    const newFaceValues = [...faceValues];
     setRotations(prev => prev.map((rot, i) => {
       if (lockedDice[i]) return rot;
-      const [fx, fy, fz] = FACES[Math.floor(Math.random() * FACES.length)];
-      return [spin + fx, spin + fy, spin + fz];
+      const face = FACES[Math.floor(Math.random() * FACES.length)];
+      newFaceValues[i] = face.value;
+      return [spin + face.rotation[0], spin + face.rotation[1], spin + face.rotation[2]];
     }));
+    setFaceValues(newFaceValues);
   }
 
   function toggleDieLock(index) {
@@ -138,6 +143,7 @@ export default function YatzyGameScreen({ navigation }) {
       setDiceCount(c => c + 1);
       setRotations(prev => [...prev, [0, 0, 0]]);
       setLockedDice(prev => [...prev, false]);
+      setFaceValues(prev => [...prev, null]);
     }
   }
 
@@ -146,6 +152,7 @@ export default function YatzyGameScreen({ navigation }) {
       setDiceCount(c => c - 1);
       setRotations(prev => prev.slice(0, -1));
       setLockedDice(prev => prev.slice(0, -1));
+      setFaceValues(prev => prev.slice(0, -1));
     }
   }
 
@@ -176,23 +183,6 @@ export default function YatzyGameScreen({ navigation }) {
           <Text style={styles.hiddenSubtitle}>Tryk på ikonet oppe i højre hjørne for at vise terningerne.</Text>
         </View>
       )}
-      <TouchableOpacity style={styles.hideButton} onPress={() => setDiceVisible(v => !v)}>
-        <Ionicons name={diceVisible ? 'eye' : 'eye-off'} size={22} color="white" />
-      </TouchableOpacity>
-      <View style={styles.controls}>
-        <TouchableOpacity
-          style={[styles.controlButton, diceCount >= 5 && styles.controlButtonDisabled]}
-          onPress={addDie}
-        >
-          <Text style={styles.controlText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.controlButton, diceCount <= 1 && styles.controlButtonDisabled]}
-          onPress={removeDie}
-        >
-          <Text style={styles.controlText}>−</Text>
-        </TouchableOpacity>
-      </View>
     </ImageBackground>
   );
 }
