@@ -23,10 +23,11 @@ const FULL_SIZE = CARD_WIDTH + SPACING;
 const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
 const games = [
-  { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/bamsefar.jpg') },
-  { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cool-kid.jpg') },
-  { id: '3', name: 'Terninger', color: '#fff', image: require('../assets/dj-toenail.jpg') },
-  { id: '4', name: 'Meyer', color: '#fff', image: require('../assets/dj-toenail.jpg') },
+  { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/jeg-har-aldrig.jpg') },
+  { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cards.jpg') },
+  { id: '3', name: 'Meyer', color: '#fff', image: require('../assets/two-dice.jpg') },
+  { id: '4', name: 'Yatzy', color: '#fff', image: require('../assets/yatzy.jpg') },
+  { id: '5', name: 'Terningspil', color: '#fff', image: require('../assets/dice.jpg') },
 ];
 
 export default function HomeScreen({ navigation }) {
