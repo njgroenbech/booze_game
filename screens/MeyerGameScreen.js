@@ -5,12 +5,14 @@ import {
   TouchableOpacity,
   Text,
   View,
+  Vibration,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Canvas } from '@react-three/fiber/native';
 import { useSpring, animated } from '@react-spring/three';
 import BackButton from '../components/BackButton';
 import { loadDie } from '../services/dieLoader';
+import { Accelerometer } from 'expo-sensors';
 
 const FACES = {
   1: [0, 0, 0],
@@ -54,7 +56,30 @@ export default function MeyerGameScreen({ navigation }) {
   const [isCovered, setIsCovered] = useState(false);
   const rollCount = useRef(0);
 
+  useEffect(() => {
+    // Set how often the sensor updates (in milliseconds)
+    Accelerometer.setUpdateInterval(100);
+
+    const subscription = Accelerometer.addListener((accelerometerData) => {
+      const { x, y, z } = accelerometerData;
+
+      // Calculate total acceleration g-force 
+      const totalForce = Math.sqrt(x * x + y * y + z * z);
+
+      // 1.0 is stationary gravity. Anything above ~2.5 implies a sudden movement.
+      const shakeThreshold = 2.5; 
+
+      if (totalForce > shakeThreshold) {
+        // Trigger your dice roll here
+        rollDice()
+      }
+    });
+
+    return () => subscription.remove();
+  }, []);
+
   function rollDice() {
+    Vibration.vibrate();
     rollCount.current += 1;
     const spin = Math.PI * 4 * rollCount.current;
     const nextValues = Array.from({ length: 2 }, () => Math.floor(Math.random() * 6) + 1);
