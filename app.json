@@ -2,7 +2,7 @@
   "expo": {
     "name": "Booze Game",
     "slug": "booze-game",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "splash": {
       "image": "./assets/Booze-game-splash.png",
       "resizeMode": "contain",

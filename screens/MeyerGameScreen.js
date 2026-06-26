@@ -101,10 +101,6 @@ export default function MeyerGameScreen({ navigation }) {
         <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
           <ambientLight intensity={0.8} />
           <directionalLight position={[10, 10, 10]} intensity={1.5} />
-          <mesh onClick={rollDice} position={[0, 0, 2]}>
-            <planeGeometry args={[100, 100]} />
-            <meshBasicMaterial transparent opacity={0} />
-          </mesh>
           {rotations.map((rotation, index) => (
             <Die
               key={index}
@@ -127,14 +123,6 @@ export default function MeyerGameScreen({ navigation }) {
 
       <View style={styles.backButtonLayer}>
         <BackButton navigation={navigation} />
-      </View>
-
-      <View style={styles.controls}>
-        <TouchableOpacity style={styles.secondaryButton} onPress={toggleCover}>
-          <Text style={styles.secondaryButtonText}>
-            {isCovered ? 'Se terninger' : 'Skjul'}
-          </Text>
-        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
