@@ -20,7 +20,6 @@
     },
     "ios": {
       "bundleIdentifier": "com.balladebaderne.boozegame",
-      "buildNumber": "11",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
