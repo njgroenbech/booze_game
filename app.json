@@ -14,7 +14,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.balladebaderne.boozegame",
-      "buildNumber": "8"
+      "buildNumber": "10"
     },
     "plugins": [
       "expo-asset"
