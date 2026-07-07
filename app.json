@@ -11,6 +11,7 @@
         {
           "image": "./assets/Booze-game-splash.png",
           "resizeMode": "contain",
+          "imageWidth": 280,
           "backgroundColor": "#F4B256"
         }
       ]
