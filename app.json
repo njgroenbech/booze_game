@@ -19,7 +19,7 @@
       "package": "com.balladebaderne.boozegame"
     },
     "ios": {
-      "bundleIdentifier": "com.anonymous.boozegame",
+      "bundleIdentifier": "com.balladebaderne.boozegame",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
