@@ -11,7 +11,7 @@
         {
           "image": "./assets/Booze-game-splash.png",
           "resizeMode": "contain",
-          "backgroundColor": "#FFFFFF"
+          "backgroundColor": "#F4B256"
         }
       ]
     ],
@@ -19,13 +19,14 @@
       "package": "com.balladebaderne.boozegame"
     },
     "ios": {
-      "bundleIdentifier": "com.balladebaderne.boozegame",
+      "bundleIdentifier": "com.anonymous.boozegame",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "extra": {
       "eas": {
+        "owner": "vilo0001",
         "projectId": "443fbc85-081a-4a78-9861-230ebc57fe07"
       }
     }
