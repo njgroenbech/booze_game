@@ -3,6 +3,7 @@
     "name": "Booze Game",
     "slug": "booze-game",
     "version": "1.0.2",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/Booze-game-splash.png",
       "resizeMode": "contain",
