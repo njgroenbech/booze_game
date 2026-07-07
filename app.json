@@ -4,21 +4,27 @@
     "slug": "booze-game",
     "version": "1.0.0",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/Booze-game-splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FFFFFF"
-    },
+    "plugins": [
+      "expo-asset",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/Booze-game-splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFFFF"
+        }
+      ]
+    ],
     "android": {
       "package": "com.balladebaderne.boozegame"
     },
     "ios": {
       "bundleIdentifier": "com.balladebaderne.boozegame",
-      "buildNumber": "10"
+      "buildNumber": "11",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
-    "plugins": [
-      "expo-asset"
-    ],
     "extra": {
       "eas": {
         "projectId": "443fbc85-081a-4a78-9861-230ebc57fe07"
