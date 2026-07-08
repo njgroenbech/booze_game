@@ -8,6 +8,8 @@ import ClassicCardGameScreen from '../screens/ClassicCardGameScreen';
 import DiceGameScreen from '../screens/DiceGameScreen';
 import MeyerGameScreen from '../screens/MeyerGameScreen';
 import YatzyGameScreen from '../screens/YatzyGameScreen';
+import CharadesGameScreen from '../screens/CharadesGameScreen';
+import TriviaGameScreen from '../screens/TriviaGameScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +50,16 @@ export default function AppNavigator() {
           component={DiceGameScreen}
           options={{ orientation: 'landscape', animation: 'none' }}
           />
+        <Stack.Screen
+          name="CharadesGame"
+          component={CharadesGameScreen}
+          options={{ orientation: 'landscape', animation: 'none' }}
+        />
+        <Stack.Screen
+          name="TriviaGame"
+          component={TriviaGameScreen}
+          options={{ orientation: 'landscape', animation: 'none' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

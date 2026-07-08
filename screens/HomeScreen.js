@@ -13,7 +13,9 @@ import {
 } from 'react-native';
 import { useGame } from '../context/GameContext';
 import DrinkiesPlayerList from '../components/addplayers/AddPlayer';
+import CategoryPickerModal from '../components/charades/CategoryPickerModal';
 import { GAME_SCREENS } from '../navigation/gameScreens';
+import { CHARADES_CATEGORIES } from '../data/charadesCategories';
 
 const { width } = Dimensions.get('window');
 
@@ -24,16 +26,17 @@ const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
 const games = [
   { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/jeg-har-aldrig.jpg') },
-  { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cards.jpg') },
   { id: '3', name: 'Meyer', color: '#fff', image: require('../assets/two-dice.jpg') },
-  { id: '4', name: 'Yatzy', color: '#fff', image: require('../assets/yatzy.jpg') },
-  { id: '5', name: 'Terningspil', color: '#fff', image: require('../assets/dice.jpg') },
+  { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cards.jpg') },
+  { id: '6', name: 'Charades', color: '#fff', image: require('../assets/cool-kid.jpg') },
+  { id: '7', name: 'Trivia', color: '#fff', image: require('../assets/dj-toenail.jpg') },
 ];
 
 export default function HomeScreen({ navigation }) {
   const { setGameId, setGameName } = useGame();
   const scrollOffsetRef = useRef(0);
   const [showPlayerList, setShowPlayerList] = React.useState(false);
+  const [showCategoryPicker, setShowCategoryPicker] = React.useState(false);
 
   function startGame() {
     const currentIndex = Math.round(scrollOffsetRef.current / FULL_SIZE);
@@ -45,8 +48,24 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate('MeyerGame');
         return;
       }
+      if (activeGame.id === '2') {
+        navigation.navigate('ClassicCardGame');
+        return;
+      }
+      if (activeGame.id === '6') {
+        setShowCategoryPicker(true);
+        return;
+      }
+      if (activeGame.id === '7') {
+        navigation.navigate('TriviaGame');
+        return;
+      }
       setShowPlayerList(true);
     }
+  }
+
+  function handleSelectCategory(category) {
+    navigation.navigate('CharadesGame', { categoryId: category.id });
   }
 
   const handleScroll = (event) => {
@@ -178,6 +197,14 @@ export default function HomeScreen({ navigation }) {
           setPlayers={setPlayers}
           onReady={handleReady}
           onClose={() => setShowPlayerList(false)}
+        />
+      )}
+
+      {showCategoryPicker && (
+        <CategoryPickerModal
+          categories={CHARADES_CATEGORIES}
+          onSelect={handleSelectCategory}
+          onClose={() => setShowCategoryPicker(false)}
         />
       )}
     </View>

@@ -121,6 +121,10 @@ export default function MeyerGameScreen({ navigation }) {
         </View>
       )}
 
+      <View style={styles.hintWrapper} pointerEvents="none">
+        <Text style={styles.hintText}>Ryst telefonen for at kaste terningerne</Text>
+      </View>
+
       <View style={styles.backButtonLayer}>
         <BackButton navigation={navigation} />
       </View>
@@ -144,6 +148,18 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     zIndex: 4,
     pointerEvents: 'box-none',
+  },
+  hintWrapper: {
+    position: 'absolute',
+    bottom: 24,
+    width: '100%',
+    alignItems: 'center',
+  },
+  hintText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '600',
+    opacity: 0.8,
   },
   coverBlur: {
     width: '100%',

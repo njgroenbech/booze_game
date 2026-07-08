@@ -4,4 +4,6 @@ export const GAME_SCREENS = {
   '3': 'MeyerGame',
   '4': 'YatzyGame',
   '5': 'DiceGame',
+  '6': 'CharadesGame',
+  '7': 'TriviaGame',
 };
