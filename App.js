@@ -3,7 +3,10 @@ import { Asset } from 'expo-asset';
 import { GameProvider } from './context/GameContext';
 import AppNavigator from './navigation/AppNavigator';
 import { loadDie } from './services/dieLoader';
+import { silenceKnownThirdPartyWarnings } from './services/consoleFilters';
 import { CARD_IMAGES } from './assets/playingCards/CARD_IMAGES';
+
+silenceKnownThirdPartyWarnings();
 
 const STATIC_ASSETS = [
   require('./assets/bamsefar.jpg'),
