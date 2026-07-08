@@ -5,8 +5,8 @@ import PlayingCard, { CARD_WIDTH, CARD_HEIGHT } from './PlayingCard';
 export const CARD_GAP = 35;
 
 const MAX_VISIBLE = 6;    // how many active (non-fading) cards are shown
-const MAX_OFFSET_XY = 14;
-const MAX_TILT = 9;
+const MAX_OFFSET_XY = 6;
+const MAX_TILT = 4;
 
 const randomRange = (min, max) => Math.random() * (max - min) + min;
 

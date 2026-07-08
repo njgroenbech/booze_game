@@ -114,6 +114,12 @@ const ClassicCardGameScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
 
+        {!deckEmpty && (
+          <View style={styles.hintWrapper} pointerEvents="none">
+            <Text style={styles.hintText}>Tryk for at trække et kort</Text>
+          </View>
+        )}
+
       </Pressable>
     </ImageBackground>
   );
@@ -144,6 +150,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  hintWrapper: {
+    position: 'absolute',
+    bottom: 24,
+    width: '100%',
+    alignItems: 'center',
+  },
+  hintText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '600',
+    opacity: 0.8,
   },
 });
 
