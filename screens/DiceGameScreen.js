@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   hideButton: {
     position: 'absolute',
     top: 25,
-    right: 20,
+    right: 76,
     width: 44,
     height: 44,
     borderRadius: 22,

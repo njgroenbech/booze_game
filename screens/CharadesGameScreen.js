@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   scoreBadge: {
     position: 'absolute',
-    right: 4,
+    right: 70,
     top: 22,
     fontSize: 16,
     fontWeight: '700',
