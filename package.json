@@ -26,7 +26,7 @@
     "@react-spring/three": "^10.0.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
-    "expo": "~54.0.0",
+    "expo": "~54.0.37",
     "expo-blur": "~15.0.8",
     "expo-file-system": "~19.0.21",
     "expo-gl": "~16.0.10",
