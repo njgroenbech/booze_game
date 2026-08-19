@@ -51,3 +51,45 @@ test('replacePlayerPlaceholdersInText returns the original text when there are n
     'Alle tager en slurk.'
   );
 });
+
+test('resolvePlayerPlaceholdersBilingual substitutes the same player name into both language templates', () => {
+  const service = new PlayerPlaceholderService();
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+
+  try {
+    const result = service.resolvePlayerPlaceholdersBilingual(
+      '{player} skåler med {player2}.',
+      '{player} cheers with {player2}.',
+      ['Anna', 'Bo']
+    );
+
+    assert.equal(result.da, 'Anna skåler med Bo.');
+    assert.equal(result.en, 'Anna cheers with Bo.');
+    assert.deepEqual(result.highlightedPlayerNames, ['Anna', 'Bo']);
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('resolvePlayerPlaceholdersBilingual picks the same fallback slot in both languages when there are too few players', () => {
+  const service = new PlayerPlaceholderService();
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+
+  try {
+    const result = service.resolvePlayerPlaceholdersBilingual(
+      '{player} vælger {player2}.',
+      '{player} picks {player2}.',
+      []
+    );
+
+    // Math.random = 0 deterministically picks fallback index 0 for {player},
+    // then index 0 of the remaining pool (== original index 1) for {player2}.
+    assert.equal(result.da, 'den højeste spiller vælger spilleren med de største sko.');
+    assert.equal(result.en, 'the tallest player picks the player with the biggest shoes.');
+    assert.deepEqual(result.highlightedPlayerNames, []);
+  } finally {
+    Math.random = originalRandom;
+  }
+});

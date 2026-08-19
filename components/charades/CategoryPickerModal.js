@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import ScaleInModal from '../addplayers/ScaleInModal';
+import AnimatedText from '../AnimatedText';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function CategoryPickerModal({ categories, onSelect, onClose }) {
+  const { t } = useLanguage();
   const bgOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -57,8 +60,8 @@ export default function CategoryPickerModal({ categories, onSelect, onClose }) {
             <Text style={styles.closeButtonText}>✕</Text>
           </TouchableOpacity>
 
-          <Text style={styles.title}>Vælg kategori</Text>
-          <Text style={styles.subtitle}>Mixed blander ord fra alle kategorier</Text>
+          <AnimatedText style={styles.title}>{t('charadesCategoryPicker.title')}</AnimatedText>
+          <AnimatedText style={styles.subtitle}>{t('charadesCategoryPicker.subtitle')}</AnimatedText>
 
           <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
             {categories.map((category) => (
@@ -68,8 +71,8 @@ export default function CategoryPickerModal({ categories, onSelect, onClose }) {
                 onPress={() => handleSelect(category)}
                 activeOpacity={0.8}
               >
-                <Text style={styles.categoryName}>{category.name}</Text>
-                <Text style={styles.categoryCount}>{category.wordCount} ord</Text>
+                <AnimatedText style={styles.categoryName}>{t(category.name)}</AnimatedText>
+                <AnimatedText style={styles.categoryCount}>{t('charadesCategoryPicker.wordCount', { count: category.wordCount })}</AnimatedText>
               </TouchableOpacity>
             ))}
           </ScrollView>

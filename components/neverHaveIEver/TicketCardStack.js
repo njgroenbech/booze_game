@@ -1,10 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import TicketCard from './TicketCard';
 import CardThrowAnimation from './CardThrowAnimation';
 import questionSessionService from '../../services/neverHaveIEver/QuestionSessionService';
 import TicketCardFactoryService from '../../services/neverHaveIEver/TicketCardFactoryService';
 import { useGame } from '../../context/GameContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { STRINGS } from '../../i18n/strings';
+import AnimatedText from '../AnimatedText';
 
 // Service-instans som bygger hvert kort (spørgsmål eller exhausted-kort).
 const ticketCardService = new TicketCardFactoryService(questionSessionService);
@@ -20,10 +23,17 @@ const TicketCardStack = ({
   backgroundImageSource,
 }) => {
   const { players } = useGame();
+  const { t, language } = useLanguage();
+  // Begge sprog, ikke kun det aktive - så et allerede trukket exhausted-kort
+  // også kan skifte sprog live, ligesom almindelige spørgsmålskort.
+  const exhaustedTextBilingual = {
+    title: STRINGS.neverHaveIEver.exhaustedTitle,
+    body: STRINGS.neverHaveIEver.exhaustedBody,
+  };
   // Ref bruges til næste kort-id uden at trigge rerenders.
   const nextCardIdRef = useRef(NEXT_CARD_ID_AFTER_RESET);
   // Stack starter med ét kort, så skærmen aldrig er tom.
-  const [cards, setCards] = useState(() => [ticketCardService.createNextCard(FIRST_CARD_ID, body, players)]);
+  const [cards, setCards] = useState(() => [ticketCardService.createNextCardBilingual(FIRST_CARD_ID, body, players, exhaustedTextBilingual)]);
   // Når spørgsmål er opbrugt, låses træk og reset-knap vises.
   const [hasNoMoreQuestions, setHasNoMoreQuestions] = useState(false);
 
@@ -39,7 +49,7 @@ const TicketCardStack = ({
 
   // Opretter næste kort og flytter tælleren frem til næste træk.
   const createNextCardAndIncreaseId = () => {
-    const nextCard = ticketCardService.createNextCard(nextCardIdRef.current, body, players);
+    const nextCard = ticketCardService.createNextCardBilingual(nextCardIdRef.current, body, players, exhaustedTextBilingual);
     nextCardIdRef.current += 1;
     return nextCard;
   };
@@ -66,7 +76,7 @@ const TicketCardStack = ({
   // Starter en ny spørgsmålsrunde i services og nulstiller lokal stack-state.
   const resetQuestionSession = () => {
     questionSessionService.resetSessionQuestions();
-    const firstCard = ticketCardService.createNextCard(FIRST_CARD_ID, body, players);
+    const firstCard = ticketCardService.createNextCardBilingual(FIRST_CARD_ID, body, players, exhaustedTextBilingual);
     nextCardIdRef.current = NEXT_CARD_ID_AFTER_RESET;
     setCards([firstCard]);
 
@@ -96,10 +106,10 @@ const TicketCardStack = ({
           style={[styles.absoluteCard, { zIndex: index + 1 }]}
         >
           <TicketCard
-            title={card.title}
-            body={card.body}
+            title={card.title[language]}
+            body={card.body[language]}
             highlightedPlayerNames={card.highlightedPlayerNames}
-            cornerLabel={card.cornerLabel}
+            cornerLabel={card.cornerLabel[language]}
             brand={brand}
             backgroundColor={card.backgroundColor}
             tilt={card.tilt}
@@ -116,7 +126,7 @@ const TicketCardStack = ({
     if (!hasNoMoreQuestions) {
       footerContent = (
         <View style={styles.hintWrapper}>
-          <Text style={styles.hintText}>Tryk for at trække et nyt kort</Text>
+          <AnimatedText style={styles.hintText}>{t('neverHaveIEver.footerHint')}</AnimatedText>
         </View>
       );
     }
@@ -125,7 +135,7 @@ const TicketCardStack = ({
       footerContent = (
         <View style={styles.actionsWrapper}>
           <Pressable style={styles.actionButton} onPress={resetQuestionSession}>
-            <Text style={styles.actionButtonText}>Nulstil spørgsmål</Text>
+            <AnimatedText style={styles.actionButtonText}>{t('neverHaveIEver.resetButton')}</AnimatedText>
           </Pressable>
         </View>
       );

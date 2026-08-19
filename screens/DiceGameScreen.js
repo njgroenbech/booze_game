@@ -15,6 +15,8 @@ import * as THREE from 'three';
 import BackButton from '../components/BackButton';
 import { Ionicons } from '@expo/vector-icons';
 import { loadDie } from '../services/dieLoader';
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from '../components/AnimatedText';
 
 const FACES = [
   [0, 0, 0],
@@ -111,6 +113,7 @@ function Die({ rotation, position, dieScale, isLocked, onPress }) {
 }
 
 export default function ClassicCardGameScreen({ navigation }) {
+  const { t } = useLanguage();
   const [diceCount, setDiceCount] = useState(1);
   const [rotations, setRotations] = useState([[0, 0, 0]]);
   const [lockedDice, setLockedDice] = useState([false]);
@@ -172,8 +175,8 @@ export default function ClassicCardGameScreen({ navigation }) {
       </Canvas>
       {!diceVisible && (
         <View style={styles.hiddenOverlay}>
-          <Text style={styles.hiddenTitle}>Terningerne er skjult</Text>
-          <Text style={styles.hiddenSubtitle}>Tryk på ikonet oppe i højre hjørne for at vise terningerne.</Text>
+          <AnimatedText style={styles.hiddenTitle}>{t('shared.diceHidden.title')}</AnimatedText>
+          <AnimatedText style={styles.hiddenSubtitle}>{t('shared.diceHidden.subtitle')}</AnimatedText>
         </View>
       )}
       <TouchableOpacity style={styles.hideButton} onPress={() => setDiceVisible(v => !v)}>
@@ -227,7 +230,7 @@ const styles = StyleSheet.create({
   hideButton: {
     position: 'absolute',
     top: 25,
-    right: 20,
+    right: 76,
     width: 44,
     height: 44,
     borderRadius: 22,

@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Animated, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from './AnimatedText';
 
 const LoadingScreen = ({ onDismiss }) => {
+  const { t } = useLanguage();
   const fadeAnim = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
@@ -27,10 +30,10 @@ const LoadingScreen = ({ onDismiss }) => {
     <TouchableWithoutFeedback onPress={onDismiss}>
       <View style={styles.container}>
         <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>
-          Booze Game
+          {t('loading.title')}
         </Animated.Text>
         <ActivityIndicator size="large" color="#007bff" style={styles.spinner} />
-        <Text style={styles.subtitle}>Tap to dismiss</Text>
+        <AnimatedText style={styles.subtitle}>{t('loading.subtitle')}</AnimatedText>
       </View>
     </TouchableWithoutFeedback>
   );

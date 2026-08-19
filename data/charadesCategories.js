@@ -28,9 +28,9 @@ const MOVIES_TV = [
 ];
 
 const baseCategories = [
-  new WordCategory('animals', 'Dyr', ANIMALS, '#C9EAD3'),
-  new WordCategory('celebrities', 'Kendte personer', CELEBRITIES, '#F6D6E0'),
-  new WordCategory('movies-tv', 'Film & TV', MOVIES_TV, '#CDE0F7'),
+  new WordCategory('animals', 'charadesCategories.animals', ANIMALS, '#C9EAD3'),
+  new WordCategory('celebrities', 'charadesCategories.celebrities', CELEBRITIES, '#F6D6E0'),
+  new WordCategory('movies-tv', 'charadesCategories.moviesTv', MOVIES_TV, '#CDE0F7'),
 ];
 
 export const CHARADES_CATEGORIES = [
