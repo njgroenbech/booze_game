@@ -177,3 +177,47 @@ test('drawNextUniqueQuestion eventually returns every deduplicated question exac
   assert.equal(questionSessionService.drawNextUniqueQuestion(), null);
   assert.deepEqual(questionSessionService.getColorsWithRemainingQuestions(), []);
 });
+
+test('drawNextUniqueQuestionBilingual returns matching da/en text for the same question and still tracks the session', () => {
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+
+  try {
+    const firstColor = questionSessionService.getQuestionCategoryColors()[0];
+    const initialCount = questionSessionService.remainingQuestionsByColor[firstColor].length;
+    const firstQuestion = questionSessionService.remainingQuestionsByColor[firstColor][0];
+
+    const result = questionSessionService.drawNextUniqueQuestionBilingual();
+
+    assert.equal(result.questionId, `jegHarAldrig:${questionSessionService.normalizeQuestion(firstQuestion)}`);
+    assert.equal(result.body.da, firstQuestion);
+    assert.equal(typeof result.body.en, 'string');
+    assert.equal(result.title.da, 'Jeg har aldrig..');
+    assert.equal(result.title.en, 'Never have I ever..');
+    assert.deepEqual(result.cornerLabel, result.title);
+    assert.equal(result.backgroundColor, firstColor);
+    assert.equal(
+      questionSessionService.remainingQuestionsByColor[firstColor].length,
+      initialCount - 1
+    );
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('drawNextUniqueQuestionBilingual and drawNextUniqueQuestion draw from the same session pool without double-counting', () => {
+  const drawnIds = new Set();
+  let drawn = questionSessionService.drawNextUniqueQuestionBilingual();
+  let drawCount = 0;
+
+  while (drawn) {
+    assert.equal(drawnIds.has(drawn.questionId), false, `Duplicate draw: ${drawn.questionId}`);
+    drawnIds.add(drawn.questionId);
+    drawCount += 1;
+    drawn = drawCount % 2 === 0
+      ? questionSessionService.drawNextUniqueQuestion('en')
+      : questionSessionService.drawNextUniqueQuestionBilingual();
+  }
+
+  assert.deepEqual(questionSessionService.getColorsWithRemainingQuestions(), []);
+});

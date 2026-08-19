@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import AnimatedText from '../AnimatedText';
 
 export const CARD_WIDTH = 400;
 export const CARD_HEIGHT = 250;
@@ -14,8 +15,8 @@ export default function TriviaCardFace({ label, text, variant = 'question' }) {
 
   return (
     <View style={[styles.card, { backgroundColor }]}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.text}>{text}</Text>
+      <AnimatedText style={styles.label}>{label}</AnimatedText>
+      <AnimatedText style={styles.text}>{text}</AnimatedText>
     </View>
   );
 }

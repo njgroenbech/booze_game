@@ -21,7 +21,7 @@ Formålet er at holde forretningslogik ude af UI-komponenten, så koden er lette
 - Opretter "exhausted" kort, når der ikke er flere spørgsmål.
 - Udskifter spiller-placeholders via `PlayerPlaceholderService`.
 - Tilføjer visuel randomisering (tilt og offset), så kortene får variation.
-- Samler kortoprettelsen i én entry-metode: `createNextCard(cardId, defaultBody, players)`.
+- Samler kortoprettelsen i én entry-metode: `createNextCard(cardId, defaultBody, players, exhaustedText, language)` (de to sidste er valgfrie og styrer oversat exhausted-kort-tekst og hvilket sprog spørgsmål/labels vises på).
 
 ### `PlayerPlaceholderService.js`
 - Ansvar: Udskifter spiller-placeholders i spørgsmålstekster.

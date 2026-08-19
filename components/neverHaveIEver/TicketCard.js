@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import AnimatedText from '../AnimatedText';
 
 const escapeRegexText = (text) => {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // regex for replacement of player names in questions.
@@ -165,7 +166,7 @@ const TicketCardBody = ({ bodyText, highlightedPlayerNames }) => {
   }
 
   return (
-    <Text style={styles.body}>{renderedSegments}</Text>
+    <AnimatedText style={styles.body}>{renderedSegments}</AnimatedText>
   );
 };
 
@@ -196,9 +197,9 @@ const TicketCard = ({
     <View style={[styles.wrapper, style]}>
       <View style={[styles.card, cardStyle]}>
         <View style={cornerCutoutStyle} />
-        <Text style={cornerLabelStyle}>{cornerLabel}</Text>
+        <AnimatedText style={cornerLabelStyle}>{cornerLabel}</AnimatedText>
 
-        {title ? <Text style={styles.title}>{title}</Text> : null}
+        {title ? <AnimatedText style={styles.title}>{title}</AnimatedText> : null}
         <TicketCardBody bodyText={body} highlightedPlayerNames={highlightedPlayerNames} />
 
         <Text style={styles.brand}>{brand}</Text>
