@@ -3,7 +3,6 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  Text,
   View,
   Vibration,
 } from 'react-native';
@@ -13,6 +12,8 @@ import { useSpring, animated } from '@react-spring/three';
 import BackButton from '../components/BackButton';
 import { loadDie } from '../services/dieLoader';
 import { Accelerometer } from 'expo-sensors';
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from '../components/AnimatedText';
 
 const FACES = {
   1: [0, 0, 0],
@@ -52,6 +53,7 @@ function Die({ rotation, position, dieScale }) {
 }
 
 export default function MeyerGameScreen({ navigation }) {
+  const { t } = useLanguage();
   const [rotations, setRotations] = useState([FACES[1], FACES[1]]);
   const [isCovered, setIsCovered] = useState(false);
   const rollCount = useRef(0);
@@ -115,14 +117,14 @@ export default function MeyerGameScreen({ navigation }) {
       {isCovered && (
         <View style={styles.cover} pointerEvents="none">
           <BlurView intensity={140} tint="dark" style={styles.coverBlur}>
-            <Text style={styles.coverTitle}>Skjult</Text>
-            <Text style={styles.coverText}>Tryk hvor som helst for at slå, eller vælg at se forrige spillers terninger.</Text>
+            <AnimatedText style={styles.coverTitle}>{t('meyer.coverTitle')}</AnimatedText>
+            <AnimatedText style={styles.coverText}>{t('meyer.coverBody')}</AnimatedText>
           </BlurView>
         </View>
       )}
 
       <View style={styles.hintWrapper} pointerEvents="none">
-        <Text style={styles.hintText}>Ryst telefonen for at kaste terningerne</Text>
+        <AnimatedText style={styles.hintText}>{t('meyer.shakeHint')}</AnimatedText>
       </View>
 
       <View style={styles.backButtonLayer}>

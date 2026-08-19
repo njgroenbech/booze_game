@@ -1,4 +1,5 @@
 import TriviaCard from '../models/trivia/TriviaCard';
+import { RAW_QUESTIONS_EN } from './triviaQuestions.en';
 
 const RAW_QUESTIONS = [
   ['Hvilket land gav Frihedsgudinden til USA?', 'Frankrig'],
@@ -13,4 +14,7 @@ const RAW_QUESTIONS = [
   ['Hvilket land kommer Guinness fra?', 'Irland'],
 ];
 
-export const TRIVIA_CARDS = RAW_QUESTIONS.map(([question, answer]) => new TriviaCard(question, answer));
+export const TRIVIA_CARDS = RAW_QUESTIONS.map(([question, answer], index) => {
+  const [questionEn, answerEn] = RAW_QUESTIONS_EN[index] ?? [question, answer];
+  return new TriviaCard({ da: question, en: questionEn }, { da: answer, en: answerEn });
+});

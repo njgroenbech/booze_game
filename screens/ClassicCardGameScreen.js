@@ -2,7 +2,6 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   TouchableOpacity,
   Pressable,
   ImageBackground,
@@ -13,10 +12,13 @@ import PlayingCard, { CARD_WIDTH } from '../components/classicCardGame/PlayingCa
 import PlayingCardStack, { CARD_GAP } from '../components/classicCardGame/PlayingCardStack';
 import CardPreloader from '../components/classicCardGame/CardPreloader';
 import DeckOfCards from "../services/DeckOfCards";
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from '../components/AnimatedText';
 
 const PRELOAD_COUNT = 10;
 
 const ClassicCardGameScreen = ({ navigation }) => {
+  const { t } = useLanguage();
   const deck = useMemo(() => new DeckOfCards().shuffle(), []);
   const [drawnCards, setDrawnCards] = useState([]);
   const [deckEmpty, setDeckEmpty] = useState(false);
@@ -110,13 +112,13 @@ const ClassicCardGameScreen = ({ navigation }) => {
 
         {deckEmpty && (
           <TouchableOpacity style={styles.resetButton} onPress={handleResetPress}>
-            <Text style={styles.resetText}>Reset</Text>
+            <AnimatedText style={styles.resetText}>{t('classicCard.reset')}</AnimatedText>
           </TouchableOpacity>
         )}
 
         {!deckEmpty && (
           <View style={styles.hintWrapper} pointerEvents="none">
-            <Text style={styles.hintText}>Tryk for at trække et kort</Text>
+            <AnimatedText style={styles.hintText}>{t('classicCard.hint')}</AnimatedText>
           </View>
         )}
 

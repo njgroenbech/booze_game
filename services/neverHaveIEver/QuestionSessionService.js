@@ -1,4 +1,6 @@
 import questions from '../../data/questions.json';
+import questionsEn from '../../data/questions.en.json';
+import { STRINGS } from '../../i18n/strings';
 
 // De fire farver repræsenterer hver sin spørgsmålskategori i UI'et.
 // Farven sendes videre til kort-komponenten, så service-laget og UI-laget bruger samme mapping.
@@ -10,13 +12,6 @@ const QUESTION_KEY_BY_COLOR = {
   '#34b0fcff': 'kategori',
   '#00d031ff': 'mestTilbøjeligTil',
   '#f67efcff': 'joker',
-};
-// Nøgle -> label der vises på kortet.
-const LABEL_BY_QUESTION_KEY = {
-  jegHarAldrig: 'Jeg har aldrig..',
-  kategori: 'Kategori',
-  mestTilbøjeligTil: 'Mest tilbøjelig til..',
-  joker: 'Joker',
 };
 // Sandsynlighedsfordelingen for hvilke kategorier der forsøges først.
 // Værdierne læses som almindelige procenttal og holdes samlet ét sted,
@@ -34,13 +29,16 @@ class QuestionSessionService {
     // så resten af servicen arbejder mod ét konsistent sæt mappings.
     this.questionCategoryColors = COLOR_PALETTE;
     this.questionTypeByColor = QUESTION_KEY_BY_COLOR;
-    this.displayLabelByQuestionType = LABEL_BY_QUESTION_KEY;
 
     // questionBankByColor er "master copy": deduplikeret og stabil pr. app-livscyklus.
     // remainingQuestionsByColor er "session copy": herfra trækker vi spørgsmål og muterer løbende.
     // På den måde kan vi resette en session uden at genindlæse eller rededuplikere data.
     this.questionBankByColor = this.buildQuestionBankByColor();
     this.remainingQuestionsByColor = this.createSessionBucketsFromQuestionBank();
+    // Slår dansk spørgsmålstekst op til den engelske oversættelse, pr. farve.
+    // Bygges positionsbaseret fra questions.json/questions.en.json, som holdes i sync
+    // af test/neverHaveIEver/questions-i18n-parity.test.cjs.
+    this.danishToEnglishByColor = this.buildDanishToEnglishByColor();
   }
 
   // Returnerer et tilfældigt element fra en liste.
@@ -106,6 +104,38 @@ class QuestionSessionService {
     }
 
     return questionBankByColor;
+  }
+
+  // Bygger farve -> Map(normaliseret dansk tekst -> engelsk tekst).
+  // Går igennem de rå (ikke-deduplikerede) arrays i lås-trin, så indekset i
+  // questions.json altid matcher det tilsvarende indeks i questions.en.json.
+  buildDanishToEnglishByColor() {
+    const danishToEnglishByColor = {};
+
+    for (const color of this.questionCategoryColors) {
+      const questionType = this.questionTypeByColor[color];
+      const daQuestionsForType = Array.isArray(questions[questionType]) ? questions[questionType] : [];
+      const enQuestionsForType = Array.isArray(questionsEn[questionType]) ? questionsEn[questionType] : [];
+
+      const danishToEnglish = new Map();
+      daQuestionsForType.forEach((question, index) => {
+        danishToEnglish.set(this.normalizeQuestion(question), enQuestionsForType[index]);
+      });
+
+      danishToEnglishByColor[color] = danishToEnglish;
+    }
+
+    return danishToEnglishByColor;
+  }
+
+  // Nøgle + sprog -> label der vises på kortet. Falder tilbage til dansk,
+  // og til appens navn hvis nøglen slet ikke findes i ordbogen.
+  getQuestionLabel(questionType, language) {
+    const entry = STRINGS.neverHaveIEver?.cardLabels?.[questionType];
+    if (!entry) {
+      return 'Booze Game';
+    }
+    return entry[language] ?? entry.da;
   }
 
   // Opretter en ny session-kopi fra banken.
@@ -179,20 +209,12 @@ class QuestionSessionService {
     return this.randomFrom(colorsWithRemainingQuestions);
   }
 
-  // Trækker næste unikke spørgsmål til UI-laget.
-  //
-  // Returnerer:
-  // - et objekt med card-data hvis der findes spørgsmål
-  // - null hvis alle kategorier er tomme
-  //
-  // Logik:
-  // 1) Find kategorier med resterende spørgsmål.
-  // 2) Forsøg at vælge kategori ud fra procentfordelingen.
-  //    Hvis den valgte kategori er tom, fallback til en tilfældig kategori blandt de resterende.
-  // 3) Vælg et spørgsmål tilfældigt fra den kategori.
-  // 4) Fjern spørgsmålet fra session-listen (så det ikke kan trækkes igen i samme session).
-  // 5) Returnér et objekt med id, labels, body og baggrundsfarve.
-  drawNextUniqueQuestion() {
+  // Fælles træk-logik: vælger kategori/farve ud fra procentfordelingen, trækker
+  // et tilfældigt spørgsmål fra den kategori, og fjerner det fra session-listen.
+  // Returnerer null hvis alle kategorier er tomme.
+  // Delt af drawNextUniqueQuestion og drawNextUniqueQuestionBilingual, så
+  // udvælgelses-/mutations-logikken kun findes ét sted.
+  _drawNextRaw() {
     const colorsWithRemainingQuestions = this.getColorsWithRemainingQuestions();
     if (colorsWithRemainingQuestions.length === 0) {
       return null;
@@ -204,24 +226,72 @@ class QuestionSessionService {
     }
 
     const selectedQuestionType = this.questionTypeByColor[selectedColor];
-    let selectedQuestionLabel = this.displayLabelByQuestionType[selectedQuestionType];
-    if (!selectedQuestionLabel) {
-      selectedQuestionLabel = 'Booze Game';
-    }
-
     const remainingQuestionsForColor = this.remainingQuestionsByColor[selectedColor];
     const randomQuestionIndex = Math.floor(Math.random() * remainingQuestionsForColor.length);
     // splice muterer session-listen og returnerer de fjernede elementer.
     const removedQuestions = remainingQuestionsForColor.splice(randomQuestionIndex, 1);
     const selectedQuestionBody = removedQuestions[0];
+    const normalizedQuestionBody = this.normalizeQuestion(selectedQuestionBody);
 
-    // questionId bygges deterministisk ud fra type + normaliseret tekst,
-    // så tests og UI kan identificere et spørgsmål stabilt på tværs af sessioner.
+    return { selectedColor, selectedQuestionType, selectedQuestionBody, normalizedQuestionBody };
+  }
+
+  // Trækker næste unikke spørgsmål til UI-laget.
+  //
+  // Returnerer:
+  // - et objekt med card-data hvis der findes spørgsmål
+  // - null hvis alle kategorier er tomme
+  //
+  // language er valgfri (default 'da'), så eksisterende kald/tests er uændrede.
+  // Uddrag/session-tracking sker altid på den danske tekst, så en sprogskift
+  // midt i en session ikke mister styr på hvilke spørgsmål der er trukket.
+  drawNextUniqueQuestion(language = 'da') {
+    const raw = this._drawNextRaw();
+    if (!raw) {
+      return null;
+    }
+    const { selectedColor, selectedQuestionType, selectedQuestionBody, normalizedQuestionBody } = raw;
+
+    const selectedQuestionLabel = this.getQuestionLabel(selectedQuestionType, language);
+
+    let displayBody = selectedQuestionBody;
+    if (language === 'en') {
+      const englishBody = this.danishToEnglishByColor[selectedColor].get(normalizedQuestionBody);
+      if (englishBody) {
+        displayBody = englishBody;
+      }
+    }
+
+    // questionId bygges deterministisk ud fra type + normaliseret DANSK tekst,
+    // så tests og UI kan identificere et spørgsmål stabilt på tværs af sessioner og sprog.
     return {
-      questionId: `${selectedQuestionType}:${this.normalizeQuestion(selectedQuestionBody)}`,
+      questionId: `${selectedQuestionType}:${normalizedQuestionBody}`,
       title: selectedQuestionLabel,
       cornerLabel: selectedQuestionLabel,
-      body: selectedQuestionBody,
+      body: displayBody,
+      backgroundColor: selectedColor,
+    };
+  }
+
+  // Samme som drawNextUniqueQuestion, men returnerer BEGGE sprog for title/
+  // cornerLabel/body i stedet for at vælge ét sprog. Bruges af UI-laget når
+  // kortet skal kunne skifte sprog live uden at trække et nyt kort.
+  drawNextUniqueQuestionBilingual() {
+    const raw = this._drawNextRaw();
+    if (!raw) {
+      return null;
+    }
+    const { selectedColor, selectedQuestionType, selectedQuestionBody, normalizedQuestionBody } = raw;
+
+    const labelDa = this.getQuestionLabel(selectedQuestionType, 'da');
+    const labelEn = this.getQuestionLabel(selectedQuestionType, 'en');
+    const englishBody = this.danishToEnglishByColor[selectedColor].get(normalizedQuestionBody) ?? selectedQuestionBody;
+
+    return {
+      questionId: `${selectedQuestionType}:${normalizedQuestionBody}`,
+      title: { da: labelDa, en: labelEn },
+      cornerLabel: { da: labelDa, en: labelEn },
+      body: { da: selectedQuestionBody, en: englishBody },
       backgroundColor: selectedColor,
     };
   }

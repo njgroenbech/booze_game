@@ -15,6 +15,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AnimatedPlayerItem from './AnimatedPlayerItem';
 import ScaleInModal from './ScaleInModal';
+import AnimatedText from '../AnimatedText';
+import { useLanguage } from '../../context/LanguageContext';
 
 function randomColor(alpha = 1) {
   const base = Math.floor(Math.random() * 40) + 20;
@@ -25,6 +27,7 @@ function randomColor(alpha = 1) {
 }
 
 export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClose }) {
+  const { t } = useLanguage();
   const [playerName, setPlayerName] = useState('');
   const idCounter = useRef(0);
 
@@ -103,14 +106,14 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClo
               </TouchableOpacity>
 
               {/* Text at top */}
-              <Text style={styles.chalkText}>
-                Spillet er federe,{'\n'}hvis du tilføjer{'\n'}spillere
-              </Text>
+              <AnimatedText style={styles.chalkText}>
+                {t('addPlayer.header')}
+              </AnimatedText>
 
               {/* Input field */}
               <TextInput
                 style={styles.input}
-                placeholder="Skriv navn..."
+                placeholder={t('addPlayer.placeholder')}
                 placeholderTextColor="rgba(255,255,255,0.55)"
                 value={playerName}
                 onChangeText={setPlayerName}
@@ -132,7 +135,7 @@ export default function DrinkiesPlayerList({ players, setPlayers, onReady, onClo
               {/* Ready button */}
               <View style={styles.readyButtonRow}>
                 <TouchableOpacity onPress={onReady} style={styles.readyButtonWrapper}>
-                  <Text style={styles.readyButton}>Start</Text>
+                  <AnimatedText style={styles.readyButton}>{t('addPlayer.start')}</AnimatedText>
                 </TouchableOpacity>
               </View>
             </View>

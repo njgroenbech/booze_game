@@ -18,6 +18,8 @@ import * as THREE from 'three';
 import BackButton from '../components/BackButton';
 import { Ionicons } from '@expo/vector-icons';
 import { loadDie } from '../services/dieLoader';
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from '../components/AnimatedText';
 
 const FACES = [
   { rotation: [0, 0, 0],              value: 1 },
@@ -39,25 +41,25 @@ const LAYOUTS = {
 const NUM_PLAYERS = 4;
 
 const SHEET_ROWS = [
-  { key: 'navn',          label: 'Navn',                      numeric: false },
-  { key: 'ones',          label: "1'ere",                     numeric: true  },
-  { key: 'twos',          label: "2'ere",                     numeric: true  },
-  { key: 'threes',        label: "3'ere",                     numeric: true  },
-  { key: 'fours',         label: "4'ere",                     numeric: true  },
-  { key: 'fives',         label: "5'ere",                     numeric: true  },
-  { key: 'sixes',         label: "6'ere",                     numeric: true  },
-  { key: 'total',         label: 'Total',                     numeric: true, divider: true },
-  { key: 'bonus',         label: 'Bonus 50 point (min. 63)',  numeric: true  },
-  { key: 'onePair',       label: '1 par',                     numeric: true, divider: true },
-  { key: 'twoPairs',      label: '2 par',                     numeric: true  },
-  { key: 'threeOfKind',   label: '3 ens',                     numeric: true  },
-  { key: 'fourOfKind',    label: '4 ens',                     numeric: true  },
-  { key: 'smallStraight', label: 'Lille straight 1-2-3-4-5',  numeric: true  },
-  { key: 'largeStraight', label: 'Stor straight 2-3-4-5-6',   numeric: true  },
-  { key: 'fullHouse',     label: 'Hus 3+2 ens',               numeric: true  },
-  { key: 'chance',        label: 'Chance',                    numeric: true  },
-  { key: 'yatzy',         label: 'Yatzy',                     numeric: true  },
-  { key: 'ialt',          label: 'I alt',                     numeric: true, divider: true },
+  { key: 'navn',          labelKey: 'yatzy.sheet.rows.navn',          numeric: false },
+  { key: 'ones',          labelKey: 'yatzy.sheet.rows.ones',          numeric: true  },
+  { key: 'twos',          labelKey: 'yatzy.sheet.rows.twos',          numeric: true  },
+  { key: 'threes',        labelKey: 'yatzy.sheet.rows.threes',        numeric: true  },
+  { key: 'fours',         labelKey: 'yatzy.sheet.rows.fours',         numeric: true  },
+  { key: 'fives',         labelKey: 'yatzy.sheet.rows.fives',         numeric: true  },
+  { key: 'sixes',         labelKey: 'yatzy.sheet.rows.sixes',         numeric: true  },
+  { key: 'total',         labelKey: 'yatzy.sheet.rows.total',         numeric: true, divider: true },
+  { key: 'bonus',         labelKey: 'yatzy.sheet.rows.bonus',         numeric: true  },
+  { key: 'onePair',       labelKey: 'yatzy.sheet.rows.onePair',       numeric: true, divider: true },
+  { key: 'twoPairs',      labelKey: 'yatzy.sheet.rows.twoPairs',      numeric: true  },
+  { key: 'threeOfKind',   labelKey: 'yatzy.sheet.rows.threeOfKind',   numeric: true  },
+  { key: 'fourOfKind',    labelKey: 'yatzy.sheet.rows.fourOfKind',    numeric: true  },
+  { key: 'smallStraight', labelKey: 'yatzy.sheet.rows.smallStraight', numeric: true  },
+  { key: 'largeStraight', labelKey: 'yatzy.sheet.rows.largeStraight', numeric: true  },
+  { key: 'fullHouse',     labelKey: 'yatzy.sheet.rows.fullHouse',     numeric: true  },
+  { key: 'chance',        labelKey: 'yatzy.sheet.rows.chance',        numeric: true  },
+  { key: 'yatzy',         labelKey: 'yatzy.sheet.rows.yatzy',         numeric: true  },
+  { key: 'ialt',          labelKey: 'yatzy.sheet.rows.ialt',          numeric: true, divider: true },
 ];
 
 function initSheetData() {
@@ -195,6 +197,7 @@ function Die({ rotation, position, dieScale, isLocked, onPress }) {
 
 
 export default function YatzyGameScreen({ navigation }) {
+  const { t } = useLanguage();
   const [diceCount, setDiceCount] = useState(5);
   const [rotations, setRotations] = useState([[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]);
   const [lockedDice, setLockedDice] = useState([false, false, false, false, false]);
@@ -287,7 +290,7 @@ export default function YatzyGameScreen({ navigation }) {
           <Pressable style={styles.sheetBackdrop} onPress={() => setSheetVisible(false)} />
           <View style={styles.sheetContainer}>
             <View style={styles.sheetHeader}>
-              <Text style={styles.sheetTitle}>Yatzy</Text>
+              <AnimatedText style={styles.sheetTitle}>{t('yatzy.sheet.rows.yatzy')}</AnimatedText>
               <Pressable onPress={() => setSheetVisible(false)}>
                 <Ionicons name="close" size={26} color="white" />
               </Pressable>
@@ -295,7 +298,7 @@ export default function YatzyGameScreen({ navigation }) {
             <ScrollView keyboardShouldPersistTaps="handled">
               {SHEET_ROWS.map((row, rowIdx) => (
                 <View key={row.key} style={[styles.sheetRow, row.divider && styles.sheetRowDivider, rowIdx % 2 === 0 && styles.sheetRowAlt]}>
-                  <Text style={styles.sheetLabel} numberOfLines={1}>{row.label}</Text>
+                  <AnimatedText style={styles.sheetLabel} numberOfLines={1}>{t(row.labelKey)}</AnimatedText>
                   {Array.from({ length: NUM_PLAYERS }).map((_, pi) => {
                     if (row.key === 'navn') {
                       return (
@@ -332,10 +335,10 @@ export default function YatzyGameScreen({ navigation }) {
             {pendingEntry && (
               <View style={styles.sheetActions}>
                 <Pressable style={[styles.actionBtn, styles.cancelBtn]} onPress={handleCancel}>
-                  <Text style={styles.actionBtnText}>Annullér</Text>
+                  <AnimatedText style={styles.actionBtnText}>{t('yatzy.cancel')}</AnimatedText>
                 </Pressable>
                 <Pressable style={[styles.actionBtn, styles.saveBtn]} onPress={handleSave}>
-                  <Text style={styles.actionBtnText}>Gem</Text>
+                  <AnimatedText style={styles.actionBtnText}>{t('yatzy.save')}</AnimatedText>
                 </Pressable>
               </View>
             )}
@@ -362,8 +365,8 @@ export default function YatzyGameScreen({ navigation }) {
       </Canvas>
       {!diceVisible && (
         <View style={styles.hiddenOverlay}>
-          <Text style={styles.hiddenTitle}>Terningerne er skjult</Text>
-          <Text style={styles.hiddenSubtitle}>Tryk på ikonet oppe i højre hjørne for at vise terningerne.</Text>
+          <AnimatedText style={styles.hiddenTitle}>{t('shared.diceHidden.title')}</AnimatedText>
+          <AnimatedText style={styles.hiddenSubtitle}>{t('shared.diceHidden.subtitle')}</AnimatedText>
         </View>
       )}
     </ImageBackground>
@@ -378,7 +381,7 @@ const styles = StyleSheet.create({
   sheetButton: {
     position: 'absolute',
     top: 25,
-    right: 20,
+    right: 76,
     zIndex: 20,
     width: 44,
     height: 44,
@@ -530,7 +533,7 @@ const styles = StyleSheet.create({
   hideButton: {
     position: 'absolute',
     top: 25,
-    right: 20,
+    right: 76,
     width: 44,
     height: 44,
     borderRadius: 22,

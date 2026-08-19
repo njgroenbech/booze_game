@@ -5,10 +5,13 @@ import BackButton from '../components/BackButton';
 import WordListModal from '../components/charades/WordListModal';
 import CharadesSession, { SESSION_PHASE, FEEDBACK } from '../models/charades/CharadesSession';
 import { findCharadesCategory } from '../data/charadesCategories';
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from '../components/AnimatedText';
 
 const ROUND_DURATION_SECONDS = 60;
 
 const CharadesGameScreen = ({ navigation, route }) => {
+  const { t } = useLanguage();
   const category = useMemo(
     () => findCharadesCategory(route.params?.categoryId),
     [route.params?.categoryId]
@@ -57,9 +60,9 @@ const CharadesGameScreen = ({ navigation, route }) => {
       <SafeAreaView style={styles.safeArea} edges={['bottom', 'left', 'right']}>
         {state.phase === SESSION_PHASE.COUNTDOWN && (
           <View style={styles.centerContent}>
-            <Text style={styles.categoryLabel}>{state.categoryName}</Text>
+            <AnimatedText style={styles.categoryLabel}>{t(state.categoryName)}</AnimatedText>
             <Text style={styles.countdownText}>{state.countdownRemaining}</Text>
-            <Text style={styles.hintText}>Sæt telefonen på panden...</Text>
+            <AnimatedText style={styles.hintText}>{t('charades.hint')}</AnimatedText>
           </View>
         )}
 
@@ -67,21 +70,21 @@ const CharadesGameScreen = ({ navigation, route }) => {
           <View style={styles.playingContent}>
             <View style={styles.topBar}>
               <Text style={[styles.timerBig, flashTextStyle]}>{state.timeLeft}</Text>
-              <Text style={[styles.scoreBadge, flashTextStyle]}>{state.score} rigtige</Text>
+              <AnimatedText style={[styles.scoreBadge, flashTextStyle]}>{t('charades.result.correctCount', { count: state.score })}</AnimatedText>
             </View>
 
             <View style={styles.wordWrapper}>
               <Text style={[styles.wordText, flashTextStyle]}>{state.currentWord}</Text>
             </View>
 
-            <Text style={[styles.hintText, flashTextStyle]}>Vip ned = rigtigt   ·   Vip op = pas</Text>
+            <AnimatedText style={[styles.hintText, flashTextStyle]}>{t('charades.tiltHint')}</AnimatedText>
           </View>
         )}
 
         {state.phase === SESSION_PHASE.FINISHED && (
           <View style={styles.resultsContent}>
-            <Text style={styles.categoryLabel}>{state.categoryName}</Text>
-            <Text style={styles.resultsHeading}>Tiden er gået! 🎉</Text>
+            <AnimatedText style={styles.categoryLabel}>{t(state.categoryName)}</AnimatedText>
+            <AnimatedText style={styles.resultsHeading}>{t('charades.timeUp')}</AnimatedText>
 
             <View style={styles.statsRow}>
               <TouchableOpacity
@@ -90,8 +93,8 @@ const CharadesGameScreen = ({ navigation, route }) => {
                 onPress={() => setActiveList('correct')}
               >
                 <Text style={styles.statNumber}>{state.correctWords.length}</Text>
-                <Text style={styles.statLabel}>Rigtige</Text>
-                <Text style={styles.statHint}>Tryk for at se</Text>
+                <AnimatedText style={styles.statLabel}>{t('charades.result.correctLabel')}</AnimatedText>
+                <AnimatedText style={styles.statHint}>{t('charades.result.tapToReveal')}</AnimatedText>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -100,17 +103,17 @@ const CharadesGameScreen = ({ navigation, route }) => {
                 onPress={() => setActiveList('pass')}
               >
                 <Text style={styles.statNumber}>{state.passedWords.length}</Text>
-                <Text style={styles.statLabel}>Sprunget over</Text>
-                <Text style={styles.statHint}>Tryk for at se</Text>
+                <AnimatedText style={styles.statLabel}>{t('charades.result.skippedLabel')}</AnimatedText>
+                <AnimatedText style={styles.statHint}>{t('charades.result.tapToReveal')}</AnimatedText>
               </TouchableOpacity>
             </View>
 
             <View style={styles.actionsRow}>
               <TouchableOpacity style={styles.primaryButton} onPress={playAgain}>
-                <Text style={styles.primaryButtonText}>Spil igen</Text>
+                <AnimatedText style={styles.primaryButtonText}>{t('charades.playAgain')}</AnimatedText>
               </TouchableOpacity>
               <TouchableOpacity style={styles.secondaryButton} onPress={goHome}>
-                <Text style={styles.secondaryButtonText}>Til forsiden</Text>
+                <AnimatedText style={styles.secondaryButtonText}>{t('charades.backHome')}</AnimatedText>
               </TouchableOpacity>
             </View>
           </View>
@@ -119,7 +122,7 @@ const CharadesGameScreen = ({ navigation, route }) => {
 
       {activeList && (
         <WordListModal
-          title={activeList === 'correct' ? 'Rigtige' : 'Sprunget over'}
+          title={activeList === 'correct' ? t('charades.result.correctLabel') : t('charades.result.skippedLabel')}
           words={activeList === 'correct' ? state.correctWords : state.passedWords}
           accentColor={activeList === 'correct' ? '#C9EAD3' : '#F6D6E0'}
           onClose={() => setActiveList(null)}
@@ -191,7 +194,7 @@ const styles = StyleSheet.create({
   },
   scoreBadge: {
     position: 'absolute',
-    right: 4,
+    right: 70,
     top: 22,
     fontSize: 16,
     fontWeight: '700',
