@@ -1,97 +1,161 @@
-import { Accelerometer } from 'expo-sensors';
+import { Gyroscope } from 'expo-sensors';
 
 const DEFAULT_OPTIONS = {
-  updateIntervalMs: 60,
-  tiltThreshold: 0.9,
-  resetThreshold: 0.3,
-  calibrationSamples: 5,
+  updateIntervalMs: 20,
+  tiltThresholdDegrees: 40,
+  settleAngularSpeedDegPerSec: 25,
+  settleHoldMs: 120,
+  confirmSamples: 2,
 };
 
 const AXES = ['x', 'y', 'z'];
+const RAD_TO_DEG = 180 / Math.PI;
 
-// Calibrates against whatever position the phone is held in when start() is
-// called, then watches for the axis that deviates most from that baseline.
-// This keeps it working regardless of exactly how "forward"/"back" map to
-// raw x/y/z for a landscape forehead-hold.
+// Tracks how far the phone has rotated (in degrees, per body axis) since it
+// was last held still, by integrating the gyroscope's angular velocity over
+// time, and fires when the dominant axis's accumulated angle crosses
+// tiltThresholdDegrees.
 //
-// Pure threshold trigger, no hold-time: the moment a reading's dominant axis
-// crosses tiltThreshold it fires immediately, so a fast flick registers
-// right away. A slow/small tilt that never reaches the threshold never
-// triggers. After firing, it locks out until the reading settles back under
-// resetThreshold so a single flick can't be counted twice on its way back
-// to neutral. tiltThreshold is the knob to retune after testing on a real
-// device (higher = requires a harder flick, lower = more sensitive).
+// This replaces an earlier accelerometer-based approach that thresholded the
+// raw gravity-vector delta per axis. That measured a *projection* of a fixed
+// external vector (gravity) onto the phone's axes, and the size of that
+// projection for a given physical tilt angle depends on the phase of
+// wherever the phone happened to be calibrated (its "baseline" hold angle).
+// In practice that meant the same physical tilt could read as a big delta in
+// one direction and barely register in the other, and at large angles could
+// even flip which axis - and sign - looked dominant (a 90-degree tilt one
+// way registering as the opposite direction). Integrating angular velocity
+// has none of that: it's a direct, symmetric measurement of how many degrees
+// the phone has actually rotated, independent of starting orientation.
+//
+// No calibration phase is needed either: the detector starts locked, so
+// whatever motion happens while the player brings the phone up to their
+// forehead is treated the same as any other "not holding still yet" period
+// and simply delays arming until things settle - see _handleReading's locked
+// branch below.
+//
+// The trade-off is gyro bias drift, but since the integrator resets to zero
+// every time the phone is held still, any single integration window only
+// runs a second or two - far too short for drift to accumulate to a
+// meaningful fraction of tiltThresholdDegrees.
 export default class TiltDetector {
   constructor({ onTiltForward, onTiltBackward, ...options } = {}) {
     this.onTiltForward = onTiltForward;
     this.onTiltBackward = onTiltBackward;
     this.options = { ...DEFAULT_OPTIONS, ...options };
     this._subscription = null;
-    this._baseline = null;
-    this._calibrationSamples = [];
-    this._locked = false;
+    this._lastTimestamp = null;
+    this._angle = { x: 0, y: 0, z: 0 };
+    this._locked = true;
+    this._settledSinceTimestamp = null;
+    this._pendingAxis = null;
+    this._pendingSign = 0;
+    this._pendingCount = 0;
   }
 
   start() {
-    this._baseline = null;
-    this._calibrationSamples = [];
-    this._locked = false;
-    Accelerometer.setUpdateInterval(this.options.updateIntervalMs);
-    this._subscription = Accelerometer.addListener((reading) => this._handleReading(reading));
+    this._lastTimestamp = null;
+    this._angle = { x: 0, y: 0, z: 0 };
+    this._locked = true;
+    this._settledSinceTimestamp = null;
+    this._clearPending();
+    Gyroscope.setUpdateInterval(this.options.updateIntervalMs);
+    this._subscription = Gyroscope.addListener((reading) => this._handleReading(reading));
   }
 
   stop() {
     this._subscription?.remove();
     this._subscription = null;
+    this._lastTimestamp = null;
+  }
+
+  _clearPending() {
+    this._pendingAxis = null;
+    this._pendingSign = 0;
+    this._pendingCount = 0;
   }
 
   _handleReading(reading) {
-    if (!this._baseline) {
-      this._calibrationSamples.push(reading);
-      if (this._calibrationSamples.length >= this.options.calibrationSamples) {
-        this._baseline = this._average(this._calibrationSamples);
-      }
+    const { x, y, z, timestamp } = reading;
+
+    if (this._lastTimestamp == null) {
+      this._lastTimestamp = timestamp;
       return;
     }
 
-    const delta = {
-      x: reading.x - this._baseline.x,
-      y: reading.y - this._baseline.y,
-      z: reading.z - this._baseline.z,
-    };
+    const dt = timestamp - this._lastTimestamp;
+    this._lastTimestamp = timestamp;
+    // Guard against a bogus or huge gap (e.g. the app was backgrounded
+    // mid-round) being integrated into a fake giant rotation.
+    if (dt <= 0 || dt > 0.5) {
+      return;
+    }
+
+    const speedDeg = { x: x * RAD_TO_DEG, y: y * RAD_TO_DEG, z: z * RAD_TO_DEG };
+    const isStill = AXES.every(
+      (axis) => Math.abs(speedDeg[axis]) < this.options.settleAngularSpeedDegPerSec
+    );
 
     if (this._locked) {
-      const settled = AXES.every((axis) => Math.abs(delta[axis]) < this.options.resetThreshold);
-      if (settled) {
-        this._locked = false;
+      if (!isStill) {
+        this._settledSinceTimestamp = null;
+        return;
       }
+      if (this._settledSinceTimestamp == null) {
+        this._settledSinceTimestamp = timestamp;
+        return;
+      }
+      if ((timestamp - this._settledSinceTimestamp) * 1000 < this.options.settleHoldMs) {
+        return;
+      }
+      // Been still for long enough: arm again, using this resting pose as
+      // the new zero reference for the next tilt.
+      this._locked = false;
+      this._angle = { x: 0, y: 0, z: 0 };
+      this._settledSinceTimestamp = null;
       return;
     }
 
-    const dominantAxis = AXES.reduce((a, b) => (Math.abs(delta[a]) >= Math.abs(delta[b]) ? a : b));
-    const magnitude = delta[dominantAxis];
+    AXES.forEach((axis) => {
+      this._angle[axis] += speedDeg[axis] * dt;
+    });
 
-    if (Math.abs(magnitude) < this.options.tiltThreshold) {
+    const dominantAxis = AXES.reduce((a, b) =>
+      Math.abs(this._angle[a]) >= Math.abs(this._angle[b]) ? a : b
+    );
+    const angle = this._angle[dominantAxis];
+
+    if (Math.abs(angle) < this.options.tiltThresholdDegrees) {
+      this._clearPending();
+      return;
+    }
+
+    // A tilt in progress keeps accumulating in the same direction, so this
+    // just filters a one-off spurious gyro reading rather than adding real
+    // latency in practice.
+    const sign = angle > 0 ? 1 : -1;
+    if (this._pendingAxis === dominantAxis && this._pendingSign === sign) {
+      this._pendingCount += 1;
+    } else {
+      this._pendingAxis = dominantAxis;
+      this._pendingSign = sign;
+      this._pendingCount = 1;
+    }
+
+    if (this._pendingCount < this.options.confirmSamples) {
       return;
     }
 
     this._locked = true;
-    if (magnitude > 0) {
+    this._settledSinceTimestamp = null;
+    this._clearPending();
+    // Gyroscope sign follows the right-hand rule around each body axis,
+    // which doesn't line up with the old accelerometer-delta convention -
+    // negative is the "forward" (nod down / correct) rotation here.
+    if (sign < 0) {
       this.onTiltForward?.();
     } else {
       this.onTiltBackward?.();
     }
-  }
-
-  _average(samples) {
-    const sum = samples.reduce(
-      (acc, sample) => ({ x: acc.x + sample.x, y: acc.y + sample.y, z: acc.z + sample.z }),
-      { x: 0, y: 0, z: 0 }
-    );
-    return {
-      x: sum.x / samples.length,
-      y: sum.y / samples.length,
-      z: sum.z / samples.length,
-    };
   }
 }

@@ -47,14 +47,18 @@ export default function WordListModal({ title, words, accentColor, onClose }) {
 
           <AnimatedText style={styles.title}>{title}</AnimatedText>
 
-          <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            style={styles.list}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={true}
+          >
             {words.length === 0 ? (
               <AnimatedText style={styles.emptyText}>{t('charadesWordList.empty')}</AnimatedText>
             ) : (
-              <View style={styles.chipWrap}>
+              <View style={styles.grid}>
                 {words.map((word, index) => (
-                  <View key={`${word}-${index}`} style={[styles.chip, { backgroundColor: accentColor }]}>
-                    <Text style={styles.chipText}>{word}</Text>
+                  <View key={`${word}-${index}`} style={[styles.cell, { backgroundColor: accentColor }]}>
+                    <Text style={styles.cellText}>{word}</Text>
                   </View>
                 ))}
               </View>
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    width: '85%',
+    width: '60%',
     height: '78%',
     borderRadius: 36,
     shadowColor: '#000',
@@ -117,23 +121,29 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
+  listContent: {
+    paddingBottom: 4,
+  },
   emptyText: {
     fontSize: 15,
     color: 'rgba(0,0,0,0.45)',
   },
-  chipWrap: {
+  grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
-  chip: {
-    borderRadius: 14,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+  cell: {
+    width: '47%',
+    borderRadius: 16,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  chipText: {
-    fontSize: 14,
-    fontWeight: '600',
+  cellText: {
+    fontSize: 19,
+    fontWeight: '700',
     color: '#1a1a1a',
+    textAlign: 'center',
   },
 });
