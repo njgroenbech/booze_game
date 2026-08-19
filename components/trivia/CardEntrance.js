@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Easing } from 'react-native';
 
-const DROP_DISTANCE = 50;
+export const ENTRANCE_DURATION_MS = 220;
+
+const DROP_DISTANCE = 14;
 
 // Plays a small drop/scale/fade-in whenever `cardKey` changes (i.e. a new
 // card was drawn) and settles at the given tiny offset/tilt. Re-mounting on
@@ -10,20 +12,24 @@ export default function CardEntrance({ cardKey, offsetX, offsetY, tilt, children
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    progress.stopAnimation();
     progress.setValue(0);
-    Animated.spring(progress, {
+    const animation = Animated.timing(progress, {
       toValue: 1,
-      friction: 8,
-      tension: 50,
+      duration: ENTRANCE_DURATION_MS,
+      easing: Easing.out(Easing.cubic),
       useNativeDriver: true,
-    }).start();
+    });
+
+    animation.start();
+    return () => animation.stop();
   }, [cardKey]);
 
   const translateY = progress.interpolate({
     inputRange: [0, 1],
     outputRange: [offsetY - DROP_DISTANCE, offsetY],
   });
-  const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] });
+  const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [0.985, 1] });
   const opacity = progress.interpolate({ inputRange: [0, 1], outputRange: [0, 1] });
 
   return (
