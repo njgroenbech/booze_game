@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
+
+export const FLIP_DURATION_MS = 260;
 
 // Generic 3D flip wrapper: renders `front` normally (which sizes the box)
 // and `back` absolutely on top of it, rotating both around the Y axis as
@@ -8,12 +10,16 @@ export default function FlipCard({ flipped, front, back, style }) {
   const progress = useRef(new Animated.Value(flipped ? 1 : 0)).current;
 
   useEffect(() => {
-    Animated.spring(progress, {
+    progress.stopAnimation();
+    const animation = Animated.timing(progress, {
       toValue: flipped ? 1 : 0,
-      friction: 9,
-      tension: 45,
+      duration: FLIP_DURATION_MS,
+      easing: Easing.out(Easing.cubic),
       useNativeDriver: true,
-    }).start();
+    });
+
+    animation.start();
+    return () => animation.stop();
   }, [flipped]);
 
   const frontRotateY = progress.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '180deg'] });
@@ -24,6 +30,8 @@ export default function FlipCard({ flipped, front, back, style }) {
   return (
     <View style={style}>
       <Animated.View
+        collapsable={false}
+        renderToHardwareTextureAndroid
         style={[
           styles.face,
           { opacity: frontOpacity, transform: [{ perspective: 1400 }, { rotateY: frontRotateY }] },
@@ -32,6 +40,8 @@ export default function FlipCard({ flipped, front, back, style }) {
         {front}
       </Animated.View>
       <Animated.View
+        collapsable={false}
+        renderToHardwareTextureAndroid
         style={[
           styles.face,
           styles.backFace,
@@ -46,6 +56,8 @@ export default function FlipCard({ flipped, front, back, style }) {
 
 const styles = StyleSheet.create({
   face: {
+    width: '100%',
+    height: '100%',
     backfaceVisibility: 'hidden',
   },
   backFace: {

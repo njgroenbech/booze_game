@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, Pressable, ImageBackground } from 'react-native';
 import BackButton from '../components/BackButton';
-import CardEntrance from '../components/trivia/CardEntrance';
-import FlipCard from '../components/trivia/FlipCard';
+import CardEntrance, { ENTRANCE_DURATION_MS } from '../components/trivia/CardEntrance';
+import FlipCard, { FLIP_DURATION_MS } from '../components/trivia/FlipCard';
 import TriviaCardFace, { CARD_WIDTH, CARD_HEIGHT } from '../components/trivia/TriviaCardFace';
 import TriviaSession, { TRIVIA_PHASE } from '../models/trivia/TriviaSession';
 import { TRIVIA_CARDS } from '../data/triviaQuestions';
@@ -14,14 +14,30 @@ const TriviaGameScreen = ({ navigation }) => {
   }
   const session = sessionRef.current;
   const [state, setState] = useState(session.state);
+  const isTransitioningRef = useRef(false);
+  const transitionTimeoutRef = useRef(null);
 
   useEffect(() => session.subscribe(setState), [session]);
+  useEffect(() => () => clearTimeout(transitionTimeoutRef.current), []);
 
   const { phase, card, cardId, presentation } = state;
 
+  const handleScreenPress = () => {
+    if (isTransitioningRef.current) return;
+
+    const duration = phase === TRIVIA_PHASE.QUESTION ? FLIP_DURATION_MS : ENTRANCE_DURATION_MS;
+    isTransitioningRef.current = true;
+    session.handleTap();
+
+    clearTimeout(transitionTimeoutRef.current);
+    transitionTimeoutRef.current = setTimeout(() => {
+      isTransitioningRef.current = false;
+    }, duration);
+  };
+
   return (
     <ImageBackground source={require('../assets/wood-table.png')} style={styles.screen}>
-      <Pressable style={styles.screen} onPress={() => session.handleTap()}>
+      <Pressable style={styles.screen} onPress={handleScreenPress}>
         <BackButton navigation={navigation} />
 
         <View style={styles.tableArea}>
@@ -32,6 +48,7 @@ const TriviaGameScreen = ({ navigation }) => {
             tilt={presentation.tilt}
           >
             <FlipCard
+              key={cardId}
               style={styles.cardBox}
               flipped={phase === TRIVIA_PHASE.ANSWER}
               front={<TriviaCardFace label="Spørgsmål" text={card.question} variant="question" />}
