@@ -123,6 +123,10 @@ export default class CharadesSession {
       this._feedbackTimerId = null;
     }
     this._tiltDetector.stop();
+    // A fast trill of short pulses, clearly different in feel from the single
+    // 40ms "correct" buzz and the 30/60/30 "pass" double-buzz, so it reads as
+    // an alarm rather than another tilt confirmation.
+    Vibration.vibrate([0, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
   }
 
   // Guessing doesn't advance the deck immediately: the current word stays on
