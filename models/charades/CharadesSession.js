@@ -1,4 +1,5 @@
 import { Vibration } from 'react-native';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import CharadesRound from './CharadesRound';
 import TiltDetector from './TiltDetector';
 
@@ -28,9 +29,16 @@ export default class CharadesSession {
     this.countdownRemaining = countdownSeconds;
     this.feedback = null;
 
+    // The screen is locked to landscape but not to a specific rotation, so
+    // the same physical "nod down" gesture flips sign on the gyroscope
+    // depending on whether the phone is currently held landscape-left or
+    // landscape-right. Default to landscape-left until the real reading
+    // comes back from ScreenOrientation (see start()).
+    this._orientation = ScreenOrientation.Orientation.LANDSCAPE_LEFT;
+
     this._tiltDetector = new TiltDetector({
-      onTiltForward: () => this._handleCorrect(),
-      onTiltBackward: () => this._handlePass(),
+      onTiltPositive: () => this._handleTiltSign(1),
+      onTiltNegative: () => this._handleTiltSign(-1),
     });
     this._countdownTimerId = null;
     this._roundTimerId = null;
@@ -48,6 +56,14 @@ export default class CharadesSession {
     this.countdownRemaining = this.countdownSeconds;
     this.feedback = null;
     this._notify();
+
+    // Re-check every round: the player may have picked the phone back up
+    // rotated the other way since the last round.
+    ScreenOrientation.getOrientationAsync()
+      .then((orientation) => {
+        this._orientation = orientation;
+      })
+      .catch(() => {});
 
     this._countdownTimerId = setInterval(() => {
       this.countdownRemaining -= 1;
@@ -127,6 +143,24 @@ export default class CharadesSession {
     // 40ms "correct" buzz and the 30/60/30 "pass" double-buzz, so it reads as
     // an alarm rather than another tilt confirmation.
     Vibration.vibrate([0, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
+  }
+
+  // TiltDetector only reports the raw sign of whichever gyroscope axis
+  // dominated the gesture - it has no way to know which way round the
+  // phone is currently held. Landscape-right is a 180-degree roll from
+  // landscape-left, which flips the sign of the same physical "nod down"
+  // gesture, so correct for that here using the orientation captured in
+  // start(). (LANDSCAPE_LEFT was picked as the untouched reference case
+  // arbitrarily - if correct/pass come out swapped specifically when held
+  // one particular way, flip which branch gets the -1 below.)
+  _handleTiltSign(rawSign) {
+    const flip = this._orientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT ? -1 : 1;
+    const sign = rawSign * flip;
+    if (sign < 0) {
+      this._handleCorrect();
+    } else {
+      this._handlePass();
+    }
   }
 
   // Guessing doesn't advance the deck immediately: the current word stays on

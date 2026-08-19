@@ -38,10 +38,19 @@ const RAD_TO_DEG = 180 / Math.PI;
 // every time the phone is held still, any single integration window only
 // runs a second or two - far too short for drift to accumulate to a
 // meaningful fraction of tiltThresholdDegrees.
+//
+// This class deliberately does NOT decide what a positive vs. negative
+// dominant-axis rotation "means" (e.g. correct vs. pass): the gyroscope's
+// sign follows the right-hand rule around whichever body axis ends up
+// dominant, and that mapping to a real-world "nodded forward" vs "nodded
+// back" gesture flips depending on which way round the phone is currently
+// held (landscape-left vs. landscape-right) - something this class has no
+// way to know. It just reports the raw sign; the caller, which does know
+// the current screen orientation, is responsible for interpreting it.
 export default class TiltDetector {
-  constructor({ onTiltForward, onTiltBackward, ...options } = {}) {
-    this.onTiltForward = onTiltForward;
-    this.onTiltBackward = onTiltBackward;
+  constructor({ onTiltPositive, onTiltNegative, ...options } = {}) {
+    this.onTiltPositive = onTiltPositive;
+    this.onTiltNegative = onTiltNegative;
     this.options = { ...DEFAULT_OPTIONS, ...options };
     this._subscription = null;
     this._lastTimestamp = null;
@@ -149,13 +158,10 @@ export default class TiltDetector {
     this._locked = true;
     this._settledSinceTimestamp = null;
     this._clearPending();
-    // Gyroscope sign follows the right-hand rule around each body axis,
-    // which doesn't line up with the old accelerometer-delta convention -
-    // negative is the "forward" (nod down / correct) rotation here.
-    if (sign < 0) {
-      this.onTiltForward?.();
+    if (sign > 0) {
+      this.onTiltPositive?.();
     } else {
-      this.onTiltBackward?.();
+      this.onTiltNegative?.();
     }
   }
 }
