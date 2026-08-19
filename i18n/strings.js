@@ -7,7 +7,7 @@
 export const STRINGS = {
   home: {
     title: { da: 'Booze Game', en: 'Booze Game' },
-    play: { da: 'Play', en: 'Play' },
+    play: { da: 'Spil', en: 'Play' },
     games: {
       neverHaveIEver: { da: 'Jeg Har Aldrig', en: 'Never Have I Ever' },
       meyer: { da: 'Meyer', en: 'Meyer' },
