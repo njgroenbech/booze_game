@@ -8,18 +8,17 @@ const FLAGS = {
   en: require('../assets/flags/icons8-great-britain-96.png'),
 };
 
-// Shows the flag of the language a tap will switch TO, not the active one.
+// Shows the flag of the currently active language.
 const LanguageToggle = () => {
   const { language, toggleLanguage } = useLanguage();
   const insets = useSafeAreaInsets();
-  const targetLanguage = language === 'da' ? 'en' : 'da';
 
   return (
     <Pressable
       style={[styles.button, { top: insets.top + 12 }]}
       onPress={toggleLanguage}
     >
-      <Image source={FLAGS[targetLanguage]} style={styles.flag} />
+      <Image source={FLAGS[language]} style={styles.flag} />
     </Pressable>
   );
 };
