@@ -6,8 +6,10 @@ import FlipCard from '../components/trivia/FlipCard';
 import TriviaCardFace, { CARD_WIDTH, CARD_HEIGHT } from '../components/trivia/TriviaCardFace';
 import TriviaSession, { TRIVIA_PHASE } from '../models/trivia/TriviaSession';
 import { TRIVIA_CARDS } from '../data/triviaQuestions';
+import { useLanguage } from '../context/LanguageContext';
 
 const TriviaGameScreen = ({ navigation }) => {
+  const { t, language } = useLanguage();
   const sessionRef = useRef(null);
   if (!sessionRef.current) {
     sessionRef.current = new TriviaSession(TRIVIA_CARDS);
@@ -34,14 +36,14 @@ const TriviaGameScreen = ({ navigation }) => {
             <FlipCard
               style={styles.cardBox}
               flipped={phase === TRIVIA_PHASE.ANSWER}
-              front={<TriviaCardFace label="Spørgsmål" text={card.question} variant="question" />}
-              back={<TriviaCardFace label="Svar" text={card.answer} variant="answer" />}
+              front={<TriviaCardFace label={t('trivia.questionLabel')} text={card.getQuestion(language)} variant="question" />}
+              back={<TriviaCardFace label={t('trivia.answerLabel')} text={card.getAnswer(language)} variant="answer" />}
             />
           </CardEntrance>
         </View>
 
         <Text style={styles.hintText}>
-          {phase === TRIVIA_PHASE.QUESTION ? 'Tryk for at se svaret' : 'Tryk for næste spørgsmål'}
+          {phase === TRIVIA_PHASE.QUESTION ? t('trivia.hintReveal') : t('trivia.hintNext')}
         </Text>
       </Pressable>
     </ImageBackground>

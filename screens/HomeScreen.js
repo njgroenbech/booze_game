@@ -12,6 +12,8 @@ import {
   ImageBackground
 } from 'react-native';
 import { useGame } from '../context/GameContext';
+import { useLanguage } from '../context/LanguageContext';
+import AnimatedText from '../components/AnimatedText';
 import DrinkiesPlayerList from '../components/addplayers/AddPlayer';
 import CategoryPickerModal from '../components/charades/CategoryPickerModal';
 import { GAME_SCREENS } from '../navigation/gameScreens';
@@ -25,14 +27,15 @@ const FULL_SIZE = CARD_WIDTH + SPACING;
 const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
 const games = [
-  { id: '1', name: 'Jeg Har Aldrig', color: '#fff', image: require('../assets/jeg-har-aldrig.jpg') },
-  { id: '3', name: 'Meyer', color: '#fff', image: require('../assets/two-dice.jpg') },
-  { id: '2', name: 'Klassisk Kortspil', color: '#fff', image: require('../assets/cards.jpg') },
-  { id: '6', name: 'Charades', color: '#fff', image: require('../assets/cool-kid.jpg') },
-  { id: '7', name: 'Trivia', color: '#fff', image: require('../assets/dj-toenail.jpg') },
+  { id: '1', nameKey: 'home.games.neverHaveIEver', color: '#fff', image: require('../assets/jeg-har-aldrig.jpg') },
+  { id: '3', nameKey: 'home.games.meyer', color: '#fff', image: require('../assets/two-dice.jpg') },
+  { id: '2', nameKey: 'home.games.classicCards', color: '#fff', image: require('../assets/cards.jpg') },
+  { id: '6', nameKey: 'home.games.charades', color: '#fff', image: require('../assets/cool-kid.jpg') },
+  { id: '7', nameKey: 'home.games.trivia', color: '#fff', image: require('../assets/dj-toenail.jpg') },
 ];
 
 export default function HomeScreen({ navigation }) {
+  const { t } = useLanguage();
   const { setGameId, setGameName } = useGame();
   const scrollOffsetRef = useRef(0);
   const [showPlayerList, setShowPlayerList] = React.useState(false);
@@ -43,7 +46,7 @@ export default function HomeScreen({ navigation }) {
     const activeGame = games[currentIndex];
     if (activeGame) {
       setGameId(activeGame.id);
-      setGameName(activeGame.name);
+      setGameName(activeGame.nameKey);
       if (activeGame.id === '3') {
         navigation.navigate('MeyerGame');
         return;
@@ -90,7 +93,7 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      <Text style={styles.title}>Booze Game</Text>
+      <Text style={styles.title}>{t('home.title')}</Text>
 
       <View style={styles.carouselWrapper}>
         <Animated.FlatList
@@ -143,7 +146,7 @@ export default function HomeScreen({ navigation }) {
                     <View style={styles.cardBody} />
 
                     <View style={styles.cardFooter}>
-                      <Text style={styles.cardText}>{item.name}</Text>
+                      <AnimatedText style={styles.cardText}>{t(item.nameKey)}</AnimatedText>
                     </View>
                   </ImageBackground>
 
@@ -188,7 +191,7 @@ export default function HomeScreen({ navigation }) {
         activeOpacity={0.8}
         onPress={startGame}
       >
-        <Text style={styles.buttonText}>Play</Text>
+        <AnimatedText style={styles.buttonText}>{t('home.play')}</AnimatedText>
       </TouchableOpacity>
 
       {showPlayerList && (

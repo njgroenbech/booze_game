@@ -2,8 +2,11 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Pressable, Animated } from 'react-native';
 import { BlurView } from 'expo-blur';
 import ScaleInModal from '../addplayers/ScaleInModal';
+import AnimatedText from '../AnimatedText';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function WordListModal({ title, words, accentColor, onClose }) {
+  const { t } = useLanguage();
   const bgOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function WordListModal({ title, words, accentColor, onClose }) {
             <Text style={styles.closeButtonText}>✕</Text>
           </TouchableOpacity>
 
-          <Text style={styles.title}>{title}</Text>
+          <AnimatedText style={styles.title}>{title}</AnimatedText>
 
           <ScrollView
             style={styles.list}
@@ -50,7 +53,7 @@ export default function WordListModal({ title, words, accentColor, onClose }) {
             showsVerticalScrollIndicator={true}
           >
             {words.length === 0 ? (
-              <Text style={styles.emptyText}>Ingen ord her endnu</Text>
+              <AnimatedText style={styles.emptyText}>{t('charadesWordList.empty')}</AnimatedText>
             ) : (
               <View style={styles.grid}>
                 {words.map((word, index) => (
