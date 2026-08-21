@@ -8,7 +8,7 @@ Formålet er at holde forretningslogik ude af UI-komponenten, så koden er lette
 ### `QuestionSessionService.js`
 - Ansvar: Håndterer spørgsmålssessionen.
 - Gør følgende:
-- Bygger spørgsmålsbank pr. farve fra `data/questions.json`.
+- Bygger spørgsmålsbank pr. farve fra `data/questions.json` (hvert spørgsmål er `{ da, en }`).
 - Fjerner dubletter (normaliseret tekst) inden en session starter.
 - Holder styr på hvilke spørgsmål der er tilbage i den aktive session.
 - Trækker næste unikke spørgsmål med `drawNextUniqueQuestion()`.

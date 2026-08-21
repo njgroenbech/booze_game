@@ -20,10 +20,10 @@ test('drawNextUniqueQuestion removes a question from the current session and ret
     const result = questionSessionService.drawNextUniqueQuestion();
 
     assert.deepEqual(result, {
-      questionId: `jegHarAldrig:${questionSessionService.normalizeQuestion(firstQuestion)}`,
+      questionId: `jegHarAldrig:${questionSessionService.normalizeQuestion(firstQuestion.da)}`,
       title: 'Jeg har aldrig..',
       cornerLabel: 'Jeg har aldrig..',
-      body: firstQuestion,
+      body: firstQuestion.da,
       backgroundColor: firstColor,
     });
     assert.equal(
@@ -104,8 +104,8 @@ test('drawNextUniqueQuestion uses threshold-based category selection', () => {
     const result = questionSessionService.drawNextUniqueQuestion();
 
     assert.equal(result.backgroundColor, expectedColor);
-    assert.equal(result.body, expectedQuestion);
-    assert.equal(result.questionId, `joker:${questionSessionService.normalizeQuestion(expectedQuestion)}`);
+    assert.equal(result.body, expectedQuestion.da);
+    assert.equal(result.questionId, `joker:${questionSessionService.normalizeQuestion(expectedQuestion.da)}`);
   } finally {
     Math.random = originalRandom;
   }
@@ -143,7 +143,7 @@ test('drawNextUniqueQuestion eventually returns every deduplicated question exac
     const questionType = questionSessionService.questionTypeByColor[color];
     for (const question of questionSessionService.questionBankByColor[color]) {
       expectedQuestionIds.add(
-        `${questionType}:${questionSessionService.normalizeQuestion(question)}`
+        `${questionType}:${questionSessionService.normalizeQuestion(question.da)}`
       );
     }
   }
@@ -189,8 +189,8 @@ test('drawNextUniqueQuestionBilingual returns matching da/en text for the same q
 
     const result = questionSessionService.drawNextUniqueQuestionBilingual();
 
-    assert.equal(result.questionId, `jegHarAldrig:${questionSessionService.normalizeQuestion(firstQuestion)}`);
-    assert.equal(result.body.da, firstQuestion);
+    assert.equal(result.questionId, `jegHarAldrig:${questionSessionService.normalizeQuestion(firstQuestion.da)}`);
+    assert.equal(result.body.da, firstQuestion.da);
     assert.equal(typeof result.body.en, 'string');
     assert.equal(result.title.da, 'Jeg har aldrig..');
     assert.equal(result.title.en, 'Never have I ever..');

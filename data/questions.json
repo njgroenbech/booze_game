@@ -1,250 +1,952 @@
 {
   "jegHarAldrig": [
-    "brugt en andens tandbørste uden at fortælle det.",
-    "løjet om, hvor mange personer jeg har været sammen med.",
-    "ladet som om jeg var syg for at undgå en aftale.",
-    "kigget i en andens telefon uden deres viden.",
-    "mobbet en klassekammerat",
-    "ladet som om jeg var på telefonen for at undgå nogen.",
-    "spist noget fra gulvet.",
-    "grinet af en joke, jeg faktisk ikke forstod, bare for at passe ind.",
-    "taget æren for noget, jeg egentlig ikke gjorde.",
-    "ignoreret en besked med vilje og sagt, at jeg ikke så den.",
-    "spist noget, jeg ikke kunne lide for at være høflig.",
-    "været jaloux på en ven uden at ville indrømme det.",
-    "slettet en besked for at undgå problemer senere",
-    "løjet om min alder",
-    "lagt skylden på nogen andre for noget, jeg gjorde.",
-    "ladet som om jeg vidste noget, jeg faktisk ikke anede noget om.",
-    "lyttet til en sang, som jeg skammede mig over at kunne lide.",
-    "ladet som om jeg havde travlt for at slippe ud af en samtale.",
-    "løjet om en anden person for at få dem til at fremstå dårligere.",
-    "Lånt penge jeg vidste, jeg aldrig ville betale tilbage.",
-    "Løjet om et dødsfald for at slippe ud af noget.",
-    "Tændt på en vens kæreste.",
-    "tungekysset efter at have kastet op",
-    "sniffet til mit eget tøj for at tjekke, om det kunne bruges én dag mere.",
-    "haft sex med sokker på.",
-    "blevet stoppet af politiet.",
-    "mistet min telefon i byen.",
-    "haft sex hos mine bedsteforældre",
-    "googlet mig selv",
-    "haft telefonsex",
-    "lavet hærværk",
-    "stukket en finger i numsen på nogle andre",
-    "stukket en finger i numsen på mig selv",
-    "løjet i dette spil",
-    "haft ubeskyttet sex",
-    "besøgt en sexshop",
-    "tisset i en håndvask",
-    "tændt på en af mine venners forældre",
-    "grædt til en film",
-    "haft en bolleven",
-    "lavet frivilligt arbejde",
-    "haft sex med en kollega",
-    "blevet afsløret under sex",
-    "samlet en blaffer op i min bil",
-    "forsøgt at gennemføre 'No Nut November",
-    "tisset i sengen efter jeg fyldte 13",
-    "blevet kørt i en ambulance",
-    "fået tæsk i byen",
-    "givet tæsk i byen",
-    "pruttet under sex",
-    "stjålet noget til en fest",
-    "været i bad sammen med en homie",
-    "dumpet en eksamen",
-    "smuttet fra en regning på en restaurant",
-    "haft sex et offentligt sted",
-    "kastet op i en taxa",
-    "stjålet et glas med hjem fra en bar",
-    "kysset to forskellige på samme aften",
-    "været sammen med en vens eks",
-    "stjålet fra en ven",
-    "set porno på min arbejdsplads/skole",
-    "haft en trekant",
-    "været på stripclub",
-    "fortrudt en tatovering",
-    "fået AI til at svare på en besked for mig",
-    "tabt mere end 1000kr på gambling på en aften",
-    "barberet mine kønsdele 'just in case'",
-    "sprunget en postkasse i luften",
-    "skidt i skoven",
-    "stjålet fra et supermarked",
-    "tisset på en anden",
-    "brugt falsk ID",
-    "set dværge-porno",
-    "set ISIS beheading videoer",
-    "barberet mit røvhul",
-    "gået 5 dage uden bad",
-    "taget et brugt stykke snus",
-    "været i håndlænker i sengen",
-    "brugt de samme underbukser i mere end 3 dage",
-    "lavet hjemmelavet fyrværkeri",
-    "ladet som om jeg havde set en film, jeg aldrig har set",
-    "løjet på mit CV",
-    "ghostet nogen",
-    "blevet ghostet",
-    "mistet mine nøgler efter en bytur",
-    "snakket mig ud af en bøde",
-    "fået en besked der var ment til en anden",
-    "været til en fest hvor jeg ikke kendte nogen",
-    "haft sex i en bil",
-    "haft sex med nogen jeg mødte samme aften",
-    "haft sex på et køkkenbord",
-    "været til en fest jeg ikke var inviteret til",
-    "tabt min telefon i toilettet",
-    "løbet fra en taxa uden at betale.",
-    "kastet op foran alle til en fest",
-    "ved en fejl drukket af en øl med et stykke snus i",
-    "introduceret mig selv til nogen jeg allerede havde mødt",
-    "pillet næse og håbet ingen så det",
-    "kløet mig i røven og lugtet til fingrene",
-    "vinket tilbage til nogen der ikke vinkede til mig",
-    "sendt et nøgenbillede",
-    "blevet lagt i håndhjern af politiet",
-    "tisset i en flaske",
-    "spist så meget at jeg kastede op",
-    "brugt mere end 200kr på en enkelt McDonald's ordre",
-    "opdaget bremsespor i min kammerats underbukser",
-    "haft et stykke snus i mine kønsorganer",
-    "haft sex i mine forældres seng",
-    "gået ind på nogen, som onanerede",
-    "hørt mine forældre haft sex",
-    "kommet til at gå ind i en fremmed persons bil",
-    "taget et kviklån",
-    "givet penge til en hjemløs bare for at imponere en flirt",
-    "prøvet at blive content creator uden succes",
-    "genbrugt en gave",
-    "holdt en flirt i live, bare for at knalde"
+    {
+      "da": "brugt en andens tandbørste uden at fortælle det.",
+      "en": "used someone else's toothbrush without telling them."
+    },
+    {
+      "da": "løjet om, hvor mange personer jeg har været sammen med.",
+      "en": "lied about how many people I've slept with."
+    },
+    {
+      "da": "ladet som om jeg var syg for at undgå en aftale.",
+      "en": "pretended to be sick to get out of a commitment."
+    },
+    {
+      "da": "kigget i en andens telefon uden deres viden.",
+      "en": "looked through someone else's phone without them knowing."
+    },
+    {
+      "da": "mobbet en klassekammerat",
+      "en": "bullied a classmate"
+    },
+    {
+      "da": "ladet som om jeg var på telefonen for at undgå nogen.",
+      "en": "pretended to be on the phone to avoid someone."
+    },
+    {
+      "da": "spist noget fra gulvet.",
+      "en": "eaten something off the floor."
+    },
+    {
+      "da": "grinet af en joke, jeg faktisk ikke forstod, bare for at passe ind.",
+      "en": "laughed at a joke I didn't actually get, just to fit in."
+    },
+    {
+      "da": "taget æren for noget, jeg egentlig ikke gjorde.",
+      "en": "taken credit for something I didn't actually do."
+    },
+    {
+      "da": "ignoreret en besked med vilje og sagt, at jeg ikke så den.",
+      "en": "deliberately ignored a message and said I never saw it."
+    },
+    {
+      "da": "spist noget, jeg ikke kunne lide for at være høflig.",
+      "en": "eaten something I didn't like just to be polite."
+    },
+    {
+      "da": "været jaloux på en ven uden at ville indrømme det.",
+      "en": "been jealous of a friend without wanting to admit it."
+    },
+    {
+      "da": "slettet en besked for at undgå problemer senere",
+      "en": "deleted a message to avoid trouble later"
+    },
+    {
+      "da": "løjet om min alder",
+      "en": "lied about my age"
+    },
+    {
+      "da": "lagt skylden på nogen andre for noget, jeg gjorde.",
+      "en": "blamed someone else for something I did."
+    },
+    {
+      "da": "ladet som om jeg vidste noget, jeg faktisk ikke anede noget om.",
+      "en": "pretended to know something I actually had no clue about."
+    },
+    {
+      "da": "lyttet til en sang, som jeg skammede mig over at kunne lide.",
+      "en": "listened to a song I was embarrassed to admit I liked."
+    },
+    {
+      "da": "ladet som om jeg havde travlt for at slippe ud af en samtale.",
+      "en": "pretended to be busy to get out of a conversation."
+    },
+    {
+      "da": "løjet om en anden person for at få dem til at fremstå dårligere.",
+      "en": "lied about someone else to make them look bad."
+    },
+    {
+      "da": "Lånt penge jeg vidste, jeg aldrig ville betale tilbage.",
+      "en": "Borrowed money I knew I'd never pay back."
+    },
+    {
+      "da": "Løjet om et dødsfald for at slippe ud af noget.",
+      "en": "Lied about a death to get out of something."
+    },
+    {
+      "da": "Tændt på en vens kæreste.",
+      "en": "Been attracted to a friend's partner."
+    },
+    {
+      "da": "tungekysset efter at have kastet op",
+      "en": "made out with someone after throwing up"
+    },
+    {
+      "da": "sniffet til mit eget tøj for at tjekke, om det kunne bruges én dag mere.",
+      "en": "sniffed my own clothes to check if they could last one more day."
+    },
+    {
+      "da": "haft sex med sokker på.",
+      "en": "had sex with my socks on."
+    },
+    {
+      "da": "blevet stoppet af politiet.",
+      "en": "been pulled over by the police."
+    },
+    {
+      "da": "mistet min telefon i byen.",
+      "en": "lost my phone on a night out."
+    },
+    {
+      "da": "haft sex hos mine bedsteforældre",
+      "en": "had sex at my grandparents' place"
+    },
+    {
+      "da": "googlet mig selv",
+      "en": "googled myself"
+    },
+    {
+      "da": "haft telefonsex",
+      "en": "had phone sex"
+    },
+    {
+      "da": "lavet hærværk",
+      "en": "committed vandalism"
+    },
+    {
+      "da": "stukket en finger i numsen på nogle andre",
+      "en": "stuck a finger in someone else's butt"
+    },
+    {
+      "da": "stukket en finger i numsen på mig selv",
+      "en": "stuck a finger in my own butt"
+    },
+    {
+      "da": "løjet i dette spil",
+      "en": "lied in this game"
+    },
+    {
+      "da": "haft ubeskyttet sex",
+      "en": "had unprotected sex"
+    },
+    {
+      "da": "besøgt en sexshop",
+      "en": "visited a sex shop"
+    },
+    {
+      "da": "tisset i en håndvask",
+      "en": "peed in a sink"
+    },
+    {
+      "da": "tændt på en af mine venners forældre",
+      "en": "been attracted to one of my friends' parents"
+    },
+    {
+      "da": "grædt til en film",
+      "en": "cried at a movie"
+    },
+    {
+      "da": "haft en bolleven",
+      "en": "had a friend with benefits"
+    },
+    {
+      "da": "lavet frivilligt arbejde",
+      "en": "done volunteer work"
+    },
+    {
+      "da": "haft sex med en kollega",
+      "en": "had sex with a coworker"
+    },
+    {
+      "da": "blevet afsløret under sex",
+      "en": "been caught in the act during sex"
+    },
+    {
+      "da": "samlet en blaffer op i min bil",
+      "en": "picked up a hitchhiker in my car"
+    },
+    {
+      "da": "forsøgt at gennemføre 'No Nut November",
+      "en": "attempted to complete 'No Nut November'"
+    },
+    {
+      "da": "tisset i sengen efter jeg fyldte 13",
+      "en": "wet the bed after turning 13"
+    },
+    {
+      "da": "blevet kørt i en ambulance",
+      "en": "been taken away in an ambulance"
+    },
+    {
+      "da": "fået tæsk i byen",
+      "en": "gotten beaten up on a night out"
+    },
+    {
+      "da": "givet tæsk i byen",
+      "en": "beaten someone up on a night out"
+    },
+    {
+      "da": "pruttet under sex",
+      "en": "farted during sex"
+    },
+    {
+      "da": "stjålet noget til en fest",
+      "en": "stolen something for a party"
+    },
+    {
+      "da": "været i bad sammen med en homie",
+      "en": "showered together with a homie"
+    },
+    {
+      "da": "dumpet en eksamen",
+      "en": "failed an exam"
+    },
+    {
+      "da": "smuttet fra en regning på en restaurant",
+      "en": "skipped out on a restaurant bill"
+    },
+    {
+      "da": "haft sex et offentligt sted",
+      "en": "had sex in a public place"
+    },
+    {
+      "da": "kastet op i en taxa",
+      "en": "thrown up in a taxi"
+    },
+    {
+      "da": "stjålet et glas med hjem fra en bar",
+      "en": "stolen a glass from a bar"
+    },
+    {
+      "da": "kysset to forskellige på samme aften",
+      "en": "kissed two different people in the same night"
+    },
+    {
+      "da": "været sammen med en vens eks",
+      "en": "been with a friend's ex"
+    },
+    {
+      "da": "stjålet fra en ven",
+      "en": "stolen from a friend"
+    },
+    {
+      "da": "set porno på min arbejdsplads/skole",
+      "en": "watched porn at work/school"
+    },
+    {
+      "da": "haft en trekant",
+      "en": "had a threesome"
+    },
+    {
+      "da": "været på stripclub",
+      "en": "been to a strip club"
+    },
+    {
+      "da": "fortrudt en tatovering",
+      "en": "regretted a tattoo"
+    },
+    {
+      "da": "fået AI til at svare på en besked for mig",
+      "en": "had AI answer a message for me"
+    },
+    {
+      "da": "tabt mere end 1000kr på gambling på en aften",
+      "en": "lost more than 1000kr gambling in one night"
+    },
+    {
+      "da": "barberet mine kønsdele 'just in case'",
+      "en": "shaved my genitals 'just in case'"
+    },
+    {
+      "da": "sprunget en postkasse i luften",
+      "en": "blown up a mailbox"
+    },
+    {
+      "da": "skidt i skoven",
+      "en": "pooped in the woods"
+    },
+    {
+      "da": "stjålet fra et supermarked",
+      "en": "stolen from a supermarket"
+    },
+    {
+      "da": "tisset på en anden",
+      "en": "peed on someone else"
+    },
+    {
+      "da": "brugt falsk ID",
+      "en": "used a fake ID"
+    },
+    {
+      "da": "set dværge-porno",
+      "en": "watched midget porn"
+    },
+    {
+      "da": "set ISIS beheading videoer",
+      "en": "watched ISIS beheading videos"
+    },
+    {
+      "da": "barberet mit røvhul",
+      "en": "shaved my butthole"
+    },
+    {
+      "da": "gået 5 dage uden bad",
+      "en": "gone 5 days without showering"
+    },
+    {
+      "da": "taget et brugt stykke snus",
+      "en": "taken someone else's used nicotine pouch"
+    },
+    {
+      "da": "været i håndlænker i sengen",
+      "en": "worn handcuffs in bed"
+    },
+    {
+      "da": "brugt de samme underbukser i mere end 3 dage",
+      "en": "worn the same underwear for more than 3 days"
+    },
+    {
+      "da": "lavet hjemmelavet fyrværkeri",
+      "en": "made homemade fireworks"
+    },
+    {
+      "da": "ladet som om jeg havde set en film, jeg aldrig har set",
+      "en": "pretended I'd seen a movie I never actually saw"
+    },
+    {
+      "da": "løjet på mit CV",
+      "en": "lied on my resume"
+    },
+    {
+      "da": "ghostet nogen",
+      "en": "ghosted someone"
+    },
+    {
+      "da": "blevet ghostet",
+      "en": "been ghosted"
+    },
+    {
+      "da": "mistet mine nøgler efter en bytur",
+      "en": "lost my keys after a night out"
+    },
+    {
+      "da": "snakket mig ud af en bøde",
+      "en": "talked my way out of a fine"
+    },
+    {
+      "da": "fået en besked der var ment til en anden",
+      "en": "received a message meant for someone else"
+    },
+    {
+      "da": "været til en fest hvor jeg ikke kendte nogen",
+      "en": "been to a party where I didn't know anyone"
+    },
+    {
+      "da": "haft sex i en bil",
+      "en": "had sex in a car"
+    },
+    {
+      "da": "haft sex med nogen jeg mødte samme aften",
+      "en": "had sex with someone I met that same night"
+    },
+    {
+      "da": "haft sex på et køkkenbord",
+      "en": "had sex on a kitchen counter"
+    },
+    {
+      "da": "været til en fest jeg ikke var inviteret til",
+      "en": "been to a party I wasn't invited to"
+    },
+    {
+      "da": "tabt min telefon i toilettet",
+      "en": "dropped my phone in the toilet"
+    },
+    {
+      "da": "løbet fra en taxa uden at betale.",
+      "en": "run off from a taxi without paying."
+    },
+    {
+      "da": "kastet op foran alle til en fest",
+      "en": "thrown up in front of everyone at a party"
+    },
+    {
+      "da": "ved en fejl drukket af en øl med et stykke snus i",
+      "en": "accidentally drunk from a beer with a nicotine pouch in it"
+    },
+    {
+      "da": "introduceret mig selv til nogen jeg allerede havde mødt",
+      "en": "introduced myself to someone I'd already met"
+    },
+    {
+      "da": "pillet næse og håbet ingen så det",
+      "en": "picked my nose and hoped no one saw"
+    },
+    {
+      "da": "kløet mig i røven og lugtet til fingrene",
+      "en": "scratched my butt and smelled my fingers"
+    },
+    {
+      "da": "vinket tilbage til nogen der ikke vinkede til mig",
+      "en": "waved back at someone who wasn't waving at me"
+    },
+    {
+      "da": "sendt et nøgenbillede",
+      "en": "sent a nude"
+    },
+    {
+      "da": "blevet lagt i håndhjern af politiet",
+      "en": "been handcuffed by the police"
+    },
+    {
+      "da": "tisset i en flaske",
+      "en": "peed in a bottle"
+    },
+    {
+      "da": "spist så meget at jeg kastede op",
+      "en": "eaten so much I threw up"
+    },
+    {
+      "da": "brugt mere end 200kr på en enkelt McDonald's ordre",
+      "en": "spent more than 200kr on a single McDonald's order"
+    },
+    {
+      "da": "opdaget bremsespor i min kammerats underbukser",
+      "en": "found skid marks in my friend's underwear"
+    },
+    {
+      "da": "haft et stykke snus i mine kønsorganer",
+      "en": "had a nicotine pouch in my genitals"
+    },
+    {
+      "da": "haft sex i mine forældres seng",
+      "en": "had sex in my parents' bed"
+    },
+    {
+      "da": "gået ind på nogen, som onanerede",
+      "en": "walked in on someone masturbating"
+    },
+    {
+      "da": "hørt mine forældre haft sex",
+      "en": "heard my parents having sex"
+    },
+    {
+      "da": "kommet til at gå ind i en fremmed persons bil",
+      "en": "accidentally gotten into a stranger's car"
+    },
+    {
+      "da": "taget et kviklån",
+      "en": "taken out a payday loan"
+    },
+    {
+      "da": "givet penge til en hjemløs bare for at imponere en flirt",
+      "en": "given money to a homeless person just to impress someone I was flirting with"
+    },
+    {
+      "da": "prøvet at blive content creator uden succes",
+      "en": "tried to become a content creator without success"
+    },
+    {
+      "da": "genbrugt en gave",
+      "en": "regifted a present"
+    },
+    {
+      "da": "holdt en flirt i live, bare for at knalde",
+      "en": "kept a flirtation going just to hook up"
+    }
   ],
   "kategori": [
-    "Ølmærker",
-    "Computerspil",
-    "Bilmærker",
-    "Sportsgrene",
-    "Byer i Danmark",
-    "Tøjmærker", 
-    "TV-serier",
-    "Stater i USA",
-    "Musikinstrumenter",
-    "Fodboldspillere",
-    "Bryghuse",
-    "Fastfood kæder",
-    "Lande i Europa",
-    "Barer i København",
-    "Rockbands",
-    "Programmeringssprog",
-    "Lande i Afrika",
-    "Nuværende folketingsmedlemmer",
-    "Amerikanske præsidenter",
-    "Universiteter",
-    "Hunderacer",
-    "Grammy-vindere",
-    "Skuespillere",
-    "Disney film",
-    "Filminstruktører",
-    "Kendte kvinder",
-    "Græske guder",
-    "Flyselskaber",
-    "Rappere",
-    "Sociale medier",
-    "Festivaler",
-    "Cocktails",
-    "Pornostjerner",
-    "Eminem sange",
-    "Skisportssteder",
-    "Kendte kunstmalere"
+    {
+      "da": "Ølmærker",
+      "en": "Beer brands"
+    },
+    {
+      "da": "Computerspil",
+      "en": "Video games"
+    },
+    {
+      "da": "Bilmærker",
+      "en": "Car brands"
+    },
+    {
+      "da": "Sportsgrene",
+      "en": "Sports"
+    },
+    {
+      "da": "Byer i Danmark",
+      "en": "Cities in Denmark"
+    },
+    {
+      "da": "Tøjmærker",
+      "en": "Clothing brands"
+    },
+    {
+      "da": "TV-serier",
+      "en": "TV shows"
+    },
+    {
+      "da": "Stater i USA",
+      "en": "US states"
+    },
+    {
+      "da": "Musikinstrumenter",
+      "en": "Musical instruments"
+    },
+    {
+      "da": "Fodboldspillere",
+      "en": "Football players"
+    },
+    {
+      "da": "Bryghuse",
+      "en": "Breweries"
+    },
+    {
+      "da": "Fastfood kæder",
+      "en": "Fast food chains"
+    },
+    {
+      "da": "Lande i Europa",
+      "en": "Countries in Europe"
+    },
+    {
+      "da": "Barer i København",
+      "en": "Bars in Copenhagen"
+    },
+    {
+      "da": "Rockbands",
+      "en": "Rock bands"
+    },
+    {
+      "da": "Programmeringssprog",
+      "en": "Programming languages"
+    },
+    {
+      "da": "Lande i Afrika",
+      "en": "Countries in Africa"
+    },
+    {
+      "da": "Nuværende folketingsmedlemmer",
+      "en": "Current members of the Danish Parliament"
+    },
+    {
+      "da": "Amerikanske præsidenter",
+      "en": "American presidents"
+    },
+    {
+      "da": "Universiteter",
+      "en": "Universities"
+    },
+    {
+      "da": "Hunderacer",
+      "en": "Dog breeds"
+    },
+    {
+      "da": "Grammy-vindere",
+      "en": "Grammy winners"
+    },
+    {
+      "da": "Skuespillere",
+      "en": "Actors"
+    },
+    {
+      "da": "Disney film",
+      "en": "Disney movies"
+    },
+    {
+      "da": "Filminstruktører",
+      "en": "Film directors"
+    },
+    {
+      "da": "Kendte kvinder",
+      "en": "Famous women"
+    },
+    {
+      "da": "Græske guder",
+      "en": "Greek gods"
+    },
+    {
+      "da": "Flyselskaber",
+      "en": "Airlines"
+    },
+    {
+      "da": "Rappere",
+      "en": "Rappers"
+    },
+    {
+      "da": "Sociale medier",
+      "en": "Social media platforms"
+    },
+    {
+      "da": "Festivaler",
+      "en": "Festivals"
+    },
+    {
+      "da": "Cocktails",
+      "en": "Cocktails"
+    },
+    {
+      "da": "Pornostjerner",
+      "en": "Porn stars"
+    },
+    {
+      "da": "Eminem sange",
+      "en": "Eminem songs"
+    },
+    {
+      "da": "Skisportssteder",
+      "en": "Ski resorts"
+    },
+    {
+      "da": "Kendte kunstmalere",
+      "en": "Famous painters"
+    }
   ],
-
   "mestTilbøjeligTil": [
-    "at glemme deres taske et sted",
-    "at blive fanget i en Frank Hvam situation",
-    "at gå forkert ind i en fremmeds bil",
-    "at forsvinde fra festen uden at sige farvel",
-    "at holde en tale uden opfordring",
-    "at skide i bukserne",
-    "at overdrive en historie til uigenkendelighed",
-    "at købe noget under pres fra en sælger",
-    "at prøve at snige sig ind i et VIP-område",
-    "at blive influencer",
-    "at køre vanvidskørsel",
-    "at være med i en pornofilm",
-    "at blive anholdt",
-    "at få alkoholsforgiftning",
-    "at være med i politijagten",
-    "at blive stand-up komiker",
-    "at møde fuld op på arbejde",
-    "at være den mest fotogene",
-    "at være den mest ansvarsfulde",
-    "at tage hårde stoffer",
-    "at give penge til en hjemløs",
-    "at få en fartbøde",
-    "at blive medlem af en bande",
-    "at komme for sent til en jobsamtale og alligevel få jobbet",
-    "at sige 'jeg elsker dig' på første date",
-    "have flest penge på bankkontoen",
-    "at blive kærester med en vens eks",
-    "at blive model",
-    "at få 8 børn",
-    "at brænde maden på",
-    "at stille op til folketinget",
-    "at klage til bartenderen over for meget skum i sin øl",
-    "at glemme navnet på en person, de lige har scoret",
-    "at starte en røvsyg politisk debat til en fest",
-    "at få tæv i byen",
-    "at blackout til sit eget bryllup",
-    "at fyre n-ordet casually",
-    "at være racist",
-    "at ikke at støvsuge i 3 uger",
-    "ikke at skifte sit sengetøj",
-    "at 'glemme' at sende penge til nogen som har lagt ud",
-    "at tage for tidligt hjem fra byen"
+    {
+      "da": "at glemme deres taske et sted",
+      "en": "to forget their bag somewhere"
+    },
+    {
+      "da": "at blive fanget i en Frank Hvam situation",
+      "en": "to get caught in a Frank Hvam-style situation"
+    },
+    {
+      "da": "at gå forkert ind i en fremmeds bil",
+      "en": "to get into the wrong car by mistake"
+    },
+    {
+      "da": "at forsvinde fra festen uden at sige farvel",
+      "en": "to disappear from the party without saying goodbye"
+    },
+    {
+      "da": "at holde en tale uden opfordring",
+      "en": "to give an unsolicited speech"
+    },
+    {
+      "da": "at skide i bukserne",
+      "en": "to poop their pants"
+    },
+    {
+      "da": "at overdrive en historie til uigenkendelighed",
+      "en": "to exaggerate a story beyond recognition"
+    },
+    {
+      "da": "at købe noget under pres fra en sælger",
+      "en": "to buy something under pressure from a salesperson"
+    },
+    {
+      "da": "at prøve at snige sig ind i et VIP-område",
+      "en": "to try to sneak into a VIP area"
+    },
+    {
+      "da": "at blive influencer",
+      "en": "to become an influencer"
+    },
+    {
+      "da": "at køre vanvidskørsel",
+      "en": "to get charged with reckless driving"
+    },
+    {
+      "da": "at være med i en pornofilm",
+      "en": "to be in a porn film"
+    },
+    {
+      "da": "at blive anholdt",
+      "en": "to get arrested"
+    },
+    {
+      "da": "at få alkoholsforgiftning",
+      "en": "to get alcohol poisoning"
+    },
+    {
+      "da": "at være med i politijagten",
+      "en": "to be in a police chase"
+    },
+    {
+      "da": "at blive stand-up komiker",
+      "en": "to become a stand-up comedian"
+    },
+    {
+      "da": "at møde fuld op på arbejde",
+      "en": "to show up drunk to work"
+    },
+    {
+      "da": "at være den mest fotogene",
+      "en": "to be the most photogenic"
+    },
+    {
+      "da": "at være den mest ansvarsfulde",
+      "en": "to be the most responsible"
+    },
+    {
+      "da": "at tage hårde stoffer",
+      "en": "to do hard drugs"
+    },
+    {
+      "da": "at give penge til en hjemløs",
+      "en": "to give money to a homeless person"
+    },
+    {
+      "da": "at få en fartbøde",
+      "en": "to get a speeding ticket"
+    },
+    {
+      "da": "at blive medlem af en bande",
+      "en": "to join a gang"
+    },
+    {
+      "da": "at komme for sent til en jobsamtale og alligevel få jobbet",
+      "en": "to show up late to a job interview and still get the job"
+    },
+    {
+      "da": "at sige 'jeg elsker dig' på første date",
+      "en": "to say 'I love you' on the first date"
+    },
+    {
+      "da": "have flest penge på bankkontoen",
+      "en": "to have the most money in their bank account"
+    },
+    {
+      "da": "at blive kærester med en vens eks",
+      "en": "to start dating a friend's ex"
+    },
+    {
+      "da": "at blive model",
+      "en": "to become a model"
+    },
+    {
+      "da": "at få 8 børn",
+      "en": "to have 8 kids"
+    },
+    {
+      "da": "at brænde maden på",
+      "en": "to burn the food"
+    },
+    {
+      "da": "at stille op til folketinget",
+      "en": "to run for the Danish Parliament"
+    },
+    {
+      "da": "at klage til bartenderen over for meget skum i sin øl",
+      "en": "to complain to the bartender about too much foam in their beer"
+    },
+    {
+      "da": "at glemme navnet på en person, de lige har scoret",
+      "en": "to forget the name of someone they just hooked up with"
+    },
+    {
+      "da": "at starte en røvsyg politisk debat til en fest",
+      "en": "to start an annoying political debate at a party"
+    },
+    {
+      "da": "at få tæv i byen",
+      "en": "to get beaten up on a night out"
+    },
+    {
+      "da": "at blackout til sit eget bryllup",
+      "en": "to blackout at their own wedding"
+    },
+    {
+      "da": "at fyre n-ordet casually",
+      "en": "to casually drop the n-word"
+    },
+    {
+      "da": "at være racist",
+      "en": "to be racist"
+    },
+    {
+      "da": "at ikke at støvsuge i 3 uger",
+      "en": "to not vacuum for 3 weeks"
+    },
+    {
+      "da": "ikke at skifte sit sengetøj",
+      "en": "to not change their bedsheets"
+    },
+    {
+      "da": "at 'glemme' at sende penge til nogen som har lagt ud",
+      "en": "to 'forget' to pay back someone who covered for them"
+    },
+    {
+      "da": "at tage for tidligt hjem fra byen",
+      "en": "to leave the party too early"
+    }
   ],
-
   "joker": [
-    "{player} skal udpege en person til at hente øl til bordet",
-    "{player} skal give 2 slurke ud. Det skal din makker til venstre også.",
-    "{player} vælg en person, der skal give 3 slurke ud",
-    "Alle med et ur på venstre arm skal tage 2 slurke. Hvis du har ur på højre arm, skal du bunde",
-    "{player} skal udpege en person, der skal tage 1 slurk ud for hver farve på deres tøj",
-    "FÆLLESKÅL!",
-    "Den sidste, der ankom i dag, skal tage 4 slurke",
-    "Alle der har et familiemedlem med samme navn som en ved bordet, tager 1 shot (5 slurk øl, hvis shots ikke er til stede)",
-    "Alle der har haft deres kørekort i over 5 år tager 1 slurk. Folk uden kørekort skal bunde",
-    "Den ældste ved bordet skal give 3 slurke ud",
-    "Alle, der har søskende, skal tage en slurk",
-    "Den person med de største sko skal give 2 slurke ud",
-    "Hvis du har spist en slasket kebab indenfor de sidste tre dage, tag en slurk",
-    "Personen med kortest hår skal give 3 slurke ud",
-    "FÆLLESSKÅL!",
-    "Hvis du har kysset med en ved bordet her, tager du 2 slurke.",
-    "Hvis du har knaldet med en fra bordet her, tager du 4 slurke",
-    "Alle med piercinger tager en slurk pr. piercing.",
-    "Den, der sidder tættest på toilettet, må vælge en person til at tage 3 slurke.",
-    "Alle med planer i morgen tager 1 slurk",
-    "{player} må give 1 slurk ud pr. armbøjning",
-    "Hvis du har en tatovering på højre arm, skal du tage 2 slurke",
-    "Alle tager en slurk per tatovering de har",
-    "Alle tager en slurk per stykke snus de har på sig",
-    "Alle tager en slurk per gang de har onaneret denne uge",
-    "Alle tager en slurk per ekskæreste de har",
-    "Alle der stemmer blå blok drikker 1 slurk, alle der stemmer rød blok drikker 2 slurke",
-    "{player} må give 2 slurke ud",
-    "{player} må give 2 slurke ud",
-    "{player} må give 2 slurke ud",
-    "{player} må give 2 slurke ud",
-    "{player} må give 2 slurke ud",
-    "{player} må give 3 slurke ud",
-    "{player} må give 3 slurke ud",
-    "{player} må give 3 slurke ud",
-    "{player} må give 5 slurke ud",
-    "{player} må give 5 slurke ud",
-    "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
-    "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
-    "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør"
+    {
+      "da": "{player} skal udpege en person til at hente øl til bordet",
+      "en": "{player} must pick someone to fetch beer for the table"
+    },
+    {
+      "da": "{player} skal give 2 slurke ud. Det skal din makker til venstre også.",
+      "en": "{player} must give out 2 drinks. So must the person to your left."
+    },
+    {
+      "da": "{player} vælg en person, der skal give 3 slurke ud",
+      "en": "{player}, pick someone who has to give out 3 drinks"
+    },
+    {
+      "da": "Alle med et ur på venstre arm skal tage 2 slurke. Hvis du har ur på højre arm, skal du bunde",
+      "en": "Everyone wearing a watch on their left arm takes 2 drinks. If you wear it on your right arm, chug your drink"
+    },
+    {
+      "da": "{player} skal udpege en person, der skal tage 1 slurk ud for hver farve på deres tøj",
+      "en": "{player} must pick someone who has to take 1 drink for every color they're wearing"
+    },
+    {
+      "da": "FÆLLESKÅL!",
+      "en": "CHEERS, EVERYONE DRINKS!"
+    },
+    {
+      "da": "Den sidste, der ankom i dag, skal tage 4 slurke",
+      "en": "Whoever arrived last today takes 4 drinks"
+    },
+    {
+      "da": "Alle der har et familiemedlem med samme navn som en ved bordet, tager 1 shot (5 slurk øl, hvis shots ikke er til stede)",
+      "en": "Everyone who has a family member with the same name as someone at the table takes 1 shot (5 drinks of beer if no shots are available)"
+    },
+    {
+      "da": "Alle der har haft deres kørekort i over 5 år tager 1 slurk. Folk uden kørekort skal bunde",
+      "en": "Everyone who's had their driver's license for more than 5 years takes 1 drink. Anyone without a license has to chug"
+    },
+    {
+      "da": "Den ældste ved bordet skal give 3 slurke ud",
+      "en": "The oldest person at the table must give out 3 drinks"
+    },
+    {
+      "da": "Alle, der har søskende, skal tage en slurk",
+      "en": "Everyone with siblings takes a drink"
+    },
+    {
+      "da": "Den person med de største sko skal give 2 slurke ud",
+      "en": "The person with the biggest shoes must give out 2 drinks"
+    },
+    {
+      "da": "Hvis du har spist en slasket kebab indenfor de sidste tre dage, tag en slurk",
+      "en": "If you've eaten a greasy kebab in the last three days, take a drink"
+    },
+    {
+      "da": "Personen med kortest hår skal give 3 slurke ud",
+      "en": "The person with the shortest hair must give out 3 drinks"
+    },
+    {
+      "da": "FÆLLESSKÅL!",
+      "en": "CHEERS, EVERYONE DRINKS!"
+    },
+    {
+      "da": "Hvis du har kysset med en ved bordet her, tager du 2 slurke.",
+      "en": "If you've kissed someone at this table, take 2 drinks."
+    },
+    {
+      "da": "Hvis du har knaldet med en fra bordet her, tager du 4 slurke",
+      "en": "If you've hooked up with someone at this table, take 4 drinks"
+    },
+    {
+      "da": "Alle med piercinger tager en slurk pr. piercing.",
+      "en": "Everyone with piercings takes a drink per piercing."
+    },
+    {
+      "da": "Den, der sidder tættest på toilettet, må vælge en person til at tage 3 slurke.",
+      "en": "Whoever is sitting closest to the bathroom gets to pick someone to take 3 drinks."
+    },
+    {
+      "da": "Alle med planer i morgen tager 1 slurk",
+      "en": "Everyone with plans tomorrow takes 1 drink"
+    },
+    {
+      "da": "{player} må give 1 slurk ud pr. armbøjning",
+      "en": "{player} may give out 1 drink per push-up they do"
+    },
+    {
+      "da": "Hvis du har en tatovering på højre arm, skal du tage 2 slurke",
+      "en": "If you have a tattoo on your right arm, take 2 drinks"
+    },
+    {
+      "da": "Alle tager en slurk per tatovering de har",
+      "en": "Everyone takes a drink per tattoo they have"
+    },
+    {
+      "da": "Alle tager en slurk per stykke snus de har på sig",
+      "en": "Everyone takes a drink per nicotine pouch they're carrying"
+    },
+    {
+      "da": "Alle tager en slurk per gang de har onaneret denne uge",
+      "en": "Everyone takes a drink for every time they've masturbated this week"
+    },
+    {
+      "da": "Alle tager en slurk per ekskæreste de har",
+      "en": "Everyone takes a drink per ex they have"
+    },
+    {
+      "da": "Alle der stemmer blå blok drikker 1 slurk, alle der stemmer rød blok drikker 2 slurke",
+      "en": "Everyone who votes for the 'blue bloc' drinks 1, everyone who votes for the 'red bloc' drinks 2"
+    },
+    {
+      "da": "{player} må give 2 slurke ud",
+      "en": "{player} may give out 2 drinks"
+    },
+    {
+      "da": "{player} må give 2 slurke ud",
+      "en": "{player} may give out 2 drinks"
+    },
+    {
+      "da": "{player} må give 2 slurke ud",
+      "en": "{player} may give out 2 drinks"
+    },
+    {
+      "da": "{player} må give 2 slurke ud",
+      "en": "{player} may give out 2 drinks"
+    },
+    {
+      "da": "{player} må give 2 slurke ud",
+      "en": "{player} may give out 2 drinks"
+    },
+    {
+      "da": "{player} må give 3 slurke ud",
+      "en": "{player} may give out 3 drinks"
+    },
+    {
+      "da": "{player} må give 3 slurke ud",
+      "en": "{player} may give out 3 drinks"
+    },
+    {
+      "da": "{player} må give 3 slurke ud",
+      "en": "{player} may give out 3 drinks"
+    },
+    {
+      "da": "{player} må give 5 slurke ud",
+      "en": "{player} may give out 5 drinks"
+    },
+    {
+      "da": "{player} må give 5 slurke ud",
+      "en": "{player} may give out 5 drinks"
+    },
+    {
+      "da": "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
+      "en": "{player}, for the rest of the game you must take a drink every time {player2} does"
+    },
+    {
+      "da": "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
+      "en": "{player}, for the rest of the game you must take a drink every time {player2} does"
+    },
+    {
+      "da": "{player}, resten af spillet skal du tage en slurk hver gang {player2} gør",
+      "en": "{player}, for the rest of the game you must take a drink every time {player2} does"
+    }
   ],
-
   "unhinged": [
-    "Personen der sidst har onaneret må give 5 slurke ud"
+    {
+      "da": "Personen der sidst har onaneret må give 5 slurke ud",
+      "en": "The person who last masturbated may give out 5 drinks"
+    }
   ]
 }

@@ -1,5 +1,4 @@
 import questions from '../../data/questions.json';
-import questionsEn from '../../data/questions.en.json';
 import { STRINGS } from '../../i18n/strings';
 
 // De fire farver repræsenterer hver sin spørgsmålskategori i UI'et.
@@ -35,10 +34,6 @@ class QuestionSessionService {
     // På den måde kan vi resette en session uden at genindlæse eller rededuplikere data.
     this.questionBankByColor = this.buildQuestionBankByColor();
     this.remainingQuestionsByColor = this.createSessionBucketsFromQuestionBank();
-    // Slår dansk spørgsmålstekst op til den engelske oversættelse, pr. farve.
-    // Bygges positionsbaseret fra questions.json/questions.en.json, som holdes i sync
-    // af test/neverHaveIEver/questions-i18n-parity.test.cjs.
-    this.danishToEnglishByColor = this.buildDanishToEnglishByColor();
   }
 
   // Returnerer et tilfældigt element fra en liste.
@@ -73,8 +68,10 @@ class QuestionSessionService {
   //
   // Flow:
   // 1) Find category key ud fra farve.
-  // 2) Læs spørgsmål fra questions.json.
-  // 3) Dedupliker via normaliseret tekst.
+  // 2) Læs spørgsmål fra questions.json. Hvert spørgsmål er { da, en } - de to
+  //    sprog rejser altid sammen som én enhed, så der ikke er noget separat
+  //    indeks at holde i sync mellem to filer.
+  // 3) Dedupliker via normaliseret dansk tekst.
   // 4) Gem resultat i questionBankByColor[color].
   buildQuestionBankByColor() {
     const questionBankByColor = {};
@@ -93,7 +90,7 @@ class QuestionSessionService {
       const seenNormalizedQuestions = new Set();
 
       for (const question of safeQuestionsForType) {
-        const normalizedQuestion = this.normalizeQuestion(question);
+        const normalizedQuestion = this.normalizeQuestion(question.da);
         if (!seenNormalizedQuestions.has(normalizedQuestion)) {
           seenNormalizedQuestions.add(normalizedQuestion);
           uniqueQuestionsForType.push(question);
@@ -104,28 +101,6 @@ class QuestionSessionService {
     }
 
     return questionBankByColor;
-  }
-
-  // Bygger farve -> Map(normaliseret dansk tekst -> engelsk tekst).
-  // Går igennem de rå (ikke-deduplikerede) arrays i lås-trin, så indekset i
-  // questions.json altid matcher det tilsvarende indeks i questions.en.json.
-  buildDanishToEnglishByColor() {
-    const danishToEnglishByColor = {};
-
-    for (const color of this.questionCategoryColors) {
-      const questionType = this.questionTypeByColor[color];
-      const daQuestionsForType = Array.isArray(questions[questionType]) ? questions[questionType] : [];
-      const enQuestionsForType = Array.isArray(questionsEn[questionType]) ? questionsEn[questionType] : [];
-
-      const danishToEnglish = new Map();
-      daQuestionsForType.forEach((question, index) => {
-        danishToEnglish.set(this.normalizeQuestion(question), enQuestionsForType[index]);
-      });
-
-      danishToEnglishByColor[color] = danishToEnglish;
-    }
-
-    return danishToEnglishByColor;
   }
 
   // Nøgle + sprog -> label der vises på kortet. Falder tilbage til dansk,
@@ -230,10 +205,12 @@ class QuestionSessionService {
     const randomQuestionIndex = Math.floor(Math.random() * remainingQuestionsForColor.length);
     // splice muterer session-listen og returnerer de fjernede elementer.
     const removedQuestions = remainingQuestionsForColor.splice(randomQuestionIndex, 1);
-    const selectedQuestionBody = removedQuestions[0];
-    const normalizedQuestionBody = this.normalizeQuestion(selectedQuestionBody);
+    // selectedQuestionEntry er { da, en } - de to sprog for ét spørgsmål rejser
+    // altid sammen, så der aldrig er noget separat indeks der kan gå ud af sync.
+    const selectedQuestionEntry = removedQuestions[0];
+    const normalizedQuestionBody = this.normalizeQuestion(selectedQuestionEntry.da);
 
-    return { selectedColor, selectedQuestionType, selectedQuestionBody, normalizedQuestionBody };
+    return { selectedColor, selectedQuestionType, selectedQuestionEntry, normalizedQuestionBody };
   }
 
   // Trækker næste unikke spørgsmål til UI-laget.
@@ -250,17 +227,10 @@ class QuestionSessionService {
     if (!raw) {
       return null;
     }
-    const { selectedColor, selectedQuestionType, selectedQuestionBody, normalizedQuestionBody } = raw;
+    const { selectedColor, selectedQuestionType, selectedQuestionEntry, normalizedQuestionBody } = raw;
 
     const selectedQuestionLabel = this.getQuestionLabel(selectedQuestionType, language);
-
-    let displayBody = selectedQuestionBody;
-    if (language === 'en') {
-      const englishBody = this.danishToEnglishByColor[selectedColor].get(normalizedQuestionBody);
-      if (englishBody) {
-        displayBody = englishBody;
-      }
-    }
+    const displayBody = selectedQuestionEntry[language] ?? selectedQuestionEntry.da;
 
     // questionId bygges deterministisk ud fra type + normaliseret DANSK tekst,
     // så tests og UI kan identificere et spørgsmål stabilt på tværs af sessioner og sprog.
@@ -281,17 +251,16 @@ class QuestionSessionService {
     if (!raw) {
       return null;
     }
-    const { selectedColor, selectedQuestionType, selectedQuestionBody, normalizedQuestionBody } = raw;
+    const { selectedColor, selectedQuestionType, selectedQuestionEntry, normalizedQuestionBody } = raw;
 
     const labelDa = this.getQuestionLabel(selectedQuestionType, 'da');
     const labelEn = this.getQuestionLabel(selectedQuestionType, 'en');
-    const englishBody = this.danishToEnglishByColor[selectedColor].get(normalizedQuestionBody) ?? selectedQuestionBody;
 
     return {
       questionId: `${selectedQuestionType}:${normalizedQuestionBody}`,
       title: { da: labelDa, en: labelEn },
       cornerLabel: { da: labelDa, en: labelEn },
-      body: { da: selectedQuestionBody, en: englishBody },
+      body: { da: selectedQuestionEntry.da, en: selectedQuestionEntry.en },
       backgroundColor: selectedColor,
     };
   }
